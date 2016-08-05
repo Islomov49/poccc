@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/ivTitleIcon"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp" />
+
+        <TextView
+            android:id="@+id/tvTitleName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/twenty_dp"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textColor="@color/toolbar_text_color"
+            android:textSize="@dimen/eighteen_sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivCurrencyChoose"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:background="@color/drawer_listview_border" />
+
+    <LinearLayout
+        android:id="@+id/llSubItems"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+    </LinearLayout>
+
+</LinearLayout>

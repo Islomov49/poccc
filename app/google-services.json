@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "913068431761",
+    "firebase_url": "https://pocket-accounter.firebaseio.com",
+    "project_id": "pocket-accounter",
+    "storage_bucket": "pocket-accounter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:913068431761:android:08ef934599a8de7e",
+        "android_client_info": {
+          "package_name": "com.jim.pocketaccounter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "913068431761-r3imsj89kits4s86gpoqs9d3ngok8n8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jim.pocketaccounter",
+            "certificate_hash": "8A621F3ECE8B2A1DBD8EBAB3B10156EB661B1A28"
+          }
+        },
+        {
+          "client_id": "913068431761-4gjl18s9mmen3pjjesi4ui3saaq73dlm.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "913068431761-3luv38obf2eoj8gi1nj6v8j373292vt7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDixGGbiWDuLNWXwz48pKOTZTPW_vdElEU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-77213654-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "913068431761-4gjl18s9mmen3pjjesi4ui3saaq73dlm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

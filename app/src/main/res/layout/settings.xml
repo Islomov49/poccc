@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <PreferenceCategory android:title="@string/language">
+        <ListPreference
+            android:defaultValue='@string/language_default'
+            android:dialogIcon="@drawable/remove_red"
+            android:entries="@array/language_titles"
+            android:entryValues="@array/language_values"
+            android:key="language"
+            android:selectable="true"
+            android:summary="@string/choose_language" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/finance">
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/balance_mode_titles"
+            android:entryValues="@array/balance_mode_values"
+            android:key="balance_solve"
+            android:selectable="true"
+            android:summary="@string/balance_summary"
+            android:title="@string/balance_title"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/notifications">
+        <CheckBoxPreference
+            android:defaultValue="@bool/notif_default"
+            android:key="general_notif"
+            android:summary="@string/notifications_summary"
+            android:title="@string/notifications" />
+        <com.jim.pocketaccounter.TimePreference
+            android:defaultValue="08:00"
+            android:summary="@string/planning_notif_summary"
+            android:showDefault="true"
+            android:dependency="@string/general_notif"
+            android:entries="@string/planning_notif_entry"
+            android:dialogLayout="@layout/time_preference"
+            android:title="@string/planning_notif_title"
+            android:key="planningNotifTime" />
+     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/filters">
+        <ListPreference
+            android:defaultValue="2"
+            android:entries="@array/filter_titles"
+            android:entryValues="@array/filter_value"
+            android:key="report_filter"
+            android:summary="@string/filter_subtitle"
+            android:title="@string/filter_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/sync">
+        <Preference
+            android:key="save"
+            android:summary="@string/setting_save"
+            android:title="@string/save" />
+        <Preference
+            android:key="load"
+            android:summary="@string/setting_repair"
+            android:title="@string/repair" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/google_sync">
+        <Preference
+            android:key="backup"
+            android:summary="@string/backup_summary"
+            android:title="@string/backup" />
+        <Preference
+            android:key="logout"
+            android:title="@string/google_logout" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/sbrosit_title">
+        <Preference
+            android:key="sbros"
+            android:summary="@string/sbrosit_about"
+            android:title="@string/sbrosit" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

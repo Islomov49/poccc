@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/hundred_and_twenty_dp"
+                android:background="@color/grey_light"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp">
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/name_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="@dimen/twentynine_dp"
+                        android:text="@string/tel_number"
+                        android:textColor="#212121"
+                        android:textSize="@dimen/twenty_sp" />
+
+                    <EditText
+                        android:id="@+id/etSmsParseEditPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/name_text_view"
+                        android:hint="@string/enter_phone_number"
+                        android:maxLines="1"
+                        android:textColor="@color/black_for_glavniy_text"
+                        android:textColorHint="@color/black_for_secondary_text"
+                        android:textSize="@dimen/fourteen_dp"
+                        android:maxLength="13"
+                        android:layout_marginTop="@dimen/five_dp"
+                        />
+
+                    <FrameLayout
+                        android:id="@+id/tvSmsParseEditFromContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/name_text_view"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="@dimen/two_dp"
+                        android:background="@drawable/rounded_rectangle_1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/five_dp"
+                            android:layout_marginLeft="@dimen/eight_dp"
+                            android:layout_marginRight="@dimen/eight_dp"
+                            android:layout_marginTop="@dimen/five_dp"
+                            android:text="@string/from_contact"
+                            android:textColor="@color/green_light"
+                            android:textSize="@dimen/eight_dp" />
+                    </FrameLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/sixteen_dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/ten_dp"
+                        android:text="@string/choose_type_sms"
+                        android:textColor="@color/black_for_glavniy_text"
+                        android:textSize="@dimen/eighteen_sp" />
+
+
+                </LinearLayout>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rgSmsParseEdit"
+                    android:paddingTop="@dimen/five_dp">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbOnlyExpense"
+                        android:text="@string/only_expense"
+                        android:checked="true"
+                        android:layout_marginTop="@dimen/five_dp"
+                        android:textSize="@dimen/sixteen_sp"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbOnlyIncome"
+                        android:text="@string/only_income"
+                        android:layout_marginTop="@dimen/five_dp"
+                        android:textSize="@dimen/sixteen_sp"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbBoth"
+                        android:text="@string/parse_both"
+                        android:layout_marginTop="@dimen/five_dp"
+                        android:textSize="@dimen/sixteen_sp"/>
+                </RadioGroup>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ti_type_parsinga_sms_sobsheni_eti_type_parsinga_sms_sobshenieti_type_parsinga_sms_sobsheni"
+                        android:textColor="@color/black_for_secondary_text"
+                        android:textSize="@dimen/ten_dp"
+                        android:layout_marginTop="@dimen/ten_dp"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:gravity="center">
+
+                    <ImageView
+
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/green_light_forline" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/sevent_dp"
+                    android:layout_marginBottom="@dimen/ten_dp"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spSmsParseEditAccount"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@+id/textView16" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/eighteen_sp"
+                        android:text="@string/operaitons_with"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/toolbar_text_color"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/five_dp"
+                        android:id="@+id/textView16"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_operat"
+                        android:textColor="@color/black_for_secondary_text"
+                        android:textSize="@dimen/ten_dp"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/green_light_forline" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/sevent_dp"
+                    android:layout_marginBottom="@dimen/ten_dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/eighteen_sp"
+                        android:text="@string/curenncy_of_sms"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/toolbar_text_color"
+                        android:layout_toLeftOf="@+id/spSmsParseEditCurrency"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/five_dp"
+                        android:id="@+id/textView17" />
+                    <Spinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spSmsParseEditCurrency"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBottom="@+id/textView17" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_currencu"
+                        android:textColor="@color/black_for_secondary_text"
+                        android:textSize="@dimen/ten_dp"
+                        />
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/green_light_forline" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/sixteen_dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/ten_dp"
+                        android:text="@string/key_for_parsing"
+                        android:textColor="@color/black_for_glavniy_text"
+                        android:textSize="@dimen/eighteen_sp" />
+
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    >
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etSmsParseAmountKeywords"
+                        android:hint="@string/word_do_sifri"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/fourteen_sp"
+                        android:textColorHint="@color/black_for_secondary_text"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    >
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etSmsParseEditIncome"
+                        android:hint="@string/word_for_decide_income"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/fourteen_sp"
+                        android:textColorHint="@color/black_for_secondary_text"
+                        />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    >
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etSmsParseEditExpense"
+                        android:hint="@string/word_for_decide_expence"
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/fourteen_sp"
+                        android:textColorHint="@color/black_for_secondary_text"
+                        />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/zdes_idot_dlinnaya_obyasneniya_pro_to_shto_kak_rabotaet_klyuchi_i"
+                        android:textColor="@color/black_for_secondary_text"
+                        android:textSize="@dimen/ten_dp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

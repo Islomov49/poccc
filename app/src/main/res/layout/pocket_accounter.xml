@@ -1,0 +1,215 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:longClickable="true">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/toolbar_color">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:id="@+id/ivToolbarExcel"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="@dimen/sixteen_dp"
+                android:src="@drawable/ic_excel"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/ivToolbarMostRight"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <Spinner
+            android:id="@+id/spToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/two_dp"
+            android:background="@drawable/spinner"
+            android:visibility="gone" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/rlRecordTable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:id="@+id/change"
+            android:orientation="vertical">
+            <!--android:background="@drawable/record_bg"-->
+            <RelativeLayout
+                android:id="@+id/rlRecordExpanses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlRecordBalance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/belt_balanse"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvRecordIncomeTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/two_dp"
+                                android:layout_marginLeft="@dimen/sixteen_dp"
+                                android:layout_marginRight="@dimen/ten_dp"
+                                android:layout_marginTop="@dimen/five_dp"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/income"
+                                android:textColor="@color/toolbar_text_color"
+                                android:textSize="@dimen/fourteen_sp" />
+
+                            <TextView
+                                android:id="@+id/tvRecordIncome"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginLeft="@dimen/sixteen_dp"
+                                android:layout_marginRight="@dimen/ten_dp"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text=""
+                                android:textColor="@color/green_just"
+                                android:textSize="@dimen/twelve_sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvRecordBalanseTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/two_dp"
+                                android:layout_marginLeft="@dimen/sixteen_dp"
+                                android:layout_marginRight="@dimen/ten_dp"
+                                android:layout_marginTop="@dimen/five_dp"
+
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/balanse"
+                                android:textColor="@color/toolbar_text_color"
+                                android:textSize="@dimen/fourteen_sp" />
+
+                            <TextView
+                                android:id="@+id/tvRecordBalanse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginLeft="@dimen/sixteen_dp"
+                                android:layout_marginRight="@dimen/ten_dp"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text=""
+                                android:textColor="@color/toolbar_text_color"
+                                android:textSize="@dimen/twelve_sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvRecordExpanseTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="@dimen/two_dp"
+                                android:layout_marginLeft="@dimen/sixteen_dp"
+                                android:layout_marginRight="@dimen/sixteen_dp"
+                                android:layout_marginTop="@dimen/five_dp"
+
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text="@string/expanse"
+                                android:textColor="@color/toolbar_text_color"
+                                android:textSize="@dimen/fourteen_sp" />
+
+                            <TextView
+                                android:id="@+id/tvRecordExpanse"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginLeft="@dimen/sixteen_dp"
+                                android:layout_marginRight="@dimen/sixteen_dp"
+                                android:layout_weight="1"
+                                android:gravity="center_horizontal"
+                                android:text=""
+                                android:textColor="@color/red"
+                                android:textSize="@dimen/twelve_sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/eighteen_sp"
+
+                        android:textColor="#c4c4c4"
+                        android:text=". . ."
+                        android:textSize="12dp"
+
+                        android:paddingBottom="@dimen/five_dp"
+                        android:gravity="center"
+                        />
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlRecordIncomes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/flMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"></FrameLayout>
+</RelativeLayout>

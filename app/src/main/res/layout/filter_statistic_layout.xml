@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/llFilterStatistic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="5dp"
+        android:background="@color/grey_light2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="@string/between_dates"
+            android:textSize="@dimen/thirteen_dp" />
+
+        <ImageView
+            android:id="@+id/ivFilterStatisticCancel"
+            android:layout_width="@dimen/twenty_dp"
+            android:layout_height="@dimen/twenty_dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/ivFilterStatisticSave"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/cancel_sign" />
+
+        <ImageView
+            android:id="@+id/ivFilterStatisticSave"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/sixteen_dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/check_sign" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginBottom="@dimen/ten_dp"
+        android:background="@color/green_light_forline" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/between"
+                    android:textColor="@color/black_for_glavniy_text"
+                    android:textSize="@dimen/sixteen_sp"
+                    android:layout_alignParentLeft="true"
+                    />
+
+                <Spinner
+                    android:id="@+id/spFilerStatistic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/yi_oy"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mont"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/sixteen_sp" />
+
+                        <Spinner
+                            android:id="@+id/spFilterStatisticMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentRight="true"
+                            android:text="oy" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/yearr"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/sixteen_sp" />
+
+                        <Spinner
+                            android:id="@+id/spFilterStatisticYearMont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentRight="true"
+                            android:text="oy" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/interval_edit">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Начало"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:layout_alignParentLeft="true"
+                            android:textSize="@dimen/sixteen_sp" />
+
+                        <EditText
+                            android:id="@+id/etFilterStatisticStartTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="start day" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Конец"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/sixteen_sp" />
+
+                        <EditText
+                            android:id="@+id/etFilterStatisticEndTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="end day"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/yil_edit">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Год"
+                        android:layout_alignParentLeft="true"
+                        android:textColor="@color/black_for_glavniy_text"
+                        android:textSize="@dimen/sixteen_sp" />
+
+                    <Spinner
+                        android:id="@+id/etFilterStatisticYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentRight="true"
+                        android:text="yil"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginTop="@dimen/five_dp"
+        android:background="@color/green_light_forline" />
+</LinearLayout>

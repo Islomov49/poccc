@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="@dimen/twentyfour_dp"
+        android:layout_height="@dimen/twentyfour_dp"
+        android:id="@+id/ivRecordEditCatIcon"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_marginBottom="@dimen/ten_dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvRecordEditCatName"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:layout_marginRight="@dimen/ten_dp"
+        android:layout_weight="1"
+        android:textColor="@color/toolbar_text_color"
+        android:textSize="@dimen/fourteen_sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvRecordEditCatAmount"
+        android:textColor="@color/toolbar_text_color"
+        android:textSize="@dimen/fourteen_sp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_gravity="center_vertical"/>
+</LinearLayout>

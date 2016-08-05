@@ -1,0 +1,453 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pustoyy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context="com.jim.pocketaccounter.AddCreditFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/hundred_and_twenty_dp"
+                    android:background="@color/grey_light"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivBorrowAddPopup"
+                        android:layout_width="@dimen/ninetytwo_dp"
+                        android:layout_height="@dimen/ninetytwo_dp"
+                        android:layout_marginRight="@dimen/ten_dp"
+                        android:layout_marginTop="@dimen/fifteen_dp"
+                        app:border_color="@color/green_light_forline"
+                        app:border_overlay="true"
+                        app:border_width="2px" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/name_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/twentynine_dp"
+                            android:text="@string/name"
+                            android:textColor="#212121"
+                            android:textSize="@dimen/twenty_sp" />
+
+                        <EditText
+                            android:id="@+id/etBorrowAddPopupName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/name_text_view"
+                            android:hint="@string/enter_name_error"
+                            android:maxLines="1"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textColorHint="@color/black_for_secondary_text"
+                            android:textSize="@dimen/sixteen_dp"
+                            android:maxLength="13"
+                            />
+
+                        <FrameLayout
+                            android:id="@+id/btBorrowAddPopupContact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/name_text_view"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/two_dp"
+                            android:background="@drawable/rounded_rectangle_1">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/five_dp"
+                                android:layout_marginLeft="@dimen/eight_dp"
+                                android:layout_marginRight="@dimen/eight_dp"
+                                android:layout_marginTop="@dimen/five_dp"
+                                android:text="@string/from_contact"
+                                android:textColor="@color/green_light"
+                                android:textSize="@dimen/eight_dp" />
+                        </FrameLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/green_light_forline"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/sixteen_dp"
+                    android:paddingRight="@dimen/sixteen_dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/twenty_dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/ten_dp"
+                            android:text="@string/tel_number"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/eighteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="1px"
+                                android:background="@color/green_light_forline" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etBorrowAddPopupNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                                android:hint="@string/enter_phone_number"
+                            android:inputType="phone"
+                            android:textSize="@dimen/fourteen_sp" />
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/twenty_dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/ten_dp"
+                            android:text="@string/debt_amount"
+                            android:id="@+id/summ_zayma"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/eighteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height = "1px"
+                                android:background="@color/green_light_forline" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Spinner
+                            android:id="@+id/spBorrowAddPopupValyuta"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/fourteen_dp"/>
+
+                        <EditText
+                            android:id="@+id/etBorrowAddPopupSumm"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_toLeftOf="@+id/spBorrowAddPopupValyuta"
+                            android:hint="@string/enter_debt_amoount"
+                            android:inputType="numberDecimal"
+                            android:text=""
+                            android:maxLength="13"
+                            android:textSize="@dimen/fourteen_sp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/sixteen_dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/ten_dp"
+                            android:text="@string/date"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/eighteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="2px"
+                                android:background="@color/green_light_forline" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etBorrowAddPopupDataGet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginRight="@dimen/six_dp"
+                            android:layout_toLeftOf="@+id/imageView2"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/begin_date"
+                            android:textSize="@dimen/fourteen_sp" />
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="@dimen/thirty_dp"
+                            android:layout_height="@dimen/fourty_dp"
+                            android:layout_centerHorizontal="true"
+                            android:padding="@dimen/five_dp"
+                            android:src="@drawable/ikitar" />
+
+                        <EditText
+                            android:id="@+id/etBorrowAddPopupDataRepeat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginLeft="@dimen/six_dp"
+                            android:layout_toEndOf="@+id/imageView2"
+                            android:layout_toRightOf="@+id/imageView2"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/end_time"
+                            android:textSize="@dimen/fourteen_sp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/sixteen_dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/ten_dp"
+                            android:text="@string/notif_setting"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/eighteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/one_dp"
+                                android:background="@color/green_light_forline" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/five_dp"
+                            >
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/spNotifMode"
+                                android:layout_weight="1"
+                                android:layout_marginRight="@dimen/ten_dp"/>
+
+                            <FrameLayout
+                                android:id="@+id/btnDetalization"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/name_text_view"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="@dimen/two_dp"
+                                android:background="@drawable/rounded_rectangle_1"
+                                android:layout_gravity="center_vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="@dimen/five_dp"
+                                    android:layout_marginLeft="@dimen/eight_dp"
+                                    android:layout_marginRight="@dimen/eight_dp"
+                                    android:layout_marginTop="@dimen/five_dp"
+                                    android:text="@string/detalization"
+                                    android:textColor="@color/green_light"
+                                    android:textSize="@dimen/twelve_sp" />
+                            </FrameLayout>
+                        </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/sixteen_dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/ten_dp"
+                            android:text="@string/transactions"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:textSize="@dimen/eighteen_sp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="2px"
+                                android:background="@color/green_light_forline" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/five_dp"
+                        android:layout_marginTop="@dimen/five_dp">
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginTop="@dimen/five_dp"
+                            android:layout_toLeftOf="@+id/chbAddDebtBorrowCalculate"
+                            android:text="@string/include_in_balance"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text" />
+
+                        <CheckBox
+                            android:id="@+id/chbAddDebtBorrowCalculate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/textView4"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignTop="@+id/textView4"
+                            android:checked="true"
+                            android:text="" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/etDebtBorrowFirstPay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginRight="@dimen/six_dp"
+                            android:layout_toLeftOf="@+id/spBorrowAddPopupAccount"
+                            android:layout_toStartOf="@+id/spBorrowAddPopupAccount"
+                            android:hint="@string/enter_first_transaction"
+                            android:inputType="numberDecimal"
+                            android:maxLength="13"
+                            android:textSize="@dimen/fourteen_sp" />
+
+                        <Spinner
+                            android:id="@+id/spBorrowAddPopupAccount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="@dimen/fourteen_dp"
+                            />
+
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/sixteen_dp"
+                    android:layout_marginRight="@dimen/sixteen_dp"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/green_light_forline" />
+                </RelativeLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88ffffff"
+        android:id="@+id/rlProgressBar"
+        android:clickable="true"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+    </RelativeLayout>
+</FrameLayout>

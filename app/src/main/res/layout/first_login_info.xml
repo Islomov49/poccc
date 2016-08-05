@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical">
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:gravity="right"
+             android:background="@color/grey_light2"
+             android:id="@+id/linearLayout3">
+
+             <ImageView
+                 android:id="@+id/ivInfoDebtBorrowCancel"
+                 android:layout_width="@dimen/twentyfive_dp"
+                 android:layout_height="@dimen/twentyfive_dp"
+                 android:layout_gravity="center_vertical"
+                 android:background="?attr/selectableItemBackgroundBorderless"
+                 android:src="@drawable/cancel_sign"
+                 android:layout_margin="@dimen/sixteen_dp"
+
+                 />
+
+
+
+         </LinearLayout>
+         <FrameLayout
+             android:layout_width="match_parent"
+             android:layout_height="2px"
+             android:layout_marginBottom="10dp"
+
+             android:background="@color/green_light_forline"
+             />
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+             <ImageView
+
+                 android:layout_width="match_parent"
+                 android:layout_height="110dp"
+                 android:paddingTop="10dp"
+                 android:paddingBottom="10dp"
+                 android:src="@drawable/for_sync"/>
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="@string/sync_and_backup"
+                 android:gravity="center"
+                 android:textSize="20dp"
+                 android:textStyle="bold"
+                 android:textColor="#414141"/>
+             <TextView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="@string/first_sync_loging"
+                 android:textSize="@dimen/fourteen_dp"
+                 android:gravity="center"
+                 android:textColor="#414141"
+                 android:layout_marginLeft="@dimen/sixteen_dp"
+                 android:layout_marginRight="@dimen/sixteen_dp"
+                 android:layout_marginTop="@dimen/ten_dp"
+                 android:layout_marginBottom="@dimen/ten_dp"/>
+         </LinearLayout>
+
+
+         <FrameLayout
+             android:layout_width="match_parent"
+             android:layout_height="2px"
+             android:layout_marginTop="@dimen/five_dp"
+
+
+             android:background="@color/green_light_forline"/>
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical"
+             android:background="@color/grey_light2"
+             android:weightSum="1">
+
+
+             <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/seventy_dp"
+                 android:text="@string/always_remember"
+                 android:layout_marginTop="@dimen/ten_dp"
+                 android:gravity="center"
+                 android:id="@+id/textView12"
+                 android:layout_weight="10.10">
+
+
+                 <com.google.android.gms.common.SignInButton
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:textSize="@dimen/twenty_dp"
+                     android:layout_marginTop="@dimen/five_dp"
+                     android:layout_marginBottom="@dimen/five_dp"
+                     android:layout_marginRight="@dimen/sixteen_dp"
+                     android:layout_marginLeft="@dimen/sixteen_dp"
+                     android:textColor="@color/green_light"
+                     android:id="@+id/signg" />
+             </RelativeLayout>
+             <FrameLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="2px"
+                 android:layout_marginTop="@dimen/five_dp"
+
+
+                 android:background="@color/green_light_forline"/>
+         </LinearLayout>
+
+     </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

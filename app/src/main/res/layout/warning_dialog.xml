@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tvCatEditName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_sp"
+        android:text="@string/warning"
+        android:textColor="@color/toolbar_text_color"
+        android:textSize="@dimen/eighteen_sp" />
+
+    <ImageView
+        android:id="@+id/ivCatIcon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@color/lv_border" />
+
+    <TextView
+        android:id="@+id/tvWarningText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:text="TextView"
+        android:textColor="@color/for_darker"
+        android:textSize="@dimen/sixteen_sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btnWarningYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#f2f2f2"
+            android:text="@string/yes"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <ImageView
+            android:id="@+id/ivSubCatSave"
+            android:layout_width="@dimen/one_dp"
+            android:layout_height="match_parent"
+            />
+
+        <Button
+            android:id="@+id/btnWarningNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#f2f2f2"
+            android:text="@string/no"
+            android:textSize="@dimen/fourteen_sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

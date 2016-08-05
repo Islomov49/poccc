@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:clickable="true">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvSmsParseList"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/sevent_dp"
+
+        android:layout_height="match_parent"/>
+    <com.jim.pocketaccounter.helper.FloatingActionButton
+        android:layout_width="@dimen/fiftysix_dp"
+        android:layout_height="@dimen/fiftysix_dp"
+        android:id="@+id/fabSmsParse"
+        app:fab_colorNormal="@color/green_light_darker"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/sixteen_dp"/>
+</RelativeLayout>

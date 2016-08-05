@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:clickable="true">
+
+    <CheckBox
+        android:id="@+id/chbCurrencyEditMainCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:button="@drawable/checkbox"
+        android:paddingLeft="@dimen/ten_dp"
+        android:text="@string/main_currency_edit"
+        android:textColor="@color/black_for_glavniy_text"
+        android:textSize="@dimen/fourteen_sp" />
+
+    <TextView
+        android:id="@+id/tvExchangeEditDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:text="@string/currency_exchange"
+        android:textColor="@color/toolbar_text_color"
+        android:textSize="@dimen/twelve_sp" />
+    <ImageView
+        android:id="@+id/ivDatePickCancel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/five_dp"
+        android:background="@color/lv_border" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/five_dp" >
+
+        <ImageView
+            android:id="@+id/ivExCurrencyAdd"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:src="@drawable/subcat_add" />
+
+        <ImageView
+            android:id="@+id/ivExCurrencyDelete"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:src="@drawable/subcat_delete" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvCurrencyEditExchange"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/five_dp"
+        android:background="@drawable/edittext_with_toolbarcolor" >
+
+    </ListView>
+
+</LinearLayout>

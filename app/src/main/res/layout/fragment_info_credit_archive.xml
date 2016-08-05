@@ -1,0 +1,461 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jim.pocketaccounter.InfoCreditFragment"
+    android:background="#fff">
+
+    <RelativeLayout
+        android:id="@+id/pustooyy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout"
+            android:layout_above="@+id/realitver"
+            android:layout_alignParentTop="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relativprosto"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingTop="@dimen/ten_dp"
+                android:paddingBottom="@dimen/ten_dp">
+                <TextView
+                    android:id="@+id/name_of_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/twentyfour_sp"
+                    android:layout_marginLeft="@dimen/ten_dp"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:textColor="@color/black_for_glavniy_text"
+                    android:paddingRight="@dimen/ten_dp"
+                    android:layout_toRightOf="@+id/icon_creditt"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true" />
+                <TextView
+                    android:id="@+id/left_amuont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sixteen_sp"
+                    android:layout_below="@+id/name_of_credit"
+                    android:textColor="@color/forlines"
+                    android:layout_marginLeft="@dimen/ten_dp"
+                    android:text="@string/left_amount"
+                    android:layout_marginTop="@dimen/two_dp"
+                    android:layout_toRightOf="@+id/icon_creditt"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+                <TextView
+                    android:id="@+id/value_credit_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/left_amuont"
+                    android:paddingRight="@dimen/ten_dp"
+
+                    android:textSize="@dimen/twentysix_sp"
+                    android:layout_marginLeft="@dimen/ten_dp"
+                    android:textColor="@color/red"
+                    android:layout_toRightOf="@+id/icon_creditt"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+                <ImageView
+                    android:id="@+id/icon_creditt"
+                    android:layout_width="@dimen/eighty_dp"
+                    android:layout_height="@dimen/eighty_dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@+id/name_of_credit"
+                    android:paddingTop="@dimen/four_dp"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/infoooc"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fourty_dp"
+                    android:background="@color/grey_light2">
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/green_light_forline"
+                        android:layout_marginBottom="@dimen/ten_dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/information"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/sixteen_dp"
+                        android:textSize="@dimen/sixteen_sp"
+                        android:textColor="@color/black_for_glavniy_text"/>
+                    <ImageView
+                        android:id="@+id/wlyuzik_opener"
+                        android:layout_width="@dimen/twenty_dp"
+                        android:layout_height="@dimen/twenty_dp"
+                        android:src="@drawable/infoo"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="@dimen/sixteen_dp"/>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:background="@color/green_light_forline"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/shlyuzik"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_light_backgr">
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+
+                    android:paddingLeft="@dimen/twenty_dp"
+                    android:paddingRight="@dimen/sixteen_dp"
+                    >
+                    <RelativeLayout
+
+                        android:layout_below="@+id/linearforline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/eight_dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/procentCredInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/procent_of_credit"
+                            android:id="@+id/procentCredInfoText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                    <RelativeLayout
+
+                        android:layout_below="@+id/linearforline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/four_dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/leftDateInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/left_date"
+                            android:id="@+id/leftDateInfoText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                    <RelativeLayout
+
+                        android:layout_below="@+id/linearforline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/four_dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/intervalCreditInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/period_of_credit2"
+                            android:id="@+id/intervalCreditInfoText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                    <RelativeLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/four_dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/takedtimeInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/taked_credit_time"
+                            android:id="@+id/takedtimeInfoText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                    <RelativeLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/four_dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:text="1200$"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/takedValueInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/credit_amount"
+                            android:id="@+id/takedValueInfoText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                    <RelativeLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/four_dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/totalReturnValueInfo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/total_credit_value"
+                            android:id="@+id/totalReturnValueText"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            />
+                    </RelativeLayout>
+                    <RelativeLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/four_dp"
+                        android:layout_marginBottom="@dimen/eight_dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:gravity="right"
+                            android:paddingLeft="@dimen/ten_dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/it_is_include_balance" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/forlines"
+                            android:text="@string/in_the_balance"
+                            android:id="@+id/it_is_include_balance_text"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginBottom="@dimen/eight_dp"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/with_wlyuzik"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/green_light_forline"
+                />
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/twenty_dp"
+                android:layout_marginTop="@dimen/twenty_dp"
+                android:layout_marginBottom="@dimen/five_dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/transactions"
+                    android:gravity="bottom"
+                    android:textColor="@color/black_for_secondary_text"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="@dimen/fourteen_sp"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/textView7" />
+            </RelativeLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_marginLeft="@dimen/twenty_dp"
+                android:layout_marginRight="@dimen/twenty_dp"
+                android:background="@color/green_light_forline"
+                android:layout_marginBottom="@dimen/ten_dp"/>
+            <FrameLayout
+                android:id="@+id/ifListHave"
+                android:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_marginLeft="@dimen/twenty_dp"
+                android:layout_marginRight="@dimen/twenty_dp"
+                android:background="@color/green_light_forline"
+                android:layout_marginTop="@dimen/five_dp"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginRight="@dimen/twenty_dp"
+                android:layout_marginLeft="@dimen/twenty_dp"
+                android:id="@+id/recycler_for_transactions"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/payed_item"/>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:id="@+id/realitver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/ten_dp"
+
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/green_light_forline"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/green_light"
+                android:textSize="@dimen/fourteen_sp"
+                android:layout_marginRight="@dimen/twenty_dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/total_transaction"
+                android:layout_alignTop="@+id/textView13"
+                android:layout_alignBottom="@+id/textView13" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/fourteen_sp"
+                android:gravity="right"
+                android:textColor="@color/black_for_secondary_text"
+                android:text="@string/total_a"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:layout_marginTop="@dimen/six_dp"
+                android:layout_marginBottom="@dimen/six_dp"
+                android:layout_toLeftOf="@+id/total_transaction"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:id="@+id/textView13" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

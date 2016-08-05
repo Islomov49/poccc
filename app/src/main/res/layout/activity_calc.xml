@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:id="@+id/llRoot">
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sixty_dp"
+        android:background="@color/toolbar_color">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
+        </LinearLayout>
+        <Spinner
+            android:id="@+id/spToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/two_dp"
+            android:background="@drawable/spinner"
+            android:visibility="gone" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingRight="@dimen/sixteen_dp">
+
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/record_edit_display_bg" />
+
+        <TextView
+            android:id="@+id/tvRecordEditDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/twentyfive_dp"
+            android:text="0"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/twentyfour_sp"
+            android:layout_toRightOf="@+id/spRecordEdit"
+            android:gravity="right"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spRecordEdit"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/thirty_dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/rlCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/ivsss1"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <ImageView
+                    android:id="@+id/ivRecordEditCategory"
+                    android:layout_width="@dimen/twentyfour_dp"
+                    android:layout_height="@dimen/twentyfour_dp"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlSubcategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/ivssss1"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <ImageView
+                    android:id="@+id/ivRecordEditSubCategory"
+                    android:layout_width="@dimen/twentyfour_dp"
+                    android:layout_height="@dimen/twentyfour_dp"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlBackspaceSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/ImageView09"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <ImageView
+                    android:layout_width="@dimen/twentyfour_dp"
+                    android:layout_height="@dimen/twentyfour_dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_back_button" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlDivideSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/ImageView05"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvDivide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="/"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:id="@+id/rlSeven"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/ivCurrencyEditDialogCancel"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:src="@drawable/record_edit_button" />
+
+                <TextView
+                    android:id="@+id/tvSeven"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="7"
+                    android:textSize="@dimen/twentytwo_sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlEight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/ImageView01"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+
+                <TextView
+                    android:id="@+id/tvEight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="8"
+                    android:textSize="@dimen/twentytwo_sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlNine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/ImageView02"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvNine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="9"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlMultipleSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/ImageView03"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentTop="false"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvMultiple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="x"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_dp" >
+            <RelativeLayout
+                android:id="@+id/rlFour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/ImageView07"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvFour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="4"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlFive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/ImageView06"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvFive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="5"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlSix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/rl"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvSix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="6"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlMinusSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/ivvvv"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvMinus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="-"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_dp" >
+            <RelativeLayout
+                android:id="@+id/rlOne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/iv4"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="1"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlTwo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/iv3"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="2"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlThree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/iv2"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+
+                <TextView
+                    android:id="@+id/tvThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="3"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlPlusSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="+"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_dp" >
+            <RelativeLayout
+                android:id="@+id/rlDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/kjgg"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvDot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="."
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlZero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <ImageView
+                    android:id="@+id/ImageView15"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvZero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0"
+                    android:gravity="center"
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlEqualSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/kkhl"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+                <TextView
+                    android:id="@+id/tvEqual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="="
+                    android:textSize="@dimen/twentytwo_sp" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/imOKBut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/rhlk"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/record_edit_button" />
+
+                <ImageView
+                    android:id="@+id/imOK"
+                    android:layout_width="@dimen/thirty_dp"
+                    android:layout_height="@dimen/thirty_dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/check_sign"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

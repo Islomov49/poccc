@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white" 
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tvEqual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/sixteen_sp"
+            android:layout_weight="1"
+            android:text="@string/transfer_money"
+            android:textColor="@color/toolbar_text_color" />
+
+        <ImageView
+            android:id="@+id/ivAccountManClose"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/cancel_sign" />
+
+        <ImageView
+            android:id="@+id/ivAccountManSave"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_margin="@dimen/sixteen_dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/check_sign" />
+
+    </LinearLayout>
+    
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@color/message_color" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/from_f"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:textColor="@color/black_for_glavniy_text"
+                android:textStyle="bold"
+                android:textSize="@dimen/sixteen_dp"/>
+            <Spinner
+
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/five_dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/spTransferFirst"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/to_t"
+                android:layout_marginTop="@dimen/ten_dp"
+                android:textColor="@color/black_for_glavniy_text"
+                android:textStyle="bold"
+                android:textSize="@dimen/sixteen_dp"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/five_dp"
+                android:id="@+id/spTransferSecond"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/five_dp"
+            android:orientation="horizontal" >
+            <EditText
+                android:id="@+id/etAccountEditName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:maxLength="25"
+                android:textColor="@color/toolbar_text_color"
+                android:textSize="@dimen/sixteen_sp"
+                android:hint="@string/debt_amount"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/ten_dp"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spAccManDialog"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/green_light_forline"
+
+
+        android:layout_marginTop="@dimen/four_dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/grey_light2">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/this_is_money_transfer_form_from_nsome_to_some_accaunt"
+            android:textSize="@dimen/twelve_sp"
+            android:textColor="@color/black_for_glavniy_text"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/ten_dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/all_transfer_operitions_you_can_see_bla_bla_bla_hullas_transactisiya_haqida"
+            android:textSize="@dimen/ten_sp"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:textColor="@color/black_for_secondary_text"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:paddingBottom="@dimen/thirty_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:gravity="center"
+            android:id="@+id/textView12" />
+    </LinearLayout>
+
+</LinearLayout>

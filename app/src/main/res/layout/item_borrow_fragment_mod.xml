@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000"
+        android:layout_marginLeft="@dimen/eight_dp"
+        android:layout_marginRight="@dimen/eight_dp"
+        android:layout_marginBottom="@dimen/sevent_dp"
+        android:layout_marginTop="@dimen/two_dp"
+        card:cardMaxElevation="@dimen/ten_dp"
+        card:cardElevation="@dimen/five_dp"
+        card:cardCornerRadius="@dimen/eight_dp"
+        android:layout_gravity="center_horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imBorrowPerson"
+                    android:layout_width="@dimen/seventy_dp"
+                    android:layout_height="@dimen/seventy_dp"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:layout_marginBottom="@dimen/twelve_dp"
+                    android:layout_marginLeft="@dimen/sixteen_dp"
+                    android:layout_marginRight="@dimen/sixteen_dp"
+                    card:border_width="2px"
+                    card:border_color="@color/green_light_forline"
+                    card:border_overlay="true"
+                    />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/sixteen_dp"
+                    android:layout_marginTop="@dimen/ten_dp"
+                    android:layout_marginBottom="@dimen/ten_dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvBorrowPersonName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="John Melesovskiy"
+                        android:layout_marginTop="@dimen/fifteen_dp"
+                        android:maxLength="50"
+                        android:textSize="@dimen/twenty_dp"
+                        android:gravity="bottom"
+                        android:textColor="@color/black_for_glavniy_text"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+99894666316"
+                        android:textSize="@dimen/fourteen_sp"
+                        android:textColor="@color/for_darker"
+                        android:id="@+id/tvBorrowPersonNumber"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_toLeftOf="@+id/totalpayd"
+                        android:layout_toStartOf="@+id/totalpayd"
+                        android:layout_below="@+id/tvBorrowPersonName" />
+
+                </RelativeLayout>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/green_light_forline"
+                android:layout_marginTop="@dimen/four_dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:paddingBottom="@dimen/ten_dp"
+                android:paddingTop="@dimen/six_dp"
+                android:id="@+id/rlDebtBorrowTop"
+                android:background="@color/grey_light2">
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relativeLayout">
+
+                    <RelativeLayout
+                        android:id="@+id/rela2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/two_dp"
+                        android:layout_below="@+id/realrt1"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/return_date"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/for_darker"
+                            android:id="@+id/dateay"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_toLeftOf="@+id/tvBorrowPersonDateRepeat"
+                            android:layout_toStartOf="@+id/tvBorrowPersonDateRepeat" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="18.06.2016"
+                            android:textSize="@dimen/twelve_sp"
+                            android:gravity="bottom"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:id="@+id/tvBorrowPersonDateRepeat"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/realrt1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/three_dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10.05.2016"
+                            android:textSize="@dimen/twelve_sp"
+                            android:gravity="bottom"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:textColor="@color/black_for_glavniy_text"
+                            android:id="@+id/tvBorrowPersonDateGet"
+                            android:layout_alignBottom="@+id/textView2"
+                            android:layout_alignParentTop="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/begin_date"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/for_darker"
+                            android:id="@+id/textView2"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_toLeftOf="@+id/tvBorrowPersonDateGet"
+                            android:layout_toStartOf="@+id/tvBorrowPersonDateGet" />
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_below="@+id/rela2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/three_dp"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1240$"
+                            android:textSize="@dimen/twelve_sp"
+                            android:gravity="bottom"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:textColor="@color/red"
+                            android:id="@+id/tvBorrowPersonSumm"
+                            android:layout_alignBottom="@+id/textView3"
+                            android:layout_alignParentTop="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/left"
+                            android:textSize="@dimen/twelve_sp"
+                            android:textColor="@color/for_darker"
+                            android:id="@+id/textView3"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/sixteen_dp"
+                android:orientation="horizontal"
+                android:id="@+id/frameLayout"
+                android:paddingRight="@dimen/sixteen_dp"
+                android:background="@color/grey_light2"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBottom="@+id/relativeLayout">
+                <TextView
+                    android:id="@+id/call_person_debt_borrow"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/knopka_zeleniy"
+                    android:text="@string/call"
+                    android:layout_marginBottom="@dimen/sixteen_dp"
+                    android:layout_marginRight="@dimen/five_dp"
+                    android:textColor="@color/green_light"
+                    android:textSize="@dimen/twelve_sp"
+                    />
+                <TextView
+                    android:id="@+id/btBorrowPersonPay"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:background="@drawable/knopka_zeleniy"
+                    android:text="@string/payy"
+                    android:layout_marginLeft="@dimen/five_dp"
+                    android:layout_marginBottom="@dimen/sixteen_dp"
+                    android:textColor="@color/green_light"
+                    android:textSize="@dimen/twelve_sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

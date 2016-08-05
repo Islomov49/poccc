@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:descendantFocusability="blocksDescendants">
+
+    <CheckBox
+        android:id="@+id/chbAccountListItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/five_dp"
+        android:button="@drawable/checkbox"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/ivAccountListIcon"
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="@dimen/fourty_dp"
+        android:layout_marginBottom="@dimen/fifteen_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/fifteen_dp" />
+
+    <TextView
+        android:id="@+id/tvAccountListName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/fifteen_dp"
+        android:layout_marginLeft="@dimen/fifteen_dp"
+        android:layout_marginRight="@dimen/sixteen_sp"
+        android:layout_marginTop="@dimen/fifteen_dp"
+        android:text="TextView"
+        android:textColor="@color/toolbar_text_color"
+        android:textSize="@dimen/sixteen_sp" />
+
+</LinearLayout>

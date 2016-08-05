@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tvCurrencyExchangeListItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/ten_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:layout_weight="1"
+            android:text="@string/choose_date" />
+
+        <ImageView
+            android:id="@+id/ivDatePickCancel"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:src="@drawable/cancel_sign" />
+
+        <ImageView
+            android:id="@+id/ivDatePickOk"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:src="@drawable/check_sign" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@color/lv_border" />
+
+    <DatePicker
+        android:id="@+id/dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/sixteen_dp"
+        android:calendarViewShown="false" />
+
+</LinearLayout>

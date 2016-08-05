@@ -1,0 +1,1278 @@
+<resources>
+    <string name="app_name">Мои деньги</string>
+    <string-array name="week_days">
+        <item>Понедельник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четверг</item>
+        <item>Пятница</item>
+        <item>Суббота</item>
+        <item>Воскресенье</item>
+    </string-array>
+    <string-array name="drawer_cats">
+        <item>Главная</item>
+        <item>Финансы</item>
+        <item>Статистика</item>
+        <item>Учет долгов и кредитов</item>
+        <item>SMS Парсинг</item>
+        <item>Настройки</item>
+        <item>Оценить приложения</item>
+        <item>Поделиться</item>
+        <item>Отправить письмо</item>
+    </string-array>
+    <string-array name="cat_ids">
+        <item>0</item>
+        <item>100</item>
+        <item>5</item>
+        <item>100</item>
+        <item>7</item>
+        <item>8</item>
+        <item>10</item>
+        <item>9</item>
+        <item>11</item>
+    </string-array>
+    <string-array name="statistics_subitems">
+        <item>Отчет по счетам</item>
+        <item>Отчет по расходам и доходам</item>
+        <item>Отчет по категориям</item>
+    </string-array>
+    <string-array name="statistics_subitems_icons">
+        <item>drawer_accountreport</item>
+        <item>drawer_incomeexpensereport</item>
+        <item>drawer_categoryreport</item>
+    </string-array>
+    <string-array name="finance_subitems">
+        <item>Валюты</item>
+        <item>Категории</item>
+        <item>Счета</item>
+    </string-array>
+    <string-array name="finance_subitem_icons">
+        <item>drawer_currency</item>
+        <item>drawer_category</item>
+        <item>drawer_account</item>
+    </string-array>
+    <string-array name="debts_subitems">
+        <item>Кредиты</item>
+        <item>Долги</item>
+    </string-array>
+    <string-array name="debts_subitem_icons">
+        <item>drawer_credit</item>
+        <item>drawer_debts_debt</item>
+    </string-array>
+    <string-array name="base_currencies">
+        <item>Доллары</item>
+        <item>Рубль</item>
+        <item>Евро</item>
+        <item>Гривна</item>
+        <item>Фунт стерлингов</item>
+        <item>Лев</item>
+        <item>Тенге</item>
+        <item>Белорусский рубль</item>
+        <item>Армянский драм</item>
+        <item>Шекель</item>
+        <item>Иена</item>
+        <item>Вона</item>
+        <item>Афгани</item>
+        <item>Лек</item>
+        <item>Алжирский динар</item>
+        <item>Кванза</item>
+        <item>Манат</item>
+        <item>Бахрейнский динар</item>
+        <item>Така</item>
+        <item>Марка</item>
+        <item>Реал</item>
+        <item>Юань</item>
+        <item>Чешская крона</item>
+        <item>Датская крона</item>
+        <item>Египетский фунт</item>
+        <item>Седи</item>
+        <item>Форинт</item>
+        <item>Индийская рупия</item>
+        <item>Индонезийская рупия</item>
+        <item>Иранский риал</item>
+        <item>Иракский динар</item>
+        <item>Иорданский динар</item>
+        <item>Кувейтский динар</item>
+        <item>Филиппинское песо</item>
+        <item>Злотый</item>
+        <item>Катарский риал</item>
+        <item>Сум</item>
+        <item>Саудовский риял</item>
+        <item>Швейцарский франк</item>
+        <item>Сербский динар</item>
+        <item>Бат</item>
+        <item>Лира</item>
+    </string-array>
+    <string-array name="base_abbrs">
+        <item>$</item>
+        <item>₽</item>
+        <item>€</item>
+        <item>₴</item>
+        <item>£</item>
+        <item>лв</item>
+        <item>₸</item>
+        <item>Br</item>
+        <item>РА</item>
+        <item>₪</item>
+        <item>¥</item>
+        <item>₩</item>
+        <item>؋</item>
+        <item>L</item>
+        <item>.د.ج </item>
+        <item>Kz</item>
+        <item>АР</item>
+        <item>.د.ب </item>
+        <item>৳</item>
+        <item>KM</item>
+        <item>$</item>
+        <item>¥</item>
+        <item>Kč</item>
+        <item>kr</item>
+        <item>.ج.م</item>
+        <item>﷼₵</item>
+        <item>Ft</item>
+        <item>₹</item>
+        <item>Rp</item>
+        <item>﷼</item>
+        <item>.د.ع</item>
+        <item>.د.إ</item>
+        <item>.د.ك</item>
+        <item>₱</item>
+        <item>zł</item>
+        <item>﷼</item>
+        <item>uzs</item>
+        <item>﷼</item>
+        <item>₣</item>
+        <item>din</item>
+        <item>฿</item>
+        <item>₺</item>
+    </string-array>
+    <string-array name="currency_ids">
+        <item>currency_1</item>
+        <item>currency_2</item>
+        <item>currency_3</item>
+        <item>currency_4</item>
+        <item>currency_5</item>
+        <item>currency_6</item>
+        <item>currency_7</item>
+        <item>currency_8</item>
+        <item>currency_9</item>
+        <item>currency_10</item>
+        <item>currency_11</item>
+        <item>currency_12</item>
+        <item>currency_13</item>
+        <item>currency_14</item>
+        <item>currency_15</item>
+        <item>currency_16</item>
+        <item>currency_17</item>
+        <item>currency_18</item>
+        <item>currency_19</item>
+        <item>currency_20</item>
+        <item>currency_21</item>
+        <item>currency_22</item>
+        <item>currency_23</item>
+        <item>currency_24</item>
+        <item>currency_25</item>
+        <item>currency_26</item>
+        <item>currency_27</item>
+        <item>currency_28</item>
+        <item>currency_29</item>
+        <item>currency_30</item>
+        <item>currency_31</item>
+        <item>currency_32</item>
+        <item>currency_33</item>
+        <item>currency_34</item>
+        <item>currency_35</item>
+        <item>currency_36</item>
+        <item>currency_37</item>
+        <item>currency_38</item>
+        <item>currency_39</item>
+        <item>currency_40</item>
+        <item>currency_41</item>
+        <item>currency_42</item>
+    </string-array>
+    <string-array name="currency_costs">
+        <item>1.0</item>
+        <item>65.0</item>
+        <item>100.0</item>
+        <item>1.1</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+        <item>1.0</item>
+    </string-array>
+    <string-array name="icons">
+        <item>icons_1</item>
+        <item>icons_2</item>
+        <item>icons_3</item>
+        <item>icons_4</item>
+        <item>icons_5</item>
+        <item>icons_6</item>
+        <item>icons_7</item>
+        <item>icons_8</item>
+        <item>icons_9</item>
+        <item>icons_10</item>
+        <item>icons_11</item>
+        <item>icons_12</item>
+        <item>icons_13</item>
+        <item>icons_14</item>
+        <item>icons_15</item>
+        <item>icons_16</item>
+        <item>icons_17</item>
+        <item>icons_18</item>
+        <item>icons_19</item>
+        <item>icons_20</item>
+        <item>icons_21</item>
+        <item>icons_22</item>
+        <item>icons_23</item>
+        <item>icons_24</item>
+        <item>icons_25</item>
+        <item>icons_26</item>
+        <item>icons_27</item>
+        <item>icons_28</item>
+        <item>icons_29</item>
+        <item>icons_30</item>
+        <item>icons_31</item>
+        <item>icons_32</item>
+        <item>icons_33</item>
+        <item>icons_34</item>
+        <item>icons_35</item>
+        <item>icons_36</item>
+        <item>icons_37</item>
+        <item>icons_38</item>
+        <item>icons_39</item>
+        <item>icons_40</item>
+        <item>icons_41</item>
+        <item>icons_42</item>
+        <item>icons_43</item>
+        <item>icons_44</item>
+        <item>icons_45</item>
+        <item>icons_46</item>
+        <item>icons_47</item>
+        <item>icons_48</item>
+        <item>icons_49</item>
+        <item>icons_50</item>
+        <item>icons_51</item>
+        <item>icons_52</item>
+        <item>icons_53</item>
+        <item>icons_54</item>
+        <item>icons_55</item>
+        <item>icons_56</item>
+        <item>icons_57</item>
+        <item>icons_58</item>
+        <item>icons_59</item>
+        <item>icons_60</item>
+        <item>icons_61</item>
+        <item>icons_62</item>
+        <item>icons_63</item>
+        <item>icons_64</item>
+        <item>icons_65</item>
+        <item>icons_66</item>
+        <item>icons_67</item>
+        <item>icons_68</item>
+        <item>icons_69</item>
+        <item>icons_70</item>
+        <item>icons_71</item>
+        <item>icons_72</item>
+        <item>icons_73</item>
+        <item>icons_74</item>
+        <item>icons_75</item>
+        <item>icons_76</item>
+        <item>icons_77</item>
+        <item>icons_78</item>
+        <item>icons_79</item>
+        <item>icons_80</item>
+        <item>icons_81</item>
+        <item>icons_82</item>
+        <item>icons_83</item>
+        <item>icons_84</item>
+        <item>icons_85</item>
+        <item>icons_86</item>
+        <item>icons_87</item>
+        <item>icons_88</item>
+        <item>icons_89</item>
+        <item>icons_90</item>
+        <item>icons_91</item>
+        <item>icons_92</item>
+        <item>icons_93</item>
+        <item>icons_94</item>
+        <item>icons_95</item>
+        <item>icons_96</item>
+        <item>icons_97</item>
+        <item>icons_98</item>
+        <item>icons_99</item>
+        <item>icons_100</item>
+        <item>icons_101</item>
+        <item>icons_102</item>
+        <item>icons_103</item>
+        <item>icons_104</item>
+        <item>icons_105</item>
+        <item>icons_106</item>
+        <item>icons_107</item>
+        <item>icons_108</item>
+        <item>icons_109</item>
+        <item>icons_110</item>
+        <item>icons_111</item>
+        <item>icons_112</item>
+        <item>icons_113</item>
+        <item>icons_114</item>
+        <item>icons_115</item>
+        <item>icons_116</item>
+        <item>icons_117</item>
+        <item>icons_118</item>
+        <item>icons_119</item>
+        <item>icons_120</item>
+        <item>icons_121</item>
+        <item>icons_122</item>
+        <item>icons_123</item>
+        <item>icons_124</item>
+        <item>icons_125</item>
+        <item>icons_126</item>
+        <item>icons_127</item>
+        <item>icons_128</item>
+        <item>icons_129</item>
+        <item>icons_130</item>
+        <item>icons_131</item>
+        <item>icons_132</item>
+        <item>icons_133</item>
+        <item>icons_134</item>
+        <item>icons_135</item>
+        <item>icons_136</item>
+        <item>icons_137</item>
+        <item>icons_138</item>
+        <item>icons_139</item>
+        <item>icons_140</item>
+        <item>icons_141</item>
+        <item>icons_142</item>
+        <item>icons_143</item>
+        <item>icons_144</item>
+        <item>icons_145</item>
+        <item>icons_146</item>
+        <item>icons_147</item>
+        <item>icons_148</item>
+        <item>icons_149</item>
+        <item>icons_150</item>
+        <item>icons_151</item>
+        <item>icons_152</item>
+        <item>icons_153</item>
+        <item>icons_154</item>
+        <item>icons_155</item>
+        <item>icons_156</item>
+        <item>icons_157</item>
+        <item>icons_158</item>
+        <item>icons_159</item>
+        <item>icons_160</item>
+        <item>icons_161</item>
+        <item>icons_162</item>
+        <item>icons_163</item>
+        <item>icons_164</item>
+        <item>icons_165</item>
+        <item>icons_166</item>
+        <item>icons_167</item>
+        <item>icons_168</item>
+        <item>icons_169</item>
+        <item>icons_170</item>
+        <item>icons_171</item>
+        <item>icons_172</item>
+        <item>icons_173</item>
+        <item>icons_174</item>
+        <item>icons_175</item>
+        <item>icons_176</item>
+        <item>icons_177</item>
+        <item>icons_178</item>
+        <item>icons_179</item>
+        <item>icons_180</item>
+        <item>icons_181</item>
+        <item>icons_182</item>
+        <item>icons_183</item>
+        <item>icons_184</item>
+        <item>icons_185</item>
+        <item>icons_186</item>
+        <item>icons_187</item>
+        <item>icons_188</item>
+        <item>icons_189</item>
+        <item>icons_190</item>
+        <item>icons_191</item>
+        <item>icons_192</item>
+        <item>icons_193</item>
+        <item>icons_194</item>
+        <item>icons_195</item>
+        <item>icons_196</item>
+        <item>icons_197</item>
+        <item>icons_198</item>
+        <item>icons_199</item>
+        <item>icons_200</item>
+        <item>icons_201</item>
+        <item>icons_202</item>
+        <item>icons_203</item>
+        <item>icons_204</item>
+        <item>icons_205</item>
+        <item>icons_206</item>
+        <item>icons_207</item>
+        <item>icons_208</item>
+        <item>icons_209</item>
+        <item>icons_210</item>
+        <item>icons_211</item>
+        <item>icons_212</item>
+        <item>icons_213</item>
+        <item>icons_214</item>
+        <item>icons_215</item>
+        <item>icons_216</item>
+        <item>icons_217</item>
+        <item>icons_218</item>
+        <item>icons_219</item>
+        <item>icons_220</item>
+        <item>icons_221</item>
+        <item>icons_222</item>
+        <item>icons_223</item>
+        <item>icons_224</item>
+        <item>icons_225</item>
+        <item>icons_226</item>
+        <item>icons_227</item>
+        <item>icons_228</item>
+        <item>icons_229</item>
+        <item>icons_230</item>
+        <item>icons_231</item>
+        <item>icons_232</item>
+        <item>icons_233</item>
+        <item>icons_234</item>
+        <item>icons_235</item>
+        <item>icons_236</item>
+        <item>icons_237</item>
+        <item>icons_238</item>
+        <item>icons_239</item>
+        <item>icons_240</item>
+        <item>icons_241</item>
+        <item>icons_242</item>
+        <item>icons_243</item>
+        <item>icons_244</item>
+        <item>icons_245</item>
+        <item>icons_246</item>
+        <item>icons_247</item>
+        <item>icons_248</item>
+        <item>icons_249</item>
+        <item>icons_250</item>
+        <item>icons_251</item>
+        <item>icons_252</item>
+        <item>icons_253</item>
+        <item>icons_254</item>
+        <item>icons_255</item>
+        <item>icons_256</item>
+        <item>icons_257</item>
+        <item>icons_258</item>
+        <item>icons_259</item>
+        <item>icons_260</item>
+        <item>icons_261</item>
+        <item>icons_262</item>
+        <item>icons_263</item>
+        <item>icons_264</item>
+        <item>icons_265</item>
+        <item>icons_266</item>
+        <item>icons_267</item>
+        <item>icons_268</item>
+        <item>icons_269</item>
+        <item>icons_270</item>
+        <item>icons_271</item>
+        <item>icons_272</item>
+        <item>icons_273</item>
+        <item>icons_274</item>
+        <item>icons_275</item>
+        <item>icons_276</item>
+        <item>icons_277</item>
+        <item>icons_278</item>
+        <item>icons_279</item>
+        <item>icons_280</item>
+        <item>icons_281</item>
+        <item>icons_282</item>
+        <item>icons_283</item>
+        <item>icons_284</item>
+        <item>icons_285</item>
+        <item>icons_286</item>
+        <item>icons_287</item>
+        <item>icons_288</item>
+        <item>icons_289</item>
+        <item>icons_290</item>
+        <item>icons_291</item>
+        <item>icons_292</item>
+        <item>icons_293</item>
+        <item>icons_294</item>
+        <item>icons_295</item>
+        <item>icons_296</item>
+        <item>icons_297</item>
+        <item>icons_298</item>
+        <item>icons_299</item>
+        <item>icons_301</item>
+        <item>icons_302</item>
+        <item>icons_303</item>
+        <item>icons_304</item>
+        <item>icons_305</item>
+        <item>icons_306</item>
+        <item>icons_307</item>
+        <item>icons_308</item>
+        <item>icons_309</item>
+        <item>icons_310</item>
+        <item>icons_311</item>
+        <item>icons_312</item>
+        <item>icons_313</item>
+        <item>icons_314</item>
+        <item>icons_315</item>
+    </string-array>
+    <string name="currencies">Валюты</string>
+    <string name="main_currency">Основная валюта: </string>
+    <string name="choose_currencies">Выберите валюту</string>
+    <string name="curr_not_choosen">Выберите хотя бы одну валюту</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="currency_exchange_warning">Данные по курсам валют и записи будут утеряны, так как вы не выбрали ранее вами выбранную валюту!</string>
+    <string name="currency_delete_warning">Записи по выбранным валютам будут удалены!</string>
+    <string name="currency_empty_warning">Список валют не должен быть пуст!</string>
+    <string name="warning">Внимание !</string>
+    <string name="add">Добавить</string>
+    <string name="expanse">Расход</string>
+    <string name="income">Доход</string>
+    <string name="sub_cat">Подкатегория</string>
+    <string name="cat_name">Наименование</string>
+    <string name="sub_cats">Подкатегории</string>
+    <string name="both">Оба</string>
+    <string name="subcat_name">Название подкатегории</string>
+    <string name="warning_subcat">Существует подкатегория с таким же названием.</string>
+    <string name="select_icon">Выберите иконку</string>
+    <string name="cat_type_not_choosen">Выберите тип категории</string>
+    <string name="enter_cat_name">Введите название категории</string>
+    <string name="initial_amount">Начальная сумма: </string>
+    <string name="account_history">История переводов: </string>
+    <string name="account">Счет</string>
+    <string name="currency_exchange">Курсы валют</string>
+    <string name="choose_date">Выберите дату</string>
+    <string name="enter_exchange">Введите курс</string>
+    <string name="main_currency_edit">Основная валюта</string>
+    <string name="costs_selected_all_warning">В списке должен остаться один элемент</string>
+    <string name="category">Категории</string>
+    <string name="divide_null">На ноль делить нельзя!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="total_paid">Общая сумма выплат:</string>
+    <string name="in_this_period_paid">Оплаты в данном периоде:</string>
+    <string name="this_period_ends">Конец периода:</string>
+    <string name="verall_debt">Остаток кредита:</string>
+    <string name="in_this_month_should_pay">Выплаты в данном месяце:</string>
+    <string name="credit_name">Наименование</string>
+    <string name="home">Дом</string>
+    <string name="network">Связь</string>
+    <string name="clothes">Одежда</string>
+    <string name="health">Здоровье</string>
+    <string name="food">Еда</string>
+    <string name="car">Авто</string>
+    <string name="transport">Транспорт</string>
+    <string name="gaiety">Развлечения</string>
+    <string name="buy">Покупки</string>
+    <string name="sport">Спорт</string>
+    <string name="beauty">Красота</string>
+    <string name="equipment">Оргтехника</string>
+    <string name="travel">Путешествие</string>
+    <string name="present">Подарки</string>
+    <string name="celebration">Праздник</string>
+    <string name="other">Прочие</string>
+    <string name="salary">Зарплата</string>
+    <string name="bonus">Бонус</string>
+    <string name="percents">Проценты</string>
+    <string name="other_income">Прочие</string>
+    <string name="year">год</string>
+    <string name="moth">месяц</string>
+    <string name="day">день</string>
+    <string name="moths">месяцы</string>
+    <string name="years">годы</string>
+    <string name="days">дни</string>
+    <string name="ends">Конец</string>
+    <string name="archive">Архив</string>
+    <string name="toritus">Данная система учета кредита, весьма гибкая. Условия кредита, могут быть различными, в связи с этим Вы можете настроить приложение под свои требования.</string>
+    <string-array name="cat_values">
+        <item>home</item>
+        <item>network</item>
+        <item>clothes</item>
+        <item>health</item>
+        <item>food</item>
+        <item>car</item>
+        <item>transport</item>
+        <item>gaiety</item>
+        <item>buy</item>
+        <item>sport</item>
+        <item>beauty</item>
+        <item>equipment</item>
+        <item>travel</item>
+        <item>present</item>
+        <item>celebration</item>
+        <item>other</item>
+        <item>salary</item>
+        <item>bonus</item>
+        <item>percents</item>
+        <item>other_income</item>
+    </string-array>
+    <string-array name="cat_types">
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>1</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+        <item>0</item>
+    </string-array>
+    <string-array name="cat_icons">
+        <item>icons_72</item>
+        <item>icons_90</item>
+        <item>icons_240</item>
+        <item>icons_284</item>
+        <item>icons_154</item>
+        <item>icons_266</item>
+        <item>icons_263</item>
+        <item>icons_60</item>
+        <item>icons_308</item>
+        <item>icons_174</item>
+        <item>icons_301</item>
+        <item>icons_77</item>
+        <item>icons_290</item>
+        <item>icons_63</item>
+        <item>icons_55</item>
+        <item>icons_315</item>
+        <item>icons_8</item>
+        <item>icons_19</item>
+        <item>icons_20</item>
+        <item>icons_314</item>
+    </string-array>
+    <string-array name="home">
+        <item>Ремонт</item>
+        <item>Электроэнергия</item>
+        <item>ГАЗ</item>
+        <item>Налоги</item>
+        <item>Вода(хол.)</item>
+        <item>Вода(гор.)</item>
+        <item>Отопление</item>
+        <item>Кабельное ТВ</item>
+    </string-array>
+    <string-array name="home_icons">
+        <item>icons_310</item>
+        <item>icons_81</item>
+        <item>icons_67</item>
+        <item>icons_27</item>
+        <item>icons_122</item>
+        <item>icons_124</item>
+        <item>icons_131</item>
+        <item>icons_88</item>
+    </string-array>
+    <string-array name="travel">
+        <item>Отпуск</item>
+        <item>Тур</item>
+        <item>Турне</item>
+        <item>Рейс</item>
+        <item>Экскурсия</item>
+    </string-array>
+    <string-array name="travel_icons">
+        <item>icons_288</item>
+        <item>icons_291</item>
+        <item>icons_285</item>
+        <item>icons_275</item>
+        <item>icons_293</item>
+    </string-array>
+    <string-array name="network">
+        <item>Интернет</item>
+        <item>Телефон(дом.)</item>
+        <item>Телефон(моб.)</item>
+    </string-array>
+    <string-array name="network_icons">
+        <item>icons_139</item>
+        <item>icons_92</item>
+        <item>icons_93</item>
+    </string-array>
+    <string-array name="clothes">
+        <item>Рубашка</item>
+        <item>Носки</item>
+        <item>Брюки</item>
+        <item>Футболка</item>
+        <item>Шорты</item>
+        <item>Туфли</item>
+    </string-array>
+    <string-array name="clothes_icons">
+        <item>icons_217</item>
+        <item>icons_199</item>
+        <item>icons_247</item>
+        <item>icons_205</item>
+        <item>icons_220</item>
+        <item>icons_201</item>
+    </string-array>
+    <string-array name="health">
+        <item>Лекарство</item>
+        <item>Доктор</item>
+        <item>Стоматолог</item>
+    </string-array>
+    <string-array name="health_icons">
+        <item>icons_282</item>
+        <item>icons_111</item>
+        <item>icons_281</item>
+    </string-array>
+    <string-array name="food">
+        <item>Хлеб</item>
+        <item>Молоко</item>
+        <item>Мясо</item>
+        <item>Пиво</item>
+        <item>Кефир</item>
+        <item>Вода</item>
+    </string-array>
+    <string-array name="food_icons">
+        <item>icons_156</item>
+        <item>icons_155</item>
+        <item>icons_158</item>
+        <item>icons_294</item>
+        <item>icons_165</item>
+        <item>icons_166</item>
+    </string-array>
+    <string-array name="car">
+        <item>Ремонт</item>
+        <item>Топливо</item>
+        <item>Моторное масло</item>
+        <item>Вулканизация</item>
+        <item>Фильтры</item>
+        <item>Аккумулятор</item>
+        <item>Шины</item>
+    </string-array>
+    <string-array name="car_icons">
+        <item>icons_250</item>
+        <item>icons_252</item>
+        <item>icons_254</item>
+        <item>icons_269</item>
+        <item>icons_71</item>
+        <item>icons_249</item>
+        <item>icons_251</item>
+    </string-array>
+    <string-array name="transport">
+        <item>Такси</item>
+        <item>Автобус</item>
+        <item>Метро</item>
+        <item>Трамвай</item>
+        <item>Троллейбус</item>
+        <item>Самолет</item>
+    </string-array>
+    <string-array name="transport_icons">
+        <item>icons_262</item>
+        <item>icons_263</item>
+        <item>icons_265</item>
+        <item>icons_265</item>
+        <item>icons_265</item>
+        <item>icons_275</item>
+    </string-array>
+    <string-array name="gaiety">
+        <item>Ресторан</item>
+        <item>Кафе</item>
+        <item>Ночной клуб</item>
+        <item>Боулинг</item>
+        <item>Кино</item>
+        <item>Театр</item>
+        <item>Аттракцион</item>
+    </string-array>
+    <string-array name="gaiety_icons">
+        <item>icons_292</item>
+        <item>icons_306</item>
+        <item>icons_136</item>
+        <item>icons_176</item>
+        <item>icons_298</item>
+        <item>icons_302</item>
+        <item>icons_61</item>
+    </string-array>
+    <string-array name="buy">
+        <item>Зубная паста</item>
+        <item>Шампунь</item>
+        <item>Масло</item>
+        <item>Сигареты</item>
+        <item>Напитки</item>
+    </string-array>
+    <string-array name="buy_icons">
+        <item>icons_84</item>
+        <item>icons_166</item>
+        <item>icons_254</item>
+        <item>icons_296</item>
+        <item>icons_295</item>
+    </string-array>
+    <string-array name="sport">
+        <item>Тренажерный зал</item>
+        <item>Фитнес</item>
+        <item>Футбол</item>
+        <item>Теннис</item>
+        <item>Плавание</item>
+    </string-array>
+    <string-array name="sport_icons">
+        <item>icons_179</item>
+        <item>icons_178</item>
+        <item>icons_174</item>
+        <item>icons_181</item>
+        <item>icons_184</item>
+    </string-array>
+    <string-array name="beauty">
+        <item>Парикмахер</item>
+        <item>Массаж</item>
+        <item>Маникюр</item>
+        <item>Педикюр</item>
+        <item>Макияж</item>
+    </string-array>
+    <string-array name="beauty_icons">
+        <item>icons_128</item>
+        <item>icons_289</item>
+        <item>icons_299</item>
+        <item>icons_299</item>
+        <item>icons_127</item>
+    </string-array>
+    <string-array name="equipment">
+        <item>Смартфон</item>
+        <item>Компьютер</item>
+        <item>Холодильник</item>
+        <item>Кондиционер</item>
+        <item>Принтер</item>
+    </string-array>
+    <string-array name="equipment_icons">
+        <item>icons_68</item>
+        <item>icons_143</item>
+        <item>icons_142</item>
+        <item>icons_130</item>
+        <item>icons_77</item>
+    </string-array>
+    <string name="no_category">no_category</string>
+    <string name="no_category_name">Без подкатегории</string>
+    <string name="records">Записи</string>
+    <string name="balanse">Баланс</string>
+    <!-- for google signing -->
+    <string name="sign_out">Выход</string>
+    <string name="disconnect">Отключить</string>
+    <string name="create">Создать</string>
+    <string name="change">Заменить</string>
+    <string name="clear">Убрать</string>
+    <string name="share_app">Поделиться</string>
+    <string name="from">С: </string>
+    <string name="to">До: </string>
+    <string name="from_email">from_email</string>
+    <string name="to_email">basicstepsdevelopment@gmail.com</string>
+    <string name="rate_app_web">https://play.google.com/store/apps/details?id=com.jim.pocketaccounter</string>
+    <string name="share_app_text">Рекомендую "Мои деньги"
+        https://play.google.com/store/apps/details?id=com.jim.pocketaccounter</string>
+    <string name="feedback_hint">Обратная связь</string>
+    <string name="feedback_subject">Предмет: </string>
+    <string name="feedback_content">Содержание: </string>
+    <string name="per_day">Ежедневно</string>
+    <string name="per_week">Еженедельно</string>
+    <string name="per_month">Ежемесячно</string>
+    <string name="per_year">Ежегодно</string>
+    <string name="mont">Месяц</string>
+    <string name="yearr">Год</string>
+    <string name="weekk">Неделя</string>
+    <string name="dayy">День</string>
+    <string name="this_first_comment">Выплаты до начала использования данного приложения</string>
+    <string name="always_remember">Не забывайте вносить Ваши платежи и мы с удовольствием поможем Вам, сохранить Ваш бюджет!</string>
+    <string name="date_of_pay">День оплаты</string>
+    <string name="via">Через</string>
+    <string name="comment">Примечание</string>
+    <string name="diagram_no_data_text">Нет данных для отображения!</string>
+    <string name="credit">Кредит</string>
+    <string name="borrow_statistics">Дал в долг</string>
+    <string name="borrow_recking_statistics">Вернул долг</string>
+    <string name="debt_statistics">Взял в долг</string>
+    <string name="debt_recking_statistics">Вернули долг</string>
+    <string name="pay">Оплатить</string>
+    <string name="cancel">Отмена</string>
+    <string name="repaid">Завершено</string>
+    <string name="active">Активные</string>
+    <string name="archivee">Архив</string>
+    <string-array name="months">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+    <string name="error">Ошибочное выражение!</string>
+    <string-array name="account_names">
+        <item>Наличные</item>
+        <item>Пластиковая карта</item>
+        <item>Банковский счет</item>
+    </string-array>
+    <string-array name="account_ids">
+        <item>acc_cash</item>
+        <item>acc_card</item>
+        <item>acc_bank</item>
+    </string-array>
+    <string-array name="account_icons">
+        <item>icons_30</item>
+        <item>icons_6</item>
+        <item>icons_29</item>
+    </string-array>
+    <string-array name="report_by_account_titles">
+        <item>Операция</item>
+        <item>Дата</item>
+        <item>Сумма</item>
+        <item>Категория</item>
+    </string-array>
+    <string name="debt_borrow_taken">Взял в долг</string>
+    <string name="debt_borrow_given">Дал в долг</string>
+    <string name="debt_borrow_taken_recking">Вернул долг</string>
+    <string name="debt_borrow_given_recking">Вернули долг</string>
+    <string name="detail">Подробно</string>
+    <string name="profit">Прибыль</string>
+    <string name="loading">Вход в аккаунт</string>
+    <string name="please_wait">Пожалуйста, подождите!</string>
+    <string name="total">Общая сумма:</string>
+    <string name="average">Средняя сумма:</string>
+    //settings
+    <string name="language_default">default_lang</string>
+    <string name="language">Язык</string>
+    <string-array name="language_titles">
+        <item>ENGLISH (EN)</item>
+        <item>РУССКИЙ (RU)</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
+    <string name="choose_language">Выберите язык</string>
+    <string name="transfer_data">Перенести баланс с прошлого месяца</string>
+    <string name="notifications">Уведомления</string>
+    <bool name="notif_default">true</bool>
+    <string name="notifications_summary">Ежедневное уведомление ВКЛ/ВЫКЛ</string>
+    <string name="planning_before_default">10</string>
+    <string name="general_notif">general_notif</string>
+    <string-array name="planning_before_entries">
+        <item>10 мин.</item>
+        <item>20 мин.</item>
+        <item>30 мин.</item>
+        <item>40 мин.</item>
+        <item>50 мин.</item>
+        <item>1 час</item>
+    </string-array>
+    <string-array name="planning_before_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+    </string-array>
+    <string name="planning_before_summary">Установить значение</string>
+    <string name="planning_before_title">Уведомление событий</string>
+    <string name="filters">Фильтры</string>
+    <string name="finance_record_default">3</string>
+    <string name="record_filter_summary">Установить значение для записей в финансах</string>
+    <string name="finance">Финансы</string>
+    <string name="report_daily_default">2</string>
+    <string name="filter_title">Фильтр</string>
+    <string name="filter_subtitle">Установить значение для фильтра отчета</string>
+    <string-array name="filter_titles_dialog">
+        <item>Текущий месяц</item>
+        <item>Посл. 3 дня</item>
+        <item>Посл. 7 дней</item>
+        <item>Месяц, год</item>
+        <item>Год</item>
+        <item>Период</item>
+    </string-array>
+    <string-array name="filter_titles">
+        <item>Текущий месяц</item>
+        <item>Посл. 3 дня</item>
+        <item>Посл. 7 дней</item>
+    </string-array>
+    <string-array name="filter_value">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string name="sync">Синхронизация</string>
+    <string name="setting_save">Сохранить данные в корневой папке</string>
+    <string name="save">Сохранить</string>
+    <string name="setting_repair">Восстановить данные из корневой папки</string>
+    <string name="repair">Восстановить</string>
+    <string name="planning_notif_entry">час</string>
+    <string name="planning_notif_summary">Установить время уведомления</string>
+    <string name="planning_notif_title">Время уведомления</string>
+    <string-array name="report_by_income_expanse_table_titles">
+        <item>Дата</item>
+        <item>Доходы</item>
+        <item>Расходы</item>
+        <item>Прибыль</item>
+    </string-array>
+    <string name="report_income_expanse_total_income">Общий доход:</string>
+    <string name="report_income_expanse_total_expanse">Общий расход:</string>
+    <string name="report_income_expanse_total_profit">Общая прибыль:</string>
+    <string name="report_income_expanse_aver_income">Средний доход:</string>
+    <string name="report_income_expanse_aver_expanse">Средний расход:</string>
+    <string name="report_income_expanse_aver_profit">Средняя прибыль:</string>
+    <string name="please_sign">Пожалуйста, авторизируйтесь</string>
+    <string name="and_sync_your_data">и синхронизируйте ваши данные</string>
+    <string name="introAppInfo">Приложение максимально подробно и удобно контролирует Ваши ежедневные доходы и расходы. Для тех, кто хотел бы бережно сохранять свой бюджет. Мы рады Вам помочь!</string>
+    <string name="quickInfo">Иконки быстрого доступа, помогут Вам сэкономить Ваше время. Просто нажмите на нужную категорию и введите Ваши расходы или доходы, а остальное приложение сделает за Вас!</string>
+    <string name="clear_desgn">Простой, но в тоже время интуитивно понятный интерфейс. Наша цель в дизайне приложения не красочность, а удобство. Мы постарались сделать все, чтобы интерфейс был понятным для всех без исключения. </string>
+    <string name="appInfoTitel">МОИ ДЕНЬГИ</string>
+    <string name="quickInfp">БЫСТРЫЙ ДОСТУП</string>
+    <string name="designInfo">ПРОСТОЙ ДИЗАЙН</string>
+    <string name="secureInfo">С помощью Вашей учетной записи Google вы можете синхронизировать данные. На любых устройствах можно восстановить данные! Данные хранятся в очень надежных серверах Google.</string>
+    <string name="safeInfo">СИНХРОНИЗАЦИЯ</string>
+    <string name="flexInfo">ГИБКИЙ ОТЧЕТ</string>
+    <string name="flexinfo">Приложение покажет статистику Ваших расходов и доходов. Вы сможете прогнозировать расходы. Полный отчет по всей информации, понятным образом, с возможностью сохранить в EXCEL.</string>
+    <string name="let_s_go">ПРИСТУПИМ!</string>
+    <string name="paythan">"Вы переплачиваете на сумму:"</string>
+    <string name="payza">"Неоплаченный остаток"</string>
+    <string name="imsure">Я согласен</string>
+    <string name="cancel1">Отмена</string>
+    <string name="try_later">Попытайтесь позже</string>
+    <string name="err_con">Ошибка соединения</string>
+    <string name="first_sync_loging">Чтобы синхронизировать данные, необходимо войти в систему с помощью учетной записи Google. Вы сможете загрузить с любого устройства, в любом месте. Вы можете восстановить все потерянные данные! Для восстановления данных перейдите в НАСТРОЙКИ->Google синхронизация->Загрузка базы данных.</string>
+    <string name="sync_message">Если Вы синхронизируйтесь, то Ваши данные будут перезаписаны.</string>
+    <string name="category_name_error">Назвение категории не введено!</string>
+    <string name="sub_cat_name_error">Назвение подкатегории не введено!</string>
+    <string name="account_name_error">Название счета не введено!</string>
+    <string name="info">Инфо</string>
+    <string name="save_to_excel">Сохранить в EXCEL</string>
+    <string name="no_datas_for_show">Нет данных для отображения!</string>
+    <string name="table">Таблица</string>
+    <string name="bars">Бары</string>
+    <string name="save_excel">Сохранить в EXCEL файл?</string>
+    <string name="date">Дата</string>
+    <string name="category_delete_warning">Данные, связанные с выделенными категориями будут удалены!</string>
+    <string name="account_delete_warning">Данные, связанные с выделенными счетами будут удалены!</string>
+    <string name="subcat_delete_warning">Данные, связанные с выделенными подкатегориями будут удалены!</string>
+    <string name="google_sync">Google синхронизация</string>
+    <string name="backup">Загрузка базы данных</string>
+    <string name="backup_summary">Загружает последние данные из Google аккаунта</string>
+    <string name="google_logout">Выйти</string>
+    <string name="incorrect_value">Введено неправильное значение!</string>
+    <string name="edit">Добавление/Редактирование</string>
+    <string name="accounts">Счета</string>
+    <string name="report_by_income_expanse">Доходы и расходы</string>
+    <string name="report_by_categories">Отчет по категориям</string>
+    <string name="to_edit">Редактировать</string>
+    <string name="clear_records">Очистить</string>
+    <string name="enter_credit_name">Введите название кредита</string>
+    <string name="credit_amount">Сумма кредита</string>
+    <string name="percent">Процентная ставка</string>
+    <string name="credit_percent">Процент</string>
+    <string name="period_of_credit">Срок кредитования</string>
+    <string name="enter_period_of_credit">Введите срок кредита</string>
+    <string name="interval">Период</string>
+    <string name="credit_begin_date">Начало выплат</string>
+    <string name="credit_return_date">Конец выплат</string>
+    <string name="transactions">Транзакции</string>
+    <string name="include_credit_in_balance">Учитывать кредит в балансе?</string>
+    <string name="enter_name_error">Введите имя</string>
+    <string name="enter_amount_error">Ввидите сумму</string>
+    <string name="enter_takendate_error">Выберите начальную дату</string>
+    <string name="ok">ОК</string>
+    <string name="name">Имя</string>
+    <string name="from_contact">Из контактов</string>
+    <string name="tel_number">Номер телефона</string>
+    <string name="enter_phone_number">Введите номер телефона или заголовок СМС</string>
+    <string name="debt_amount">Сумма</string>
+    <string name="enter_debt_amoount">Введите сумму долга</string>
+    <string name="enter_borrow_amoount">Введите сумму займа</string>
+    <string name="begin_date">Начальная дата</string>
+    <string name="end_time">Крайний срок</string>
+    <string name="include_in_balance">Включить в баланс</string>
+    <string name="enter_first_transaction">Первая выплата</string>
+    <string name="no_date_selected">Без даты возврата</string>
+    <string name="incorrect_date">Неправильная дата</string>
+    <string name="incorrect_pay">Вы оплачиваете больше, чем необходимо.</string>
+    <string name="enter_pay_value">Введите сумму выплаты</string>
+    <string name="return_date">Дата возврата</string>
+    <string name="left">Остаток</string>
+    <string name="call">Позвонить</string>
+    <string name="payy">Оплатить</string>
+    <string name="debt_delete_meessage">Запись будет удалена из баланса.</string>
+    <string name="delete">Удалить</string>
+    <string name="no_calc_in_balance">Не учитывать в балансе</string>
+    <string name="calc_in_balance">Учитывать в балансе</string>
+    <string name="delete_question">Удалить?</string>
+    <string name="by">"Через:"</string>
+    <string name="pay_daet">"Дата выплаты:  "</string>
+    <string name="information">Информация</string>
+    <string name="phone_number">Телефонный номер</string>
+    <string name="total_sum">Общая сумма:</string>
+    <string name="balance">Баланс</string>
+    <string name="total_pay_sum">Общая сумма выплат:</string>
+    <string name="pay_date">Дата оплаты</string>
+    <string name="amount">Сумма:</string>
+    <string name="enter_amount">Введите сумму</string>
+    <string name="enter_comment">Введите комментарие</string>
+    <string name="borrows">Мне должны</string>
+    <string name="debts">Я должен</string>
+    <string name="connection_faild">Пожалуйста, проверьте интернет соединение и повторите попытку!</string>
+    <string name="download">Загрузка</string>
+    <string name="cheking_user">Проверка пользователя</string>
+    <string name="sync_last_data_sign_up">Вы хотите синхронизировать данные из учетной записи, загруженные в последний раз?</string>
+    <string name="toast_error_connection">Ошибка соединения. Попытайтесь позже</string>
+    <string name="sync_short">Синхронизация</string>
+    <string name="exit">Да</string>
+    <string name="dou_you_want_discard">Вы не добавили кредит, хотите выйти?</string>
+    <string name="discard">Выйти</string>
+    <string name="dou_you_want_quit">Хотите выйти?</string>
+    <string name="are_you_sure_for_log_out">Вы действительно хотите выйти из учетной записи? Без учетной записи, Вы не сможете синхронизироваться!</string>
+    <string name="sync_want_from_data">Синхронизировать данные с:</string>
+    <string name="notif_credit">Проверьте ваши кредиты!</string>
+    <string name="notif_debt">Проверьте ваши долги!</string>
+    <string name="payment_balans">"Неоплаченный остаток:"</string>
+    <string name="payment_balance2">"\nВы переплачивате на сумму:"</string>
+    <string name="total_credit_value">Общая сумма кредита:</string>
+    <string name="left2">Срок кредитования:</string>
+    <string name="taken_date">День выплаты:</string>
+    <string name="adding_to_archive">В архив:</string>
+    <string name="should_not_empty">Введите наименование!</string>
+    <string name="value_shoud_not_empty">Введите сумму!</string>
+    <string name="procent_should_not_empty">Введите процент!</string>
+    <string name="period_should_not_empty">Введите период!</string>
+    <string name="after_per_choise">Введите дату!</string>
+    <string name="first_enter_period">Сначала введите срок кредитования!</string>
+    <string name="it_is_our_solution_but_please_check_it">Настройте под свои требования!</string>
+    <string name="cred_managment">Настройка кредита</string>
+    <string name="not_calc">Не учитано</string>
+    <string name="calculaed">Учитано</string>
+    <string name="accept_delete_reck">Вы действительно хотите удалить запись?</string>
+    <string name="accept">УДАЛИТЬ</string>
+    <string name="delete_credit">Вы действительно хотите удалить запись?</string>
+    <string name="delete_anyway">УДАЛИТЬ</string>
+    <string name="paid_date">Дата оплаты:</string>
+    <string name="when_you_paid">Когда оплатите?</string>
+    <string name="amount2">Сумма:</string>
+    <string name="from_account">Счет:</string>
+    <string name="how_much_you_paid">Сумма выплаты</string>
+    <string name="commentik">Примечание:</string>
+    <string name="do_you_want_note">Ваши примечания</string>
+    <string name="this_amount_will_absorb_your_credit">Частичная либо полная выплата</string>
+    <string name="left_amount">Остаток:</string>
+    <string name="procent_of_credit">Процент кредита:</string>
+    <string name="left_date">Осталось:</string>
+    <string name="period_of_credit2">Период кредита:</string>
+    <string name="taked_credit_time">Дата кредита:</string>
+    <string name="in_the_balance">В балансе:</string>
+    <string name="transactions2">Транзакции</string>
+    <string name="delete2">УДАЛИТЬ</string>
+    <string name="total_a">ВСЕГО:</string>
+    <string name="amount_borrow">Сумма займа</string>
+    <string name="between_dates">Выберите период</string>
+    <string name="between">Период</string>
+    <string name="how_long_time_you_should_pay">Период кредита</string>
+    <string name="dou_delete_arc">Вы действительно хотите удалить запись?</string>
+    <string name="dou_delete">Вы действительно хотите удалить запись? Запись учтена в балансе! Все транзакции будут удалены!</string>
+    <string name="debts_title">Учет Долгов</string>
+    <string name="left_date_debts">Осталось(год, месяц, день)</string>
+    <string name="clear_warning">Записи, связанные с данной категорией будут удалены (</string>
+    <string name="transfer_money">Перевод денег</string>
+    <string name="amount_keywords">Определение суммы \nКлючевые слова:</string>
+    <string name="from_transfer">Перевод со счета</string>
+    <string name="from_transfer_id">from_transfer</string>
+    <string name="income_keywords">Доход \nКлючевые слова:</string>
+    <string name="expense_keywords">Расход \nКлючевые слова:</string>
+    <string name="to_transfer">Перевод на счет</string>
+    <string name="to_transfer_id">to_transfer</string>
+    <string name="transfer_icon">icons_25</string>
+    <string name="only_income">Только доход</string>
+    <string name="only_expense">Только расход</string>
+    <string name="parse_both">Расход и доход</string>
+    <string name="currency">Валюта</string>
+    <string name="phone_number_warning">Введите номер телефона!</string>
+    <string name="keyword_warning">Введите ключевые слова</string>
+    <string name="sms_parse_income">СМС приход</string>
+    <string name="sms_parse_income_id">sms_income</string>
+    <string name="sms_parse_income_icon">icons_20</string>
+    <string name="sms_parse_expense">СМС расход</string>
+    <string name="sms_parse_expense_id">sms_expense</string>
+    <string name="sms_parse_expense_icon">icons_21</string>
+    <string name="ch_cat">Выберите категорию</string>
+    <string name="addedit">Добавить/Редактировать</string>
+    <string name="sms_parse">СМС Парсинг</string>
+    <string name="widget_settings">Настройки виджета</string>
+    <string name="all_transfer_operitions_you_can_see_bla_bla_bla_hullas_transactisiya_haqida">Все переводы денег фиксируются в балансе</string>
+    <string name="choose_type_sms">Выберите тип СМС</string>
+    <string name="curenncy_of_sms">Выберите валюту</string>
+    <string name="from_f">С</string>
+    <string name="key_for_parsing">Ключевые слова для парсинга</string>
+    <string name="main_diagramm">Диаграмма</string>
+    <string name="operaitons_with">Операция с</string>
+    <string name="period_of_diagramm">Период</string>
+    <string name="this_is_money_transfer_form_from_nsome_to_some_accaunt">Перевод денег с одного счета на другой</string>
+    <string name="to_t">На</string>
+    <string name="word_do_sifri">Введите слово, предшествующее цифре (сумме платежа)</string>
+    <string name="word_for_decide_expence">Слово, определяющее \"расход\"</string>
+    <string name="word_for_decide_income">Слово, определяющее \"доход\"</string>
+    <string name="zdes_idot_dlinnaya_obyasneniya_pro_to_shto_kak_rabotaet_klyuchi_i">Укажите ключевые слова, через запятую, после которых следует цифра (сумма платежа). Ключевые слова найдете в Вашем СМС, полученным от банка. Знаки препинания не учитываются.</string>
+    <string name="ti_type_parsinga_sms_sobsheni_eti_type_parsinga_sms_sobshenieti_type_parsinga_sms_sobsheni">Здесь Вы можете выбрать тип СМС, которое получаете от Вашего банка</string>
+    <string name="monthly_diagram">Расход и доход</string>
+    <string name="sys_not_found_accanount">Должно быть не менее двух счетов !</string>
+    <string name="notif_setting">Настройка уведомления</string>
+    <string name="detalization">Детально</string>
+    <string name="notif_annual">Ежегодно</string>
+    <string name="notif_everyday">Ежедневно</string>
+    <string name="notif_monthly">Ежемесячно</string>
+    <string name="notif_weekly">Еженедельно</string>
+    <string name="balance_title">Просмотр баланса</string>
+    <string name="balance_summary">Выберите способ вычисления баланса</string>
+    <string-array name="balance_mode_titles">
+        <item>За все время</item>
+        <item>За один день</item>
+    </string-array>
+    <string-array name="balance_mode_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string name="about_currencu">Эта опция устанавливает валюту для вашего СМС сообщения</string>
+    <string name="about_operat">Эта опция для выбора счета для вашего СМС сообщения</string>
+    <string name="sync_and_backup">Синхронизация и восстановление</string>
+    <string name="default_settings">Все данные и настройки будут утеряны. Вы согласны?</string>
+
+    <string name="sbrosit_title">Сброс данных</string>
+    <string name="sbrosit_about">Все данные и настройки будут удалены</string>
+    <string name="sbrosit">Сбросить</string>
+
+</resources>

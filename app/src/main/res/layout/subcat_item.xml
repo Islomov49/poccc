@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:descendantFocusability="blocksDescendants">
+
+    <CheckBox
+        android:id="@+id/chbSubCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:button="@drawable/checkbox"
+        android:scaleX="0.6"
+        android:scaleY="0.6"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvSubCatName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="@dimen/fifteen_dp"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:layout_marginRight="@dimen/ten_dp"
+        android:layout_marginTop="@dimen/fifteen_dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="TextView"
+        android:textColor="@color/for_darker"
+        android:textSize="@dimen/sixteen_sp" />
+
+    <ImageView
+        android:src="@drawable/drawer_currency"
+        android:layout_width="@dimen/twenty_dp"
+        android:layout_height="@dimen/twenty_dp"
+        android:id="@+id/ivSubCategoryIcon"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/sixteen_dp"/>
+
+</LinearLayout>

@@ -1,0 +1,28 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:typeface">serif</item>
+        <item name="colorControlNormal">@color/forlines</item>
+        <item name="colorControlActivated">@color/green_light</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+    <style name="leftBehindMenuScroll">
+        <item name="android:layout_width">@dimen/left_drawer_width</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/drawer_bg</item>
+    </style>
+    <style name="behindMenuScrollContent">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/twelve_sp</item>
+    </style>
+</resources>

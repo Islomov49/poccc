@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white" 
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/tvEqual"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/sixteen_sp"
+            android:layout_weight="1"
+            android:text="@string/edit"
+            android:textColor="@color/toolbar_text_color" />
+
+        <ImageView
+            android:id="@+id/ivAccountClose"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/cancel_sign" />
+
+        <ImageView
+            android:id="@+id/ivAccountSave"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_margin="@dimen/sixteen_dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/check_sign" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@color/message_color" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/twenty_dp"
+        android:orientation="horizontal" >
+        <EditText
+            android:id="@+id/etAccountEditName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:maxLength="25"
+            android:textColor="@color/toolbar_text_color"
+            android:textSize="@dimen/sixteen_sp"
+            android:hint="@string/cat_name"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/ten_dp"/>
+        <com.jim.pocketaccounter.helper.FABIcon
+            android:id="@+id/fabAccountIcon"
+            android:layout_width="@dimen/fiftysix_dp"
+            android:layout_height="@dimen/fiftysix_dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/twelve_dp"
+            android:layout_marginBottom="@dimen/twelve_dp"
+            android:layout_marginRight="@dimen/ten_dp"/>
+    </LinearLayout>
+
+</LinearLayout>

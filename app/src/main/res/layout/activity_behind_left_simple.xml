@@ -1,0 +1,146 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/left_drawer_width"
+    android:layout_height="match_parent" >
+
+	<ScrollView 
+	    style="@style/leftBehindMenuScroll"
+	    android:layout_height="match_parent"
+	    android:fillViewport="true" >
+	
+	    <RelativeLayout
+	        style="@style/behindMenuScrollContent"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+			<RelativeLayout
+				android:id="@+id/rlDrawerHeader"
+				android:layout_width="wrap_content"
+				android:layout_height="@dimen/drawer_header_height">
+				<FrameLayout
+					android:id="@+id/ivDrawerHead"
+					android:layout_width="@dimen/left_drawer_width"
+					android:layout_height="@dimen/drawer_header_height"
+					android:background="#d6d6d6"
+					/>
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="16dp"
+					android:layout_marginLeft="@dimen/sixteen_dp"
+					android:orientation="vertical"
+					android:layout_alignParentBottom="true">
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="horizontal">
+						<com.jim.pocketaccounter.helper.CircleImageView
+							android:id="@+id/userphoto"
+							android:layout_width="@dimen/fifty_dp"
+							android:layout_height="@dimen/fifty_dp"
+
+							android:src="@drawable/no_photo" />
+						<LinearLayout
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:orientation="vertical"
+							android:layout_gravity="center_vertical">
+							<TextView
+								android:id="@+id/tvToolbarName"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:text="@string/please_sign"
+								android:textColor="#414141"
+								android:textSize="@dimen/twelve_sp"
+								android:textStyle="bold"
+								android:layout_marginRight="@dimen/sixteen_dp"
+								android:layout_marginLeft="@dimen/eight_dp"/>
+
+							<TextView
+								android:id="@+id/tvGoogleMail"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_marginTop="@dimen/four_dp"
+								android:text="@string/and_sync_your_data"
+								android:textColor="#414141"
+								android:layout_marginLeft="@dimen/eight_dp"
+								android:layout_marginRight="@dimen/sixteen_dp"
+								android:textSize="@dimen/twelve_sp" />
+						</LinearLayout>
+
+					</LinearLayout>
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Google+"
+						android:textSize="@dimen/ten_dp"
+						android:layout_marginLeft="@dimen/eight_dp"
+						android:textColor="#787878"
+						android:layout_marginTop="@dimen/five_dp"
+						android:id="@+id/textView" />
+				</LinearLayout>
+			</RelativeLayout>
+
+
+	        <LinearLayout
+	            android:id="@+id/llDrawerContent"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:layout_below="@+id/rlDrawerHeader"
+	            android:layout_marginBottom="@dimen/sixteen_dp"
+	            android:orientation="vertical" >
+
+				<ListView
+                    android:id="@+id/lvLeftMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@color/drawer_color"
+                    android:scrollbars="none"
+                    >
+
+                </ListView>
+
+			</LinearLayout>
+	
+	    </RelativeLayout>
+	</ScrollView>
+
+	<LinearLayout
+	    android:layout_width="@dimen/six_dp"
+	    android:layout_height="match_parent"
+	    android:layout_alignParentRight="true"
+	    android:orientation="vertical"
+	    android:visibility="gone" >
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="@dimen/hundred"
+		android:layout_height="@dimen/hundred"
+		android:layout_marginTop="@dimen/one_hundred_fiveteen_dp"
+		android:layout_marginLeft="@dimen/one_hundred_eighty_one_dp">
+		<RelativeLayout
+			android:id="@+id/framee"
+			android:layout_width="@dimen/hundred"
+			android:layout_height="@dimen/hundred">
+			<com.jim.pocketaccounter.helper.FABIcon
+
+				android:layout_width="@dimen/fiftysix_dp"
+				android:layout_height="@dimen/fiftysix_dp"
+				android:id="@+id/fabDrawerNavIcon"
+				android:layout_centerInParent="true"
+				android:layout_marginTop="@dimen/one_hundred_fourty_two_dp"
+				android:layout_marginLeft="@dimen/two_hundred_eight_dp"
+				/>
+		</RelativeLayout>
+
+		<ImageView
+
+			android:id="@+id/iconFrameForAnim"
+			android:layout_centerInParent="true"
+			android:layout_width="@dimen/twentyfour_dp"
+			android:layout_height="@dimen/twentyfour_dp"
+			/>
+
+	</RelativeLayout>
+	 
+</RelativeLayout>	

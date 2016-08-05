@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/rlRootView"
+        >
+        <CheckBox
+            android:id="@+id/for_delete_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:checked="false"
+            android:text=""
+            android:visibility="gone"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/six_dp"
+            android:layout_toRightOf="@+id/frameLayout6"
+            android:layout_toEndOf="@+id/frameLayout6"
+            android:layout_alignBottom="@+id/frameLayout6" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:layout_marginBottom="@dimen/ten_dp"
+            android:textColor="@color/green_light"
+            android:textSize="@dimen/fourteen_sp"
+            android:id="@+id/paid_value"
+            android:layout_alignBottom="@+id/linearLayout2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/linearLayout2"
+            android:paddingBottom="@dimen/ten_dp"
+            android:paddingTop="@dimen/ten_dp"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/paid_value"
+            android:layout_toEndOf="@+id/for_delete_check_box"
+            android:layout_toRightOf="@+id/for_delete_check_box"
+
+            >
+            <TextView
+                android:id="@+id/via_acount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+
+                android:textColor="@color/for_darker"
+                android:textSize="@dimen/sixteen_sp"/>
+
+            <TextView
+                android:id="@+id/date_of_trans"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/for_darker"
+                android:textSize="@dimen/twelve_sp"
+                />
+
+            <TextView
+
+                android:id="@+id/comment_trans"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/twelve_sp"
+                android:visibility="visible"
+               />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="2px"
+            android:layout_height="wrap_content"
+            android:background="@color/green_light_forline"
+            android:layout_alignBottom="@+id/linearLayout2"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/frameLayout4" />
+        <FrameLayout
+            android:layout_width="2px"
+            android:layout_height="wrap_content"
+            android:background="@color/green_light_forline"
+            android:layout_alignBottom="@+id/linearLayout2"
+
+            android:layout_alignParentTop="true"
+            android:id="@+id/frameLayout6" />
+    </RelativeLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/green_light_forline"
+
+
+        />
+</LinearLayout>

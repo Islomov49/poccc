@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/sixty_dp"
+    android:background="@drawable/unselected_icon"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/ivCatIcon"
+        android:layout_width="@dimen/fourty_dp"
+        android:layout_height="@dimen/fourty_dp"
+        android:layout_gravity="center_horizontal|center_vertical" />
+
+</LinearLayout>

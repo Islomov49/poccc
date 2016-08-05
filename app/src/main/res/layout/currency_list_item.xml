@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:descendantFocusability="blocksDescendants">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="@dimen/eighty_dp"
+            android:layout_height="@dimen/eighty_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp" >
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="@dimen/seventy_dp"
+                android:layout_height="@dimen/seventy_dp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/sixteen_dp"
+                android:src="@drawable/circle_unchecked" />
+            <TextView
+                android:id="@+id/tvCurrencyItemAbbr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/sixteen_dp"
+                android:text="TextView"
+                android:textColor="@color/toolbar_text_color"
+                android:textSize="@dimen/eighteen_sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/ten_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+            <TextView
+                android:id="@+id/tvCurrencyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="@dimen/eighteen_sp" />
+            <TextView
+                android:id="@+id/tvCurrencyCost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/currency_chooser"
+                android:textSize="@dimen/fourteen_sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/ten_dp"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/ten_dp" >
+            <ImageView
+                android:id="@+id/ivCurrencyMain"
+                android:layout_width="@dimen/twentyfive_dp"
+                android:layout_height="@dimen/twentyfive_dp"
+                android:layout_centerInParent="true"/>
+            <CheckBox
+                android:id="@+id/chbCurrencyEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:button="@drawable/checkbox"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivCatIcon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:background="@color/currency_list_border" />
+
+</LinearLayout>

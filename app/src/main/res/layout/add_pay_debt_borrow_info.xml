@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right">
+
+        <ImageView
+            android:id="@+id/ivInfoDebtBorrowCancel"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/cancel_sign" />
+
+        <ImageView
+            android:id="@+id/ivInfoDebtBorrowSave"
+            android:layout_width="@dimen/twentyfive_dp"
+            android:layout_height="@dimen/twentyfive_dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/sixteen_dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/check_sign" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date "
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:id="@+id/etInfoDebtBorrowDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Date"
+            android:layout_weight="1"
+            android:textColorHint="#cfc7c7" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/spInfoDebtBorrowAccount"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pay"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/etInfoDebtBorrowPaySumm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Value"
+        android:textColorHint="#bcacac" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comment"/>
+
+    <EditText
+        android:id="@+id/etInfoDebtBorrowPayComment"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:hint="Comment ...."
+        android:textColorHint="#bcacac"
+        />
+
+</LinearLayout>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true">
+
+    <LinearLayout
+        android:id="@+id/llCatEditHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/hundred_and_twenty_dp"
+        android:background="@color/toolbar_color"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/ten_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/ten_dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tvCatEditName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/ten_dp"
+                android:text="@string/cat_name"
+                android:textColor="@color/toolbar_text_color"
+                android:textSize="@dimen/fourteen_sp" />
+
+            <EditText
+                android:id="@+id/etAccountEditName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:maxLength="22"
+                android:textColor="@color/toolbar_text_color"
+                android:textSize="@dimen/sixteen_dp" >
+
+                <requestFocus />
+            </EditText>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/sixteen_dp"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_marginTop="@dimen/fifteen_dp" >
+
+            <CheckBox
+                android:id="@+id/chbCatEditExpanse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/blue_bg_checkbox"
+                android:checked="true"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/expanse"
+                android:textColor="@color/toolbar_text_color" />
+
+            <CheckBox
+                android:id="@+id/chbCatEditIncome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/fifteen_dp"
+                android:button="@drawable/blue_bg_checkbox"
+                android:paddingLeft="@dimen/ten_dp"
+                android:text="@string/income"
+                android:textColor="@color/toolbar_text_color" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/llCatEditHeader"
+        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tvAccountListName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginLeft="@dimen/ten_dp"
+            android:layout_marginTop="@dimen/twentyeight_dp"
+            android:text="@string/sub_cats"
+            android:textColor="@color/currency_chooser"
+            android:textSize="@dimen/fourteen_sp" />
+
+        <ImageView
+            android:id="@+id/ivAccountListIcon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/one_dp"
+            android:background="@color/message_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/four_dp"
+            android:layout_marginTop="@dimen/four_dp" >
+
+            <ImageView
+                android:id="@+id/ivSubCatAdd"
+                android:layout_width="@dimen/thirty_dp"
+                android:layout_height="@dimen/thirty_dp"
+                android:layout_margin="@dimen/five_dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/subcat_add" />
+
+            <ImageView
+                android:id="@+id/ivSubCatDelete"
+                android:layout_width="@dimen/thirty_dp"
+                android:layout_height="@dimen/thirty_dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/five_dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/subcat_delete" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lvAccountHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/listview_bg"
+            android:divider="@color/message_color"
+            android:dividerHeight="@dimen/one_dp" >
+
+        </ListView>
+
+    </LinearLayout>
+
+    <com.jim.pocketaccounter.helper.FABIcon
+        android:id="@+id/fabAccountIcon"
+        android:layout_width="@dimen/fiftysix_dp"
+        android:layout_height="@dimen/fiftysix_dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/ninetytwo_dp" />
+
+</RelativeLayout>

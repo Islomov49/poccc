@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/message_color"
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/tvAccountEditBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginBottom="@dimen/twentyfour_dp"
+        android:layout_marginTop="@dimen/twentyfour_dp"
+        android:text="@string/select_icon"
+        android:textColor="@color/toolbar_text_color"
+        android:textSize="@dimen/sixteen_sp" />
+    <ImageView
+        android:id="@+id/ivSelectIcon"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/one_dp"
+        android:background="@color/warning_color" />
+    <GridView
+        android:id="@+id/gvCategoryIcons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ten_dp"
+        android:layout_marginLeft="@dimen/ten_dp"
+        android:layout_marginRight="@dimen/ten_dp"
+        android:layout_marginTop="@dimen/ten_dp"
+        android:layout_weight="1"
+        android:background="@drawable/gv_icon"
+        android:numColumns="4" >
+    </GridView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/ivAccountClose"
+            android:layout_width="@dimen/one_dp"
+            android:layout_height="match_parent"
+            android:background="@color/warning_color" />
+    </LinearLayout>
+</LinearLayout>
