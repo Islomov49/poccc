@@ -45,11 +45,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/sixteen_dp"
+        android:layout_marginBottom="@dimen/five_dp"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/twenty_dp"
         android:orientation="horizontal" >
+
         <EditText
             android:id="@+id/etAccountEditName"
             android:layout_width="wrap_content"
@@ -62,6 +63,7 @@
             android:hint="@string/cat_name"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/ten_dp"/>
+
         <com.jim.pocketaccounter.helper.FABIcon
             android:id="@+id/fabAccountIcon"
             android:layout_width="@dimen/fiftysix_dp"
@@ -71,5 +73,30 @@
             android:layout_marginBottom="@dimen/twelve_dp"
             android:layout_marginRight="@dimen/ten_dp"/>
     </LinearLayout>
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginBottom="@dimen/ten_dp">
+        <EditText
+            android:id="@+id/etStartMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:maxLength="25"
+            android:textColor="@color/toolbar_text_color"
+            android:textSize="@dimen/sixteen_sp"
+            android:hint="@string/start_amount"
+            android:inputType="numberDecimal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/ten_dp"/>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spStartMoneyCurrency"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
 </LinearLayout>

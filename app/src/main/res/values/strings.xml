@@ -1274,5 +1274,6 @@
     <string name="sbrosit">Reset</string>
     <string name="sbrosit_about">All datas and settings will be deleted</string>
     <string name="sbrosit_title">Reset</string>
+    <string name="start_amount">Начальная сумма</string>
 
 </resources>
