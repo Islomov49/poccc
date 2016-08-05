@@ -1274,5 +1274,6 @@
     <string name="sbrosit_title">Сброс данных</string>
     <string name="sbrosit_about">Все данные и настройки будут удалены</string>
     <string name="sbrosit">Сбросить</string>
+    <string name="start_amount">Начальная сумма</string>
 
 </resources>
