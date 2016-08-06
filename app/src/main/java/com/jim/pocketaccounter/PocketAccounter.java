@@ -60,6 +60,8 @@ import com.jim.pocketaccounter.helper.LeftMenuItem;
 import com.jim.pocketaccounter.helper.LeftSideDrawer;
 import com.jim.pocketaccounter.helper.PockerTag;
 import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
+import com.jim.pocketaccounter.helper.password.OnPasswordRightEntered;
+import com.jim.pocketaccounter.helper.password.PasswordWindow;
 import com.jim.pocketaccounter.helper.record.RecordExpanseView;
 import com.jim.pocketaccounter.helper.record.RecordIncomesView;
 import com.jim.pocketaccounter.intropage.IntroIndicator;
@@ -100,6 +102,7 @@ public class PocketAccounter extends AppCompatActivity {
     private ImageView ivToolbarMostRight, ivToolbarExcel;
     private RecordExpanseView expanseView;
     private RecordIncomesView incomeView;
+    private PasswordWindow pwPassword;
     private Calendar date;
     private Spinner spToolbar;
     public static SignInGoogleMoneyHold reg;
@@ -117,14 +120,10 @@ public class PocketAccounter extends AppCompatActivity {
 
     public static boolean PRESSED = false;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
-
-    }
     int WidgetID;
     public static boolean keyboardVisible=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,9 +147,6 @@ public class PocketAccounter extends AppCompatActivity {
         }
         financeManager = new FinanceManager(this);
         fragmentManager = getSupportFragmentManager();
-
-
-
         mainRoot =findViewById(R.id.main);
         mainRoot.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -164,8 +160,6 @@ public class PocketAccounter extends AppCompatActivity {
                 }
             }
         });
-
-
         mySync = new SyncBase(storageRef, this, "PocketAccounterDatabase");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -175,7 +169,6 @@ public class PocketAccounter extends AppCompatActivity {
         drawer.setLeftBehindContentView(R.layout.activity_behind_left_simple);
         lvLeftMenu = (ListView) findViewById(R.id.lvLeftMenu);
         fillLeftMenu();
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userName.setText(user.getDisplayName());
@@ -207,6 +200,8 @@ public class PocketAccounter extends AppCompatActivity {
                 PRESSED = true;
             }
         });
+        pwPassword = (PasswordWindow) findViewById(R.id.pwPassword);
+
         tvRecordExpanse = (TextView) findViewById(R.id.tvRecordExpanse);
         date = Calendar.getInstance();
         initialize(date);
@@ -226,12 +221,26 @@ public class PocketAccounter extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-
                         notific.cancelAllNotifs();
                     } catch (Exception o) {
                     }
                 }
             })).start();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean("secure", false)) {
+            pwPassword.setVisibility(View.VISIBLE);
+            pwPassword.setOnPasswordRightEnteredListener(new OnPasswordRightEntered() {
+                @Override
+                public void onPasswordRight() {
+                    pwPassword.setVisibility(View.GONE);
+                }
+            });
         }
     }
 

@@ -212,4 +212,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"></FrameLayout>
+    <com.jim.pocketaccounter.helper.password.PasswordWindow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pwPassword"
+        android:visibility="gone"/>
 </RelativeLayout>
