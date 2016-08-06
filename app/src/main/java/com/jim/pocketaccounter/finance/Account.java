@@ -1,10 +1,17 @@
 package com.jim.pocketaccounter.finance;
 
+import java.util.Calendar;
+
 public class Account {
 	private String name, id;
 	private int icon;
 	private double amount;
 	private Currency currency;
+	private boolean limited;
+	private double limitSum;
+	private Calendar calendar;
+	public Calendar getCalendar() {return calendar;}
+	public void setCalendar(Calendar calendar) {this.calendar = calendar;}
 	public double getAmount() {return amount;}
 	public void setAmount(double amount) {this.amount = amount;}
 	public Currency getCurrency() {return currency;}
@@ -27,4 +34,8 @@ public class Account {
 	public void setIcon(int icon) {
 		this.icon = icon;
 	}
+	public boolean isLimited() {return limited;}
+	public void setLimited(boolean limited) {this.limited = limited;}
+	public double getLimitSum() {return limitSum;}
+	public void setLimitSum(double limitSum) {this.limitSum = limitSum;}
 }

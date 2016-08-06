@@ -78,8 +78,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
-        android:layout_marginTop="@dimen/five_dp"
-        android:layout_marginBottom="@dimen/ten_dp">
+        android:layout_marginTop="@dimen/five_dp">
+
         <EditText
             android:id="@+id/etStartMoney"
             android:layout_width="wrap_content"
@@ -93,10 +93,41 @@
             android:inputType="numberDecimal"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/ten_dp"/>
+
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spStartMoneyCurrency"
             android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/sixteen_dp"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:layout_marginTop="@dimen/five_dp"
+        android:layout_marginBottom="@dimen/ten_dp">
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/limit"
+            android:id="@+id/chbLimit"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:layout_gravity="center_vertical"/>
+
+        <EditText
+            android:id="@+id/etLimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:maxLength="25"
+            android:textColor="@color/toolbar_text_color"
+            android:textSize="@dimen/sixteen_sp"
+            android:hint="@string/limit_sum"
+            android:inputType="numberDecimal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/ten_dp"
+            android:enabled="false"/>
     </LinearLayout>
 </LinearLayout>

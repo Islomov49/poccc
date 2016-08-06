@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.jim.pocketaccounter.PocketAccounter;
 import com.jim.pocketaccounter.R;
 import com.jim.pocketaccounter.credit.CreditDetials;
 import com.jim.pocketaccounter.credit.ReckingCredit;
@@ -30,7 +31,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 	private Context context;
 	private SimpleDateFormat dateFormat = null;
 	public PocketAccounterDatabase(Context context) {
-		super(context, "PocketAccounterDatabase", null, 4);
+		super(context, "PocketAccounterDatabase", null, 5);
 		this.context = context;
 		dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	}
@@ -105,7 +106,6 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				+ "account_id TEXT,"
 				+ "icon INTEGER,"
 				+ "empty TEXT"
-
 				+ ");");
 		//daily_record_table
 		db.execSQL("CREATE TABLE daily_record_table ("
@@ -963,15 +963,17 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 	public void saveDatasToAccountTable(ArrayList<Account> purses) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		db.beginTransaction();
-
 		try{
-
 			db.execSQL("DELETE FROM account_table");
 			for (int i=0; i<purses.size(); i++) {
 				ContentValues values = new ContentValues();
 				values.put("account_name", purses.get(i).getName());
 				values.put("account_id", purses.get(i).getId());
 				values.put("icon", purses.get(i).getIcon());
+				values.put("start_amount", purses.get(i).getAmount());
+				values.put("currency_id", purses.get(i).getCurrency().getId());
+				values.put("is_limited", purses.get(i).isLimited());
+				values.put("limit_amount", purses.get(i).getLimitSum());
 				db.insert("account_table", null, values);
 			}
 			db.setTransactionSuccessful();
@@ -988,6 +990,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 	//get all purses
 	public ArrayList<Account> loadAccounts() {
 		ArrayList<Account> result = new ArrayList<Account>();
+		ArrayList<Currency> currencies = loadCurrencies();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query("account_table", null, null, null, null, null, null);
 		cursor.moveToFirst();
@@ -996,6 +999,16 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
 			newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
 			newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
+			newAccount.setAmount(cursor.getDouble(cursor.getColumnIndex("start_amount")));
+			String currencyId = cursor.getString(cursor.getColumnIndex("currency_id"));
+			for (Currency currency:currencies) {
+				if (currency.getId().matches(currencyId)) {
+					newAccount.setCurrency(currency);
+					break;
+				}
+			}
+			newAccount.setLimited(cursor.getInt(cursor.getColumnIndex("is_limited")) != 0);
+			newAccount.setLimitSum(cursor.getDouble(cursor.getColumnIndex("limit_amount")));
 			result.add(newAccount);
 			cursor.moveToNext();
 		}
@@ -1362,6 +1375,31 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		if (arg1 == 3 && arg2 == 4) {
 			Log.d("sss", "3->4");
 			upgradeFromThreeToFour(db);
+		}
+		if (arg1 == 4 && arg2 == 5) {
+			ArrayList<Account> result = new ArrayList<Account>();
+			Cursor cursor = db.query("account_table", null, null, null, null, null, null);
+			cursor.moveToFirst();
+			while(!cursor.isAfterLast()) {
+				Account newAccount = new Account();
+				newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
+				newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
+				newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
+				result.add(newAccount);
+				cursor.moveToNext();
+			}
+			db.execSQL("DROP TABLE account_table");
+			//account table
+			db.execSQL("CREATE TABLE account_table ("
+					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ "account_name TEXT,"
+					+ "account_id TEXT,"
+					+ "icon INTEGER,"
+					+ "start_amount REAL,"
+					+ "currency_id TEXT,"
+					+ "is_limited INTEGER,"
+					+ "limit_amount REAL"
+					+ ");");
 		}
 	}
 	private void upgradeFromThreeToFour(SQLiteDatabase db) {

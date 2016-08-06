@@ -50,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.jim.pocketaccounter.credit.notificat.AlarmReceiver;
 import com.jim.pocketaccounter.credit.notificat.NotificationManagerCredit;
 import com.jim.pocketaccounter.debt.DebtBorrowFragment;
+import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.FinanceManager;
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.helper.CircleImageView;
@@ -379,6 +380,8 @@ public class PocketAccounter extends AppCompatActivity {
             else
                 expanse = expanse + PocketAccounterGeneral.getCost(records.get(i));
         }
+        for (Account account:PocketAccounter.financeManager.getAccounts())
+            income = income + PocketAccounterGeneral.getCost(date, account.getCurrency(), account.getAmount());
         balance = income - expanse;
         String mainCurrencyAbbr = PocketAccounter.financeManager.getMainCurrency().getAbbr();
         DecimalFormat decFormat = new DecimalFormat("0.00");
