@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.os.ParcelableCompat;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -33,13 +35,17 @@ import com.jim.pocketaccounter.debt.DebtBorrow;
 import com.jim.pocketaccounter.debt.Recking;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.AccountAdapter;
+import com.jim.pocketaccounter.finance.Currency;
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.finance.IconAdapterAccount;
 import com.jim.pocketaccounter.helper.FABIcon;
 import com.jim.pocketaccounter.helper.FloatingActionButton;
 import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
 import com.jim.pocketaccounter.helper.ScrollDirectionListener;
+import com.jim.pocketaccounter.report.DecFormat;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.UUID;
 
 @SuppressLint("InflateParams")
@@ -214,15 +220,50 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 		dialog.setContentView(dialogView);
 		final EditText etAccountEditName = (EditText) dialogView.findViewById(R.id.etAccountEditName);
 		final FABIcon fabAccountIcon = (FABIcon) dialogView.findViewById(R.id.fabAccountIcon);
+		final EditText etStartMoney = (EditText) dialogView.findViewById(R.id.etStartMoney);
+		final Spinner spStartMoney = (Spinner) dialog.findViewById(R.id.spStartMoneyCurrency);
+		final CheckBox chbLimit = (CheckBox) dialogView.findViewById(R.id.chbLimit);
+		final EditText etLimit = (EditText) dialogView.findViewById(R.id.etLimit);
 		String[] tempIcons = getResources().getStringArray(R.array.icons);
 		final int[] icons = new int[tempIcons.length];
 		for (int i=0; i<tempIcons.length; i++)
 			icons[i] = getResources().getIdentifier(tempIcons[i], "drawable", getActivity().getPackageName());
 		selectedIcon = icons[0];
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
+		otherSymbols.setDecimalSeparator('.');
+		otherSymbols.setGroupingSeparator('.');
+		DecimalFormat format = new DecimalFormat("0.00##", otherSymbols);
 		if (account != null) {
 			etAccountEditName.setText(account.getName());
 			selectedIcon = account.getIcon();
+			etStartMoney.setText(format.format(account.getAmount()));
+			if (account.getCurrency() != null) {
+				String curId = account.getCurrency().getId();
+				for (int i = 0; i<PocketAccounter.financeManager.getCurrencies().size(); i++) {
+					if (curId.matches(PocketAccounter.financeManager.getCurrencies().get(i).getId())) {
+						spStartMoney.setSelection(i);
+						break;
+					}
+				}
+			}
+			chbLimit.setChecked(account.isLimited());
+			etLimit.setText(format.format(account.getLimitSum()));
 		}
+		String mainCurrencyId = PocketAccounter.financeManager.getMainCurrency().getId();
+		String[] currencies = new String[PocketAccounter.financeManager.getCurrencies().size()];
+		boolean mainCurrPosFound = false;
+		int mainCurrencyPos = 0;
+		for (int i=0; i<currencies.length; i++) {
+			currencies[i] = PocketAccounter.financeManager.getCurrencies().get(i).getAbbr();
+			if (mainCurrPosFound) continue;
+			if (PocketAccounter.financeManager.getCurrencies().get(i).getId().matches(mainCurrencyId)) {
+				mainCurrencyPos = i;
+				mainCurrPosFound = true;
+			}
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, currencies);
+		spStartMoney.setAdapter(adapter);
+		spStartMoney.setSelection(mainCurrencyPos);
 		Bitmap temp = BitmapFactory.decodeResource(getResources(), selectedIcon);
 		Bitmap icon = Bitmap.createScaledBitmap(temp, (int)getResources().getDimension(R.dimen.twentyfive_dp), (int)getResources().getDimension(R.dimen.twentyfive_dp), false);
 		fabAccountIcon.setImageBitmap(icon);
@@ -265,12 +306,36 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				if (account != null) {
 					account.setName(etAccountEditName.getText().toString());
 					account.setIcon(selectedIcon);
+					if (etStartMoney.getText().toString().matches(""))
+						account.setAmount(0);
+					else
+						account.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
+					account.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					if (chbLimit.isChecked()) {
+						account.setLimited(true);
+						if (etLimit.getText().toString().matches(""))
+							account.setLimitSum(0);
+						else
+							account.setLimitSum(Double.parseDouble(etLimit.getText().toString()));
+					}
 				}
 				else {
 					Account newAccount = new Account();
 					newAccount.setName(etAccountEditName.getText().toString());
 					newAccount.setIcon(selectedIcon);
 					newAccount.setId("account_"+UUID.randomUUID().toString());
+					if (etStartMoney.getText().toString().matches(""))
+						newAccount.setAmount(0);
+					else
+						newAccount.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
+					newAccount.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					if (chbLimit.isChecked()) {
+						newAccount.setLimited(true);
+						if (etLimit.getText().toString().matches(""))
+							newAccount.setLimitSum(0);
+						else
+							newAccount.setLimitSum(Double.parseDouble(etLimit.getText().toString()));
+					}
 					PocketAccounter.financeManager.getAccounts().add(newAccount);
 				}
 				dialog.dismiss();

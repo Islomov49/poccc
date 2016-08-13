@@ -10,5 +10,4 @@
         android:layout_width="@dimen/fifty_dp"
         android:layout_height="@dimen/fifty_dp"
         android:layout_margin="@dimen/ten_dp" />
-
 </LinearLayout>

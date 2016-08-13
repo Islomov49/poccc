@@ -75,5 +75,27 @@
             android:title="@string/sbrosit" />
 
     </PreferenceCategory>
-
+    <PreferenceCategory
+        android:title="Защита">
+        <CheckBoxPreference
+            android:defaultValue="@bool/secure_default"
+            android:key="secure"
+            android:title="@string/secure_on"/>
+        <EditTextPreference
+            android:key="password"
+            android:title="@string/enter_password"
+            android:defaultValue="1234"
+            android:inputType="numberPassword"
+            android:dependency="secure"
+            android:maxLength="4">
+        </EditTextPreference>
+        <ListPreference
+            android:defaultValue="5"
+            android:entries="@array/secure_times_titles"
+            android:entryValues="@array/secure_times_values"
+            android:key="password_time"
+            android:summary="@string/set_time_of_secure_summary"
+            android:title="@string/set_time_of_secure_title"
+            android:dependency="secure"/>
+    </PreferenceCategory>
 </PreferenceScreen>

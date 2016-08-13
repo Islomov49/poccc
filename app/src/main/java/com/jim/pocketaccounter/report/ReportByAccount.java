@@ -9,6 +9,7 @@ import com.jim.pocketaccounter.credit.ReckingCredit;
 import com.jim.pocketaccounter.debt.DebtBorrow;
 import com.jim.pocketaccounter.debt.Recking;
 import com.jim.pocketaccounter.finance.Account;
+import com.jim.pocketaccounter.finance.Category;
 import com.jim.pocketaccounter.finance.Currency;
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.finance.RootCategory;
@@ -47,7 +48,20 @@ public class ReportByAccount {
         //acumluate income expense data
         ArrayList<FinanceRecord> temp = PocketAccounter.financeManager.getRecords();
         ArrayList<FinanceRecord> records = new ArrayList<>();
-
+        RootCategory cat = new RootCategory();
+        cat.setName(context.getResources().getString(R.string.start_amount));
+        cat.setType(PocketAccounterGeneral.INCOME);
+        for (Account account : PocketAccounter.financeManager.getAccounts()) {
+            if (account.getAmount() == 0) continue;
+            AccountDataRow row = new AccountDataRow();
+            row.setType(PocketAccounterGeneral.INCOME);
+            row.setDate(account.getCalendar());
+            row.setCategory(cat);
+            row.setSubCategory(null);
+            row.setCurrency(account.getCurrency());
+            row.setAmount(account.getAmount());
+            result.add(row);
+        }
         for (int i = 0; i < temp.size(); i++) {
             if (begin.compareTo(temp.get(i).getDate()) <= 0
                     && end.compareTo(temp.get(i).getDate()) >= 0) {
