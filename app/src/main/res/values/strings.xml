@@ -1285,4 +1285,6 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
+    <string name="start_amount">Начальная сумма</string>
+
 </resources>
