@@ -19,6 +19,7 @@ import com.jim.pocketaccounter.finance.CurrencyCost;
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.finance.RootCategory;
 import com.jim.pocketaccounter.finance.SubCategory;
+import com.jim.pocketaccounter.photocalc.PhotoDetails;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -217,6 +218,14 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				+ "type INTEGER,"
 				+ "empty TEXT"
 				+ ");");
+
+		db.execSQL("CREATE TABLE record_photo_table ("
+				+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ "photopath TEXT,"
+				+ "photopathCache TEXT,"
+				+ "record_id TEXT"
+				+ ");");
+
 		initCurrencies(db);
 		initDefault(db);
 		initIncomesAndExpanses(db);
@@ -536,6 +545,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		}
 		return result;
 	}
+
 
 	public ArrayList<CreditDetials> loadArchiveCredits() {
 		ArrayList<CreditDetials> result = new ArrayList<>();
@@ -1012,6 +1022,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		try{
 
 			db.execSQL("DELETE FROM daily_record_table");
+			db.execSQL("DELETE FROM record_photo_table");
 			ContentValues values = new ContentValues();
 			for (int i=0; i<records.size(); i++) {
 				Calendar cal = records.get(i).getDate();
@@ -1026,7 +1037,17 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				values.put("currency_id", records.get(i).getCurrency().getId());
 				values.put("record_id", records.get(i).getRecordId());
 				values.put("amount", records.get(i).getAmount());
+				values.put("empty", records.get(i).getComment());
 				db.insert("daily_record_table", null, values);
+				values.clear();
+
+				for (int j = 0; j <records.get(i).getAllTickets().size() ; j++) {
+					values.put("record_id",records.get(i).getAllTickets().get(j).getRecordID());
+					values.put("photopath",records.get(i).getAllTickets().get(j).getPhotopath());
+					values.put("photopathCache",records.get(i).getAllTickets().get(j).getPhotopathCache());
+					db.insert("record_photo_table", null, values);
+				}
+				values.clear();
 			}
 			db.setTransactionSuccessful();
 		}
@@ -1047,6 +1068,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		ArrayList<FinanceRecord> result = new ArrayList<FinanceRecord>();
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query("daily_record_table", null, null, null, null, null, null);
+
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			FinanceRecord newRecord = new FinanceRecord();
@@ -1082,6 +1104,21 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			}
 			newRecord.setRecordId(cursor.getString(cursor.getColumnIndex("record_id")));
 			newRecord.setAmount(cursor.getDouble(cursor.getColumnIndex("amount")));
+			newRecord.setComment(cursor.getString(cursor.getColumnIndex("empty")));
+			ArrayList<PhotoDetails> phDet=new ArrayList<>();
+			Cursor cursorPhotoTable = db.query("record_photo_table", null, null, null, null, null, null);
+			cursorPhotoTable.moveToFirst();
+
+			while (!cursorPhotoTable.isAfterLast()) {
+				if(cursorPhotoTable.getString(cursorPhotoTable.getColumnIndex("record_id")).matches(newRecord.getRecordId())){
+					PhotoDetails temp=new PhotoDetails(cursorPhotoTable.getString(cursorPhotoTable.getColumnIndex("photopath")),
+							cursorPhotoTable.getString(cursorPhotoTable.getColumnIndex("photopathCache")),cursorPhotoTable.getString(cursorPhotoTable.getColumnIndex("record_id")));
+					phDet.add(temp);
+				}
+				cursorPhotoTable.moveToNext();
+			}
+
+			newRecord.setAllTickets(phDet);
 			result.add(newRecord);
 			cursor.moveToNext();
 		}

@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.jim.pocketaccounter.credit.CreditDetials;
 import com.jim.pocketaccounter.credit.ReckingCredit;
+import com.jim.pocketaccounter.debt.PockerTag;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.FinanceManager;
 
@@ -128,28 +129,44 @@ public class InfoCreditFragment extends Fragment {
         tranact_recyc.setLayoutManager(llm);
 
         ivToolbarMostRight = (ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight);
-        ivToolbarMostRight.setImageResource(R.drawable.ic_delete_black);
+        ivToolbarMostRight.setImageResource(R.drawable.ic_more_vert_black_48dp);
         ivToolbarMostRight.setVisibility(View.VISIBLE);
         ivToolbarMostRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO add remove and edit
+                final AlertDialog.Builder builderChouse = new AlertDialog.Builder(getActivity());
+                builderChouse.setTitle("Choose type action").setItems(R.array.more_option_for_credit_debt, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which==0) {
+                            AddCreditFragment forEdit=new AddCreditFragment();
+                            forEdit.shareForEdit(currentCredit);
+                            openFragment(forEdit, PockerTag.Edit);
+                        }
+                        else {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage(getString(R.string.delete_credit))
+                                    .setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialoge, int id) {
+                                            dialoge.cancel();
+                                        }
+                                    }).setNegativeButton(getString(R.string.delete_anyway), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
 
+                                    A1.delete_item(currentPOS);
+                                    ivToolbarMostRight.setVisibility(View.GONE);
+                                    getActivity().getSupportFragmentManager().popBackStack();
 
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(getString(R.string.delete_credit))
-                        .setPositiveButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialoge, int id) {
-                                dialoge.cancel();
-                            }
-                        }).setNegativeButton(getString(R.string.delete_anyway), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                            builder.create().show();
+                        }
 
-                        A1.delete_item(currentPOS);
-                        getActivity().getSupportFragmentManager().popBackStack();
 
                     }
                 });
-                builder.create().show();
+                builderChouse.create().show();
             }
         });
 
@@ -510,6 +527,16 @@ public class InfoCreditFragment extends Fragment {
         dialog.getWindow().setLayout(7 * width / 8, RelativeLayout.LayoutParams.WRAP_CONTENT);
         dialog.show();
     }
+
+    public void openFragment(Fragment fragment,String tag) {
+        if (fragment != null) {
+            final android.support.v4.app.FragmentTransaction ft = ((PocketAccounter)context).getSupportFragmentManager().beginTransaction().addToBackStack(tag).setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.add(R.id.flMain, fragment,tag);
+            ft.commit();
+        }
+    }
+
+
     public void updateDate(){
 
         double total_paid=0;
@@ -580,9 +607,11 @@ public class InfoCreditFragment extends Fragment {
     @Override
     public void onDetach(){
         super.onDetach();
+
+    }
+    public void iconTOGONE(){
         ivToolbarMostRight.setVisibility(View.GONE);
     }
-
     private class PaysCreditAdapter extends RecyclerView.Adapter<InfoCreditFragment.ViewHolder> {
         private ArrayList<ReckingCredit> list;
 

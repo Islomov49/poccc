@@ -244,8 +244,13 @@ public class NotificationManagerCredit {
 
 					PendingIntent pendingIntent = PendingIntent.getBroadcast(context, count_intent++,
 							intent, 0);
+					if (count_intent>450){
+						prefs.edit().putInt("KEY_T",count_intent).apply();
+						return;	}
+					Log.d("gogogo", "notificSetCredit: "+count_intent);
 					alarmManager.set(AlarmManager.RTC_WAKEUP, calendars.get(i).getTimeInMillis(), pendingIntent);
 				}
+				prefs.edit().putInt("KEY_T",count_intent).apply();
 			}
 		}
 	}
@@ -433,11 +438,15 @@ public class NotificationManagerCredit {
 							"" : item.getPerson().getPhoto());
 					PendingIntent pendingIntent = PendingIntent.getBroadcast(context, count_intent++,
 							intent, 0);
+					if (count_intent>450){
+						prefs.edit().putInt("KEY_T",count_intent).commit();
+						return;	}
+					Log.d("gogogo", "notificSetDebt: "+count_intent);
 					alarmManager.set(AlarmManager.RTC_WAKEUP, calendars.get(i).getTimeInMillis(), pendingIntent);
 				}
+				prefs.edit().putInt("KEY_T",count_intent).commit();
 			}
 		}
-		prefs.edit().putInt("KEY_T",count_intent).apply();
 	}
 	public int getWeekDay(int i) {
 		switch (i) {
@@ -459,15 +468,16 @@ public class NotificationManagerCredit {
 		return 100;
 	}
 	public void cancelAllNotifs() {
+		count_intent=0;
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		Intent updateServiceIntent = new Intent(context, AlarmReceiver.class);
 
-		for (int i = 0; i <=500; i++) {
+		for (int i = 0; i <=prefs.getInt("KEY_T",500); i++) {
 		updateServiceIntent.setData(Uri.parse("custom://" + i));
 		updateServiceIntent.setAction(String.valueOf(i));
 				PendingIntent pendingUpdateIntent = PendingIntent.getBroadcast(context, i, updateServiceIntent, 0);
-
+			Log.d("gogogo", "cancelAllNotifs: "+i);
 			try {
 				alarmManager.cancel(pendingUpdateIntent);
 			} catch (Exception e) {

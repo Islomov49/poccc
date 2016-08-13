@@ -72,7 +72,7 @@
                 android:layout_marginBottom="@dimen/fifteen_dp"
                 android:layout_marginLeft="@dimen/sixteen_dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
-                android:visibility="gone">
+                android:visibility="visible">
                 <ImageView
                     android:layout_width="@dimen/twenty_dp"
                     android:layout_height="@dimen/twenty_dp"

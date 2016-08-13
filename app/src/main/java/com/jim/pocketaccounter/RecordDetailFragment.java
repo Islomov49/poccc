@@ -2,6 +2,7 @@ package com.jim.pocketaccounter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -16,17 +17,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
+import com.jim.pocketaccounter.photocalc.PhotoAdapter;
+import com.jim.pocketaccounter.photocalc.PhotoDetails;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.jim.pocketaccounter.photocalc.PhotoAdapter.REQUEST_DELETE_PHOTOS;
 
 @SuppressLint("ValidFragment")
 public class RecordDetailFragment extends Fragment implements OnClickListener {
@@ -36,12 +43,17 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
     private int mode = PocketAccounterGeneral.NORMAL_MODE;
     private ArrayList<FinanceRecord> records;
     private boolean[] selections;
+    Context context;
+    public RecordDetailFragment() {
+    }
+
     @SuppressLint("ValidFragment")
     public RecordDetailFragment(Calendar date) {
         this.date = (Calendar) date.clone();
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.record_detail_layout, container, false);
+        context=getActivity();
         ivToolbarMostRight = (ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight);
         ivToolbarMostRight.setVisibility(View.VISIBLE);
         ivToolbarExcel = (ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarExcel);
@@ -54,10 +66,14 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
         PocketAccounter.toolbar.setSubtitle(dateFormat.format(date.getTime()));
         ((Spinner) PocketAccounter.toolbar.findViewById(R.id.spToolbar)).setVisibility(View.GONE);
         PocketAccounter.toolbar.setNavigationOnClickListener(new OnClickListener() {
-            @Override
+                @Override
             public void onClick(View v) {
-                ((PocketAccounter)getContext()).getSupportFragmentManager().popBackStack();
-                ((PocketAccounter)getContext()).getSupportFragmentManager().popBackStack();
+                int size = 0;
+                size = ((PocketAccounter)getContext()).getSupportFragmentManager().getBackStackEntryCount();
+                Log.d("sss", "" + size);
+                for (int i = 0; i < size; i++) {
+                    ((PocketAccounter)getContext()).getSupportFragmentManager().popBackStack();
+                }
                 ((PocketAccounter) getContext()).initialize(date);
             }
         });
@@ -112,7 +128,14 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
             ivToolbarMostRight.setImageResource(R.drawable.ic_delete_black);
             adapter.listenChanges();
         }
+
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, final Intent data) {
+
+    }
+
 
     public class RecordDetailAdapter extends RecyclerView.Adapter<RecordDetailAdapter.DetailViewHolder>{
         List<FinanceRecord> result;
@@ -132,6 +155,35 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
             holder.tvRecordDetailCategoryName.setText(result.get(position).getCategory().getName());
             DecimalFormat decimalFormat = new DecimalFormat("0.00");
             String sign = "";
+
+            if (result.get(position).getComment()==null||result.get(position).getComment().matches("")){
+                holder.rlVisibleWhenHaveComment.setVisibility(View.GONE);
+            }
+            else {
+                holder.tvRecordComment.setText(result.get(position).getComment());
+                holder.rlVisibleWhenHaveComment.setVisibility(View.VISIBLE);
+            }
+
+            if(result.get(position).getAllTickets().size()==0){
+                holder.rlVisibleWhenHaveTickets.setVisibility(View.GONE);
+            }
+            else{
+                holder.rlVisibleWhenHaveTickets.setVisibility(View.VISIBLE);
+
+            }
+
+            LinearLayoutManager layoutManager
+                    = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            holder.rvTickets.setLayoutManager(layoutManager);
+            PhotoAdapter myTickedAdapter =new PhotoAdapter(result.get(position).getAllTickets(),context, new RecordEditFragment.OpenIntentFromAdapter() {
+                @Override
+                public void startActivityFromFragmentForResult(Intent intent) {
+                    startActivityForResult(intent,REQUEST_DELETE_PHOTOS);
+                }
+            },true);
+            holder.rvTickets.hasFixedSize();
+            holder.rvTickets.setAdapter(myTickedAdapter);
+
             if (result.get(position).getCategory().getType() == PocketAccounterGeneral.EXPENSE) {
                 holder.tvRecordDetailCategoryAmount.setTextColor(ContextCompat.getColor(context, R.color.red));
                 sign = "-";
@@ -143,32 +195,34 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
             holder.tvRecordDetailCategoryAmount.setText(sign + decimalFormat.format(result.get(position).getAmount())+result.get(position).getCurrency().getAbbr());
             boolean subCatIsNull = (result.get(position).getSubCategory() == null);
             if (subCatIsNull) {
-                holder.llSubCategories.setVisibility(View.GONE);
-                holder.ivRecordDetailBorder.setVisibility(View.GONE);
+               // holder.llSubCategories.setVisibility(View.GONE);
+                holder.tvRecordDetailSubCategory.setVisibility(View.GONE);
+
             }
             else {
-                holder.llSubCategories.setVisibility(View.VISIBLE);
-                holder.ivRecordDetailBorder.setVisibility(View.VISIBLE);
                 resId = context.getResources().getIdentifier(result.get(position).getSubCategory().getIcon(), "drawable", context.getPackageName());
-                holder.ivRecordDetailSubCategory.setImageResource(resId);
+                holder.tvRecordDetailSubCategory.setVisibility(View.VISIBLE);
                 holder.tvRecordDetailSubCategory.setText(result.get(position).getSubCategory().getName());
             }
             if (mode == PocketAccounterGeneral.NORMAL_MODE) {
                 holder.chbRecordDetail.setVisibility(View.GONE);
+                holder.ivRecordDetail.setVisibility(View.VISIBLE);
             }
             else {
                 holder.chbRecordDetail.setVisibility(View.VISIBLE);
+                holder.ivRecordDetail.setVisibility(View.GONE);
                 holder.chbRecordDetail.setChecked(selections[position]);
                 Log.d("sss", "pos"+position);
             }
             final FinanceRecord financeRecord= result.get(position);
-            holder.ivRecordDetailBorder.setVisibility(View.GONE);
             holder.root.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (mode == PocketAccounterGeneral.NORMAL_MODE)
-                        ((PocketAccounter)context).replaceFragment(new RecordEditFragment(null, financeRecord.getDate(), financeRecord, PocketAccounterGeneral.DETAIL));
+                    if (mode == PocketAccounterGeneral.NORMAL_MODE) {
+                        Log.d("sss", "der");
+                        ((PocketAccounter) context).replaceFragment(new RecordEditFragment(null, financeRecord.getDate(), financeRecord, PocketAccounterGeneral.DETAIL));
+                    }
                     else {
                         holder.chbRecordDetail.setChecked(!holder.chbRecordDetail.isChecked());
                     }
@@ -190,7 +244,7 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
         }
         @Override
         public RecordDetailAdapter.DetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.record_detail_list_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.record_detail_list_item_modern, parent, false);
             RecordDetailAdapter.DetailViewHolder viewHolder = new RecordDetailAdapter.DetailViewHolder(v);
             return viewHolder;
         }
@@ -199,22 +253,24 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
             public ImageView ivRecordDetail;
             public TextView tvRecordDetailCategoryName;
             public TextView tvRecordDetailCategoryAmount;
-            public LinearLayout llSubCategories;
-            public ImageView ivRecordDetailBorder;
             public TextView tvRecordDetailSubCategory;
-            public ImageView ivRecordDetailSubCategory;
+            public TextView tvRecordComment;
             public CheckBox chbRecordDetail;
+            public RelativeLayout rlVisibleWhenHaveComment;
+            public LinearLayout rlVisibleWhenHaveTickets;
+            public RecyclerView rvTickets;
             public View root;
             public DetailViewHolder(View view) {
                 super(view);
                 ivRecordDetail = (ImageView) view.findViewById(R.id.ivRecordDetail);
                 tvRecordDetailCategoryName = (TextView) view.findViewById(R.id.tvRecordDetailCategoryName);
+                tvRecordComment = (TextView) view.findViewById(R.id.tvComment);
+                rvTickets = (RecyclerView) view.findViewById(R.id.rvTickets);
                 tvRecordDetailCategoryAmount = (TextView) view.findViewById(R.id.tvRecordDetailCategoryAmount);
-                llSubCategories = (LinearLayout) view.findViewById(R.id.llSubCategories);
-                ivRecordDetailBorder = (ImageView) view.findViewById(R.id.ivRecordDetailBorder);
                 tvRecordDetailSubCategory = (TextView) view.findViewById(R.id.tvRecordDetailSubCategory);
-                ivRecordDetailSubCategory = (ImageView) view.findViewById(R.id.ivRecordDetailSubCategory);
                 chbRecordDetail = (CheckBox) view.findViewById(R.id.chbRecordFragmentDetail);
+                rlVisibleWhenHaveComment = (RelativeLayout) view.findViewById(R.id.visibleIfCommentHave);
+                rlVisibleWhenHaveTickets = (LinearLayout) view.findViewById(R.id.visibleIfTicketHave);
                 root = view;
             }
         }
@@ -224,7 +280,30 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
         public void removeItems() {
             for (int i = selections.length-1; i >= 0; i--) {
                 if (selections[i]) {
+                    final ArrayList<PhotoDetails> tempok=result.get(i).getAllTickets();
+
+
+                    (new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(tempok!=null)
+                            for (PhotoDetails temp:tempok) {
+                                File forDeleteTicket=new File(temp.getPhotopath());
+                                File forDeleteTicketCache=new File(temp.getPhotopathCache());
+                                try {
+                                    forDeleteTicket.delete();
+                                    forDeleteTicketCache.delete();
+                                }
+                                catch (Exception o){
+                                    o.printStackTrace();
+                                }
+                            }
+                        }
+                    })).start();
+
+
                     PocketAccounter.financeManager.getRecords().remove(result.get(i));
+
                     result.remove(i);
                 }
              }

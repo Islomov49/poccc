@@ -1274,5 +1274,15 @@
     <string name="sbrosit">Reset</string>
     <string name="sbrosit_about">All datas and settings will be deleted</string>
     <string name="sbrosit_title">Reset</string>
-
+    <string name="commenti">Write comment</string>
+    <string name="add_comment">Add comment +</string>
+    <string name="share_ticket">Share ticket</string>
+    <string-array name="adding_ticket_type">
+        <item>From gallery</item>
+        <item>From camera</item>
+    </string-array>
+    <string-array name="more_option_for_credit_debt">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
 </resources>

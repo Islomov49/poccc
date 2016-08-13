@@ -1,4 +1,7 @@
 package com.jim.pocketaccounter.finance;
+import com.jim.pocketaccounter.photocalc.PhotoDetails;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 public class FinanceRecord {
     private Calendar date;
@@ -8,6 +11,23 @@ public class FinanceRecord {
     private Account account = null;
     private Currency currency = null;
     private String recordId;
+    private ArrayList<PhotoDetails> allTickets=null;
+    private String comment;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public ArrayList<PhotoDetails> getAllTickets() {
+        return allTickets;
+    }
+    public void setAllTickets(ArrayList<PhotoDetails> allTickets) {
+        this.allTickets = allTickets;
+    }
     public String getRecordId() {return recordId;}
     public void setRecordId(String recordId) {this.recordId = recordId;}
     public FinanceRecord() {}

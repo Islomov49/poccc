@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -267,6 +269,9 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         else
             return formater.format(A);
     }
+
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Razvetleniya na dve view. odin pustoy odin realniy
@@ -324,6 +329,7 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     @Override
                     public void addedCredit() {
                     notifyItemInserted(0);
+                    Log.d("gogogo", "XXX: ");
                     }
 
                     @Override

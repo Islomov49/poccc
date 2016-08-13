@@ -23,4 +23,5 @@ public interface PockerTag {
     String WRITE_TO_US = "WRITE_TO_US";
     String ACCOUNT_MANAGEMENT = "ACCOUNT_MANAGEMENT";
     String FIRST = "FIRST";
+    String Edit = "EditFragment";
 }

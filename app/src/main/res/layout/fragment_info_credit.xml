@@ -124,7 +124,7 @@
 
                     <FrameLayout
                         android:id="@+id/shlyuzik"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/grey_light_backgr">

@@ -177,7 +177,6 @@
                     android:layout_width="@dimen/seventy_dp"
                     android:layout_height="@dimen/seventy_dp"
                     android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/ten_dp"
                     android:src="@drawable/record_edit_button" />
 
                 <TextView

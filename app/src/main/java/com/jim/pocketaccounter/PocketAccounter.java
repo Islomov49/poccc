@@ -49,7 +49,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.jim.pocketaccounter.credit.notificat.AlarmReceiver;
 import com.jim.pocketaccounter.credit.notificat.NotificationManagerCredit;
+import com.jim.pocketaccounter.debt.AddBorrowFragment;
+import com.jim.pocketaccounter.debt.DebtBorrow;
 import com.jim.pocketaccounter.debt.DebtBorrowFragment;
+import com.jim.pocketaccounter.debt.InfoDebtBorrowFragment;
 import com.jim.pocketaccounter.finance.FinanceManager;
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.helper.CircleImageView;
@@ -102,6 +105,7 @@ public class PocketAccounter extends AppCompatActivity {
     private Calendar date;
     private Spinner spToolbar;
     public static SignInGoogleMoneyHold reg;
+    public static boolean isCalcLayoutOpen = false;
     boolean downloadnycCanRest = true;
     public static SyncBase mySync;
     Uri imageUri;
@@ -122,8 +126,10 @@ public class PocketAccounter extends AppCompatActivity {
 
 
     }
+
     int WidgetID;
-    public static boolean keyboardVisible=false;
+    public static boolean keyboardVisible = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,17 +155,17 @@ public class PocketAccounter extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
 
-
-        mainRoot =findViewById(R.id.main);
+        mainRoot = findViewById(R.id.main);
         mainRoot.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 int heightDiff = mainRoot.getRootView().getHeight() - mainRoot.getHeight();
                 if (heightDiff > dpToPx(PocketAccounter.this, 200)) { // if more than 200 dp, it's probably a keyboard...
-                    keyboardVisible=true;
-                }
-                else {
-                    keyboardVisible=false;
+                    keyboardVisible = true;
+//                    Log.d("testkeyboard", "onGlobalLayout: "+keyboardVisible);
+                } else {
+                    keyboardVisible = false;
+//                    Log.d("testkeyboard", "onGlobalLayout: "+keyboardVisible);
                 }
             }
         });
@@ -179,14 +185,13 @@ public class PocketAccounter extends AppCompatActivity {
         if (user != null) {
             userName.setText(user.getDisplayName());
             userEmail.setText(user.getEmail());
-            try{
+            try {
                 if (user.getPhotoUrl() != null) {
                     imagetask = new DownloadImageTask(userAvatar);
                     imagetask.execute(user.getPhotoUrl().toString());
                     imageUri = user.getPhotoUrl();
                 }
-          }
-            catch (Exception o){
+            } catch (Exception o) {
 
             }
         }
@@ -253,18 +258,18 @@ public class PocketAccounter extends AppCompatActivity {
     }
 
     public void initialize(final Calendar date) {
-        if(keyboardVisible){
-
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        findViewById(R.id.change).setVisibility(View.VISIBLE);
+        if (keyboardVisible) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);
             mainRoot.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    keyboardVisible=false;
+                    keyboardVisible = false;
                     initialize(new GregorianCalendar());
 
                 }
-            },100);
+            }, 100);
 
         }
 
@@ -364,10 +369,9 @@ public class PocketAccounter extends AppCompatActivity {
                 if (PocketAccounter.financeManager.getRecords().get(i).getDate().compareTo(endTime) <= 0)
                     records.add(PocketAccounter.financeManager.getRecords().get(i));
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
-                if (PocketAccounter.financeManager.getRecords().get(i).getDate().compareTo(beginTime)>=0 &&
+                if (PocketAccounter.financeManager.getRecords().get(i).getDate().compareTo(beginTime) >= 0 &&
                         PocketAccounter.financeManager.getRecords().get(i).getDate().compareTo(endTime) <= 0)
                     records.add(PocketAccounter.financeManager.getRecords().get(i));
             }
@@ -393,9 +397,9 @@ public class PocketAccounter extends AppCompatActivity {
         financeManager.saveRecords();
         SharedPreferences sPref;
         sPref = getSharedPreferences("infoFirst", MODE_PRIVATE);
-        WidgetID=sPref.getInt(WidgetKeys.SPREF_WIDGET_ID,-1);
-        if(WidgetID>=0){
-            if(AppWidgetManager.INVALID_APPWIDGET_ID!=WidgetID)
+        WidgetID = sPref.getInt(WidgetKeys.SPREF_WIDGET_ID, -1);
+        if (WidgetID >= 0) {
+            if (AppWidgetManager.INVALID_APPWIDGET_ID != WidgetID)
                 WidgetProvider.updateWidget(this, AppWidgetManager.getInstance(this),
                         WidgetID);
         }
@@ -409,12 +413,11 @@ public class PocketAccounter extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             notific.cancelAllNotifs();
         }
 
-        try{
+        try {
 
             if (imagetask != null)
                 imagetask.cancel(true);
@@ -422,8 +425,7 @@ public class PocketAccounter extends AppCompatActivity {
                 imagetask.cancel(true);
                 imagetask = null;
             }
-        }
-        catch (Exception o){
+        } catch (Exception o) {
 
         }
     }
@@ -462,10 +464,11 @@ public class PocketAccounter extends AppCompatActivity {
                     userName.setText(user.getDisplayName());
                     userEmail.setText(user.getEmail());
                     if (user.getPhotoUrl() != null) {
-                        try{
+                        try {
                             imagetask.execute(user.getPhotoUrl().toString());
 
-                        }catch (Exception o){}
+                        } catch (Exception o) {
+                        }
                         imageUri = user.getPhotoUrl();
                     }
 
@@ -679,7 +682,7 @@ public class PocketAccounter extends AppCompatActivity {
                                 }
                                 break;
                             case 1:
-                                  if (getSupportFragmentManager().getBackStackEntryCount() == 1
+                                if (getSupportFragmentManager().getBackStackEntryCount() == 1
                                         && getSupportFragmentManager().findFragmentById(R.id.flMain).getTag()
                                         .matches(com.jim.pocketaccounter.debt.PockerTag.CURRENCY))
                                     return;
@@ -789,9 +792,10 @@ public class PocketAccounter extends AppCompatActivity {
                                 startActivityForResult(settings, key_for_restat);
                                 break;
                             case 14:
-                                if(keyboardVisible){
-                                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);}
+                                if (keyboardVisible) {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);
+                                }
 
                                 findViewById(R.id.change).setVisibility(View.VISIBLE);
                                 Intent rate_app_web = new Intent(Intent.ACTION_VIEW);
@@ -799,9 +803,10 @@ public class PocketAccounter extends AppCompatActivity {
                                 startActivity(rate_app_web);
                                 break;
                             case 15:
-                                if(keyboardVisible){
-                                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);}
+                                if (keyboardVisible) {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);
+                                }
 
                                 findViewById(R.id.change).setVisibility(View.VISIBLE);
                                 Intent Email = new Intent(Intent.ACTION_SEND);
@@ -811,9 +816,10 @@ public class PocketAccounter extends AppCompatActivity {
                                 startActivity(Intent.createChooser(Email, getString(R.string.share_app)));
                                 break;
                             case 16:
-                                if(keyboardVisible){
-                                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);}
+                                if (keyboardVisible) {
+                                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(mainRoot.getWindowToken(), 0);
+                                }
 
                                 findViewById(R.id.change).setVisibility(View.VISIBLE);
                                 openGmail(PocketAccounter.this, new String[]{getString(R.string.to_email)}, getString(R.string.feedback_subject), getString(R.string.feedback_content));
@@ -845,6 +851,21 @@ public class PocketAccounter extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+//        if(calcEventBackPressed!=null){
+//            if(calcEventBackPressed.isOpenLayout()){
+//                calcEventBackPressed.backpressToCalc();
+//                return;
+//            }
+//        }
+
+        if (isCalcLayoutOpen && getSupportFragmentManager().findFragmentById(R.id.flMain).getClass()
+                .getName().matches("com.jim.pocketaccounter.RecordEditFragment")) {
+            RecordEditFragment recordEditFragment = (RecordEditFragment) getSupportFragmentManager().findFragmentById(R.id.flMain);
+            recordEditFragment.closeLayout();
+            return;
+
+        }
+
         PRESSED = false;
         android.support.v4.app.Fragment temp00 = getSupportFragmentManager().
                 findFragmentById(R.id.flMain);
@@ -854,7 +875,7 @@ public class PocketAccounter extends AppCompatActivity {
             final AlertDialog.Builder builder = new AlertDialog.Builder(PocketAccounter.this);
             builder.setMessage(getString(R.string.dou_you_want_quit))
                     .setPositiveButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog,  int id) {
+                        public void onClick(DialogInterface dialog, int id) {
                         }
                     }).setNegativeButton(getString(R.string.exit), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -881,14 +902,30 @@ public class PocketAccounter extends AppCompatActivity {
                     });
                     builder.create().show();
                 } else {
+                    if (temp00.getTag().matches("Addcredit")) {
+                        ((AddCreditFragment) temp00).iconTOGONE();
+                        getSupportFragmentManager().popBackStack();
+                        return;
+                    }
+                    if (temp00.getTag().matches("InfoFragment")) {
+                        ((InfoCreditFragment) temp00).iconTOGONE();
+                        getSupportFragmentManager().popBackStack();
+                        return;
+                    }
+
+
+                    if (temp00.getTag().matches(com.jim.pocketaccounter.debt.PockerTag.Edit)) {
+                        getSupportFragmentManager().popBackStack();
+                        replaceFragment(new CreditTabLay(), com.jim.pocketaccounter.debt.PockerTag.CREDITS);
+                        return;
+                    }
+
+                    Log.d("gogogo", "onBackPressed: ");
                     AddCreditFragment.to_open_dialog = true;
                     getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     initialize(date);
                     String tag = getSupportFragmentManager().findFragmentById(R.id.flMain).getTag();
-                    if (tag.matches("Addcredit")
-                            || tag.matches("InfoFragment")) {
-                        replaceFragment(new CreditTabLay(), com.jim.pocketaccounter.debt.PockerTag.CREDITS);
-                    }
+
                     switch (tag) {
                         case com.jim.pocketaccounter.debt.PockerTag.ACCOUNT_MANAGEMENT:
                         case PockerTag.ACCOUNT:
@@ -959,6 +996,8 @@ public class PocketAccounter extends AppCompatActivity {
     }
 
     public void replaceFragment(Fragment fragment) {
+        findViewById(R.id.change).setVisibility(View.GONE);
+        Log.d("sss", "sdsa");
         if (fragment != null) {
             PRESSED = true;
             getSupportFragmentManager()
@@ -1008,6 +1047,7 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("wsdaww", "onActivityResultPOCKET: ");
         findViewById(R.id.change).setVisibility(View.VISIBLE);
         if (requestCode == SignInGoogleMoneyHold.RC_SIGN_IN) {
             reg.regitRequstGet(data);
@@ -1033,8 +1073,8 @@ public class PocketAccounter extends AppCompatActivity {
         }
 
         if (requestCode == key_for_restat && resultCode == 1111) {
-            if(WidgetID>=0){
-                if(AppWidgetManager.INVALID_APPWIDGET_ID!=WidgetID)
+            if (WidgetID >= 0) {
+                if (AppWidgetManager.INVALID_APPWIDGET_ID != WidgetID)
                     WidgetProvider.updateWidget(this, AppWidgetManager.getInstance(this),
                             WidgetID);
             }
@@ -1107,6 +1147,14 @@ public class PocketAccounter extends AppCompatActivity {
         }
     }
 
+    public static float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+
     private ProgressDialog mProgressDialog;
 
 
@@ -1128,3 +1176,4 @@ public class PocketAccounter extends AppCompatActivity {
 
 
 }
+

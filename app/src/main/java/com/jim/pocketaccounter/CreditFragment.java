@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class CreditFragment extends Fragment {
         super.onCreate(savedInstanceState);
         crList=PocketAccounter.financeManager.getCredits();
         This=getActivity();
-
+        Log.d("gogogo", "onCreate: ");
 
 
     }
@@ -124,12 +125,12 @@ public class CreditFragment extends Fragment {
         }
     }
     public void updateToFirst(){
-
+        Log.d("gogogo", "updateToFirst: ");
         try{
             (new Handler()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    crAdap.notifyItemInserted(0);
+                   crAdap.notifyItemInserted(0);
                 }
             }, 50);
 
@@ -137,16 +138,17 @@ public class CreditFragment extends Fragment {
                 (new Handler()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        crRV.scrollToPosition(0);
+                      crRV.scrollToPosition(0);
                     }
                 }, 100);
             }
             catch (Exception o){
+                Log.d("gogogo", "scrollToPosition error: ");
             }
 
         }
         catch (Exception o){
-
+            Log.d("gogogo", "notifyItemInserted error: ");
         }
 
 
@@ -166,6 +168,7 @@ public class CreditFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d("gogogo", "onDetach: ");
         PocketAccounter.financeManager.saveCredits();
     }
     public interface EventFromAdding{

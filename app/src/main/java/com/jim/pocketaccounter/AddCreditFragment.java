@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 
 import com.jim.pocketaccounter.credit.CreditDetials;
 import com.jim.pocketaccounter.credit.ReckingCredit;
+import com.jim.pocketaccounter.debt.PockerTag;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.Currency;
 import com.jim.pocketaccounter.finance.FinanceManager;
@@ -73,7 +75,7 @@ public class AddCreditFragment extends Fragment {
     public static final String OPENED_TAG = "Addcredit";
     public static boolean to_open_dialog = false;
     private FinanceManager manager;
-
+    CreditDetials currentCredit;
     private FrameLayout btnDetalization;
     private String mode = PocketAccounterGeneral.EVERY_DAY, sequence = "";
     private Spinner spNotifMode;
@@ -84,6 +86,13 @@ public class AddCreditFragment extends Fragment {
         ThisFragment = this;
     }
 
+    public void shareForEdit(CreditDetials currentCredit) {
+        this.currentCredit = currentCredit;
+    }
+
+    public boolean isEdit() {
+        return currentCredit != null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +110,7 @@ public class AddCreditFragment extends Fragment {
         spiner_trasnact = (Spinner) V.findViewById(R.id.spinner_sceta);
         isOpkey = (CheckBox) V.findViewById(R.id.key_for_balance);
         to_open_dialog = false;
+
         nameCred = (EditText) V.findViewById(R.id.editText);
         valueCred = (EditText) V.findViewById(R.id.value_credit);
         procentCred = (EditText) V.findViewById(R.id.procent_credit);
@@ -520,7 +530,101 @@ public class AddCreditFragment extends Fragment {
         spiner_procent.setAdapter(adapter);
         spinner_peiod.setAdapter(adapter_period);
         spiner_trasnact.setAdapter(adapter_scet);
+
+        if(isEdit()){
+            icona.setImageResource(currentCredit.getIcon_ID());
+            nameCred.setText(currentCredit.getCredit_name());
+            valueCred.setText(parseToWithoutNull(currentCredit.getValue_of_credit()));
+            procentCred.setText(parseToWithoutNull(currentCredit.getProcent())+"%");
+            spiner_forValut.setSelection(getIndex(spiner_forValut,currentCredit.getValyute_currency().getAbbr() ));
+
+            if(currentCredit.getProcent_interval()==forMoth){
+                spiner_procent.setSelection(0);
+            } else if (currentCredit.getProcent_interval()==forYear){
+                spiner_procent.setSelection(1);
+            }else if(currentCredit.getProcent_interval()==forWeek){
+                spiner_procent.setSelection(2);
+            }else if(currentCredit.getProcent_interval()==forDay){
+                spiner_procent.setSelection(3);
+            }
+            periodCred.setText(Long.toString(currentCredit.getPeriod_time()/currentCredit.getPeriod_time_tip()));
+
+            if(currentCredit.getPeriod_time_tip()==forMoth){
+                spinner_peiod.setSelection(0);
+            } else if (currentCredit.getPeriod_time_tip()==forYear){
+                spinner_peiod.setSelection(1);
+            }else if(currentCredit.getPeriod_time_tip()==forWeek){
+                spinner_peiod.setSelection(2);
+            }else if(currentCredit.getPeriod_time_tip()==forDay){
+                spinner_peiod.setSelection(3);
+            }
+            if(!currentCredit.isKey_for_include()){
+            isOpkey.setChecked(false);
+                spiner_trasnact.setVisibility(View.GONE);
+            }
+
+            for(ReckingCredit temp:currentCredit.getReckings()){
+                Log.d("gogogo", "onCreateView: "+temp.getAmount());
+                Log.d("gogogo", "onCreateView: "+temp.getPayDate()+"  ==  " +currentCredit.getTake_time().getTimeInMillis());
+                if(temp.getPayDate()==currentCredit.getTake_time().getTimeInMillis()){
+                    transactionCred.setText(parseToWithoutNull(temp.getAmount()));
+                    if (currentCredit.isKey_for_include())
+                    for (Account acca:accounts){
+                        if(acca.getId().matches(temp.getAccountId()))
+                        spiner_trasnact.setSelection(getIndex(spiner_trasnact,acca.getName()));
+                    }
+                    break;
+                }
+            }
+
+            firstCred.setText(dateformarter.format(currentCredit.getTake_time().getTime()));
+
+            Calendar calc= (Calendar) currentCredit.getTake_time().clone();
+
+            if(currentCredit.getProcent_interval()==forMoth){
+                calc.add(Calendar.MONTH, (int)(currentCredit.getPeriod_time()/currentCredit.getPeriod_time_tip()));
+            } else if (currentCredit.getProcent_interval()==forYear){
+                calc.add(Calendar.YEAR, (int)(currentCredit.getPeriod_time()/currentCredit.getPeriod_time_tip()));
+            }else if(currentCredit.getProcent_interval()==forWeek){
+                calc.add(Calendar.WEEK_OF_YEAR, (int)(currentCredit.getPeriod_time()/currentCredit.getPeriod_time_tip()));
+            }else if(currentCredit.getProcent_interval()==forDay){
+                calc.add(Calendar.DAY_OF_YEAR, (int)(currentCredit.getPeriod_time()/currentCredit.getPeriod_time_tip()));
+            }
+
+            lastCred.setText(dateformarter.format(calc.getTime()));
+            argFirst[0]=currentCredit.getTake_time().get(Calendar.YEAR);
+            argFirst[1]=currentCredit.getTake_time().get(Calendar.MONTH);
+            argFirst[2]=currentCredit.getTake_time().get(Calendar.DAY_OF_MONTH);
+            Log.d("kakaka", "argsFirst: "+argFirst[0]+" "+argFirst[1]+" "+argFirst[2]);
+            argLast[0]=calc.get(Calendar.YEAR);
+            argLast[1]=calc.get(Calendar.MONTH);
+            argLast[2]=calc.get(Calendar.DAY_OF_MONTH);
+            Log.d("kakaka", "argsFirst: "+argLast[0]+" "+argLast[1]+" "+argLast[2]);
+
+
+
+
+        }
+
+
         return V;
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+
+        int index = 0;
+
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).equals(myString)){
+                index = i;
+            }
+        }
+        return index;
+    }
+
+
+    public void iconTOGONE(){
+        ivToolbarMostRight.setVisibility(View.GONE);
     }
 
     private void openNotifSettingDialog() {
@@ -779,9 +883,20 @@ public class AddCreditFragment extends Fragment {
                 String sloution = solution.getText().toString();
                 if (sloution.indexOf(',') != -1)
                     sloution = sloution.substring(0, sloution.indexOf(',')) + "." + sloution.substring(sloution.indexOf(',') + 1, sloution.length());
-                CreditDetials A1 = new CreditDetials(selectedIcon, nameCred.getText().toString(), new GregorianCalendar(argFirst[0], argFirst[1], argFirst[2]),
-                        Double.parseDouble(sb.toString()), procent_inter, period_inter, period_tip, key, Double.parseDouble(valueCred.getText().toString()),
-                        currencies.get(spiner_forValut.getSelectedItemPosition()), Double.parseDouble(sloution), System.currentTimeMillis());
+                CreditDetials A1=null;
+                if(isEdit()){
+                    A1= new CreditDetials(selectedIcon, nameCred.getText().toString(), new GregorianCalendar(argFirst[0], argFirst[1], argFirst[2]),
+                            Double.parseDouble(sb.toString()), procent_inter, period_inter, period_tip, key, Double.parseDouble(valueCred.getText().toString()),
+                            currencies.get(spiner_forValut.getSelectedItemPosition()), Double.parseDouble(sloution), currentCredit.getMyCredit_id());
+
+                }
+                else {
+
+                    A1 = new CreditDetials(selectedIcon, nameCred.getText().toString(), new GregorianCalendar(argFirst[0], argFirst[1], argFirst[2]),
+                            Double.parseDouble(sb.toString()), procent_inter, period_inter, period_tip, key, Double.parseDouble(valueCred.getText().toString()),
+                            currencies.get(spiner_forValut.getSelectedItemPosition()), Double.parseDouble(sloution), System.currentTimeMillis());
+
+                }
 
                 String transactionCredString = transactionCred.getText().toString();
                 if (!transactionCredString.matches("")) {
@@ -793,16 +908,42 @@ public class AddCreditFragment extends Fragment {
                         first_pay = new ReckingCredit((new GregorianCalendar(argFirst[0], argFirst[1], argFirst[2])).getTimeInMillis(), Double.parseDouble(transactionCredString), "pustoy",
                                 A1.getMyCredit_id(), getString(R.string.this_first_comment));
                     }
-                    ArrayList<ReckingCredit> tempik = A1.getReckings();
-                    tempik.add(0, first_pay);
-                    A1.setReckings(tempik);
+                    if (isEdit()&&currentCredit.getReckings().size()!=0){
+                        ArrayList<ReckingCredit> tempiker = (ArrayList<ReckingCredit>) currentCredit.getReckings().clone();
+                        boolean iskeeeep=true;
+                        for(ReckingCredit temp:tempiker){
+                            if(temp.getPayDate()==currentCredit.getTake_time().getTimeInMillis()){
+                               tempiker.set(tempiker.indexOf(temp),first_pay);
+                                iskeeeep=false;
+                            }
+                        }
+                        if (iskeeeep){
+                            tempiker.add(0,first_pay);
+                        }
+                        A1.setReckings(tempiker);
+
+                    }
+                    else {
+                        ArrayList<ReckingCredit> tempik = A1.getReckings();
+                        tempik.add(0, first_pay);
+                        A1.setReckings(tempik);
+                    }
                 }
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(dialogView.getWindowToken(), 0);
 
                 A1.setInfo(mode + ":" + sequence);
-                myList.add(0, A1);
+                if (isEdit()){
+                    myList.set(myList.indexOf(currentCredit),A1);
+                }
+                else {
+
+                    myList.add(0, A1);
+                }
                 dialog.dismiss();
+                if(isEdit())
+                    ((PocketAccounter) context).replaceFragment(new CreditTabLay(), PockerTag.CREDITS);
+                else
                 closeCurrentFragment();
                 onSucsessed = true;
             }
@@ -833,8 +974,6 @@ public class AddCreditFragment extends Fragment {
         if (onSucsessed) {
 
         }
-
-
     }
 
     @Override
@@ -844,20 +983,22 @@ public class AddCreditFragment extends Fragment {
 
     @Override
     public void onDetach() {
-  //      ivToolbarMostRight.setVisibility(View.INVISIBLE);
-        if (!onSucsessed)
+        if (!onSucsessed && currentCredit == null)
             eventLis.canceledAdding();
-        else {
+        else if (currentCredit == null) {
             PocketAccounter.financeManager.saveCredits();
             eventLis.addedCredit();
+        } else if (currentCredit != null) {
+            Log.d("gogogog", "nado updated");
         }
-
         super.onDetach();
     }
 
 
     public void closeCurrentFragment() {
+        ivToolbarMostRight.setVisibility(View.GONE);
         getActivity().getSupportFragmentManager().popBackStack();
+        Log.d("gogogo", "closeCurrentFragment: ");
     }
 
 

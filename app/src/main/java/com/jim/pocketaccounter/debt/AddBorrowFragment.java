@@ -88,11 +88,11 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
     private final int PERMISSION_REQUEST_CONTACT = 5;
     private int PICK_CONTACT = 10;
     private final int PERMISSION_READ_STORAGE = 6;
-
+    private DebtBorrow currentDebtBorrow;
     private Spinner spNotifMode;
     private ArrayList<String> adapter;
     private FrameLayout btnDetalization;
-    private String mode=PocketAccounterGeneral.EVERY_DAY, sequence="";
+    private String mode = PocketAccounterGeneral.EVERY_DAY, sequence = "";
 
     public static Fragment getInstance(int type) {
         AddBorrowFragment fragment = new AddBorrowFragment();
@@ -107,6 +107,14 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         TYPE = getArguments().getInt("type", 0);
         adapter = new ArrayList<>();
+    }
+
+    public void shareDetialDebtBorrow(DebtBorrow currentDebtBorrow) {
+        this.currentDebtBorrow = currentDebtBorrow;
+    }
+
+    public DebtBorrow isEdit() {
+        return currentDebtBorrow;
     }
 
     private DatePickerDialog.OnDateSetListener getDatesetListener = new DatePickerDialog.OnDateSetListener() {
@@ -166,7 +174,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        mode = PocketAccounterGeneral.EVERY_DAY ;
+                        mode = PocketAccounterGeneral.EVERY_DAY;
                         btnDetalization.setVisibility(View.GONE);
                         break;
                     case 1:
@@ -328,6 +336,31 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
             }
         });
 
+        if (currentDebtBorrow != null) {
+            PersonName.setText(currentDebtBorrow.getPerson().getName());
+            PersonNumber.setText(currentDebtBorrow.getPerson().getPhoneNumber());
+            for (int i = 0; i < valyuts.length; i++) {
+                if (valyuts[i].matches(currentDebtBorrow.getCurrency().getAbbr())) {
+                    PersonValyuta.setSelection(i);
+                    break;
+                }
+            }
+            for (int i = 0; i < accaounts.length; i++) {
+                if (accaounts[i].matches(currentDebtBorrow.getAccount().getName())) {
+                    PersonAccount.setSelection(i);
+                    break;
+                }
+            }
+            PersonSumm.setText(String.valueOf(currentDebtBorrow.getAmount()));
+            PersonDataGet.setText(simpleDateFormat.format(currentDebtBorrow.getTakenDate().getTime()));
+            getDate = (Calendar) currentDebtBorrow.getTakenDate().clone();
+            PersonDataRepeat.setText(simpleDateFormat.format(currentDebtBorrow.getReturnDate().getTime()));
+            returnDate = (Calendar) currentDebtBorrow.getReturnDate().clone();
+            if (!currentDebtBorrow.getPerson().getPhoto().isEmpty())
+                imageView.setImageBitmap(decodeFile(new File(currentDebtBorrow.getPerson().getPhoto())));
+            if (!currentDebtBorrow.getReckings().isEmpty() && currentDebtBorrow.getReckings().get(0).getPayDate().matches(simpleDateFormat.format(getDate.getTime())))
+                firstPay.setText("" + currentDebtBorrow.getReckings().get(0).getAmount());
+        }
         return view;
     }
 
@@ -346,6 +379,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                     ArrayList<Recking> reckings = new ArrayList<Recking>();
                     Account account = manager.getAccounts().get(PersonAccount.getSelectedItemPosition());
                     File file = null;
+
                     if (!photoPath.matches("")) {
                         try {
                             Integer.parseInt(photoPath);
@@ -382,34 +416,61 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                         }
                     }
 
-                    final DebtBorrow debtBorrow = new DebtBorrow(new Person(PersonName.getText().toString(),
-                            PersonNumber.getText().toString(), file != null ? file.getAbsolutePath() : photoPath == "" ? "" : photoPath),
-                            getDate,
-                            returnDate,
-                            "borrow_" + UUID.randomUUID().toString(),
-                            account,
-                            currency,
-                            Double.parseDouble(PersonSumm.getText().toString()),
-                            TYPE, calculate.isChecked()
-                    );
-                    if (!firstPay.getText().toString().isEmpty()) {
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-                        reckings.add(new Recking(
-                                dateFormat.format(Calendar.getInstance().getTime()),
-                                Double.parseDouble(firstPay.getText().toString()), debtBorrow.getId(),
-                                debtBorrow.getAccount().getId(), ""));
+                    DebtBorrowFragment fragment = new DebtBorrowFragment();
+                    if (currentDebtBorrow != null) {
+                        currentDebtBorrow.setAccount(account);
+                        currentDebtBorrow.setPerson(new Person(PersonName.getText().toString(),
+                                PersonNumber.getText().toString(), file != null ? file.getAbsolutePath() : photoPath == "" ? "" : photoPath));
+                        currentDebtBorrow.setAmount(Double.parseDouble(PersonSumm.getText().toString()));
+                        currentDebtBorrow.setCurrency(currency);
+                        currentDebtBorrow.setCalculate(calculate.isChecked());
+                        currentDebtBorrow.setInfo(mode + ":" + sequence);
+                        currentDebtBorrow.setReturnDate(returnDate);
+                        currentDebtBorrow.setTakenDate(getDate);
+                        if (!firstPay.getText().toString().isEmpty()) {
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                            if (!currentDebtBorrow.getReckings().isEmpty() && currentDebtBorrow.getReckings().get(0)
+                                    .getPayDate().matches(simpleDateFormat.format(currentDebtBorrow.getTakenDate().getTime()))) {
+                                currentDebtBorrow.getReckings().get(0).setAmount(Double.parseDouble(firstPay.getText().toString()));
+                            } else {
+                                currentDebtBorrow.getReckings().add(0, new Recking(
+                                        dateFormat.format(Calendar.getInstance().getTime()),
+                                        Double.parseDouble(firstPay.getText().toString()), currentDebtBorrow.getId(),
+                                        account.getId(), ""));
+                            }
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("pos", currentDebtBorrow.getType());
+                        fragment.setArguments(bundle);
+                    } else {
+                        final DebtBorrow debtBorrow = new DebtBorrow(new Person(PersonName.getText().toString(),
+                                PersonNumber.getText().toString(), file != null ? file.getAbsolutePath() : photoPath == "" ? "" : photoPath),
+                                getDate,
+                                returnDate,
+                                "borrow_" + UUID.randomUUID().toString(),
+                                account,
+                                currency,
+                                Double.parseDouble(PersonSumm.getText().toString()),
+                                TYPE, calculate.isChecked()
+                        );
+                        if (!firstPay.getText().toString().isEmpty()) {
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+                            reckings.add(new Recking(
+                                    dateFormat.format(Calendar.getInstance().getTime()),
+                                    Double.parseDouble(firstPay.getText().toString()), debtBorrow.getId(),
+                                    debtBorrow.getAccount().getId(), ""));
+                        }
+                        debtBorrow.setInfo(mode + ":" + sequence);
+                        Log.d("sss", mode + ":" + sequence);
+                        debtBorrow.setReckings(reckings);
+                        list.add(0, debtBorrow);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("pos", debtBorrow.getType());
+                        fragment.setArguments(bundle);
                     }
-                    debtBorrow.setInfo(mode+ ":" + sequence);
-                    Log.d("sss", mode+ ":" + sequence);
-                    debtBorrow.setReckings(reckings);
                     ivToolbarMostRight.setVisibility(View.INVISIBLE);
-                    list.add(0, debtBorrow);
                     manager.setDebtBorrows(list);
                     manager.saveDebtBorrows();
-                    DebtBorrowFragment fragment = new DebtBorrowFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("pos", debtBorrow.getType());
-                    fragment.setArguments(bundle);
                     ((PocketAccounter) getContext()).replaceFragment(fragment, PockerTag.DEBTS);
                 }
             }
@@ -469,17 +530,17 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                                       public void onClick(View v) {
                                           String text = "";
                                           if (mode.matches(PocketAccounterGeneral.EVERY_WEEK)) {
-                                              for (int i=0; i<chbs.size(); i++) {
+                                              for (int i = 0; i < chbs.size(); i++) {
                                                   if (chbs.get(i).isChecked()) {
                                                       text = text + i + ",";
                                                   }
                                               }
                                           }
                                           if (mode.matches(PocketAccounterGeneral.EVERY_MONTH)) {
-                                              text = sp.getSelectedItem()+"";
+                                              text = sp.getSelectedItem() + "";
                                           }
                                           if (!text.matches("") && text.endsWith(","))
-                                            sequence = text.substring(0, text.length()-1);
+                                              sequence = text.substring(0, text.length() - 1);
 
                                           dialog.dismiss();
                                       }

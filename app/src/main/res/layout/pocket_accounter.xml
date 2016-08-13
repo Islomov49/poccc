@@ -24,6 +24,7 @@
                 android:layout_height="30dp"
                 android:layout_marginRight="@dimen/sixteen_dp"
                 android:src="@drawable/ic_excel"
+                android:layout_marginLeft="@dimen/ten_dp"
                 android:visibility="gone"/>
             <ImageView
                 android:id="@+id/ivToolbarMostRight"
@@ -33,9 +34,10 @@
         </LinearLayout>
         <Spinner
             android:id="@+id/spToolbar"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/two_dp"
+
             android:background="@drawable/spinner"
             android:visibility="gone" />
     </android.support.v7.widget.Toolbar>
@@ -186,7 +188,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/eighteen_sp"
 
-                        android:textColor="#c4c4c4"
+                        android:textColor="#a9a9a9"
                         android:text=". . ."
                         android:textSize="12dp"
 

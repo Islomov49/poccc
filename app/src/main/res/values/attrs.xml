@@ -21,7 +21,6 @@
 
 
 
-
     <declare-styleable name="ViewPagerIndicator">
 
     <!-- Style of the circle indicator. -->

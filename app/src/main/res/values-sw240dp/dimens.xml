@@ -106,4 +106,8 @@
     <dimen name="bitmap_size">15dp</dimen>
     <dimen name="one_hundred_fiveteen_dp">86dp</dimen>
     <dimen name="one_hundred_eighty_one_dp">135dp</dimen>
+    <dimen name="ninetyfive_dp">71dp</dimen>
+    <dimen name="fiveteen_dp">11dp</dimen>
+    <dimen name="ninety_eight_dp">73dp</dimen>
+    <dimen name="hundred_fivety_four">115dp</dimen>
 </resources>

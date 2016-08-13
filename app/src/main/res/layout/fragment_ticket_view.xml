@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jim.pocketaccounter.PhotoViewActivity"
+    android:background="#000">
+
+    <com.jim.pocketaccounter.photocalc.ViewPagerFixed
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/viewpagerik"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/relativeLayout2" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/sixty_dp"
+        android:id="@+id/relativeLayout2"
+        android:layout_alignParentTop="true">
+        <ImageView
+            android:id="@+id/to_back"
+            android:layout_width="@dimen/sixty_dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_arrow_back_white_24dp"
+            android:scaleType="centerInside"
+            />
+        <ImageView
+            android:layout_width="@dimen/sixty_dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/imageView6"
+            android:src="@drawable/ic_share_white_24dp"
+            android:scaleType="centerInside"/>
+        <ImageView
+            android:id="@+id/delete_item"
+            android:layout_width="@dimen/sixty_dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/imageView6"
+            android:layout_toStartOf="@+id/imageView6"
+            android:src="@drawable/ic_delete_white_24dp"
+            android:scaleType="centerInside"
+            />
+    </RelativeLayout>
+</RelativeLayout>
