@@ -172,8 +172,9 @@ public class PhotoViewActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed(){
+        PocketAccounter.openActivity=false;
         if(!fromAdapter){
-
+            Log.d("resulttt", "onBackPressed: "+Boolean.toString(fromAdapter)+" - "+myDeletedListPhotos.size());
             Intent resultIntent=null;
             if(myDeletedListPhotos.size()!=0){
                 resultIntent = new Intent();
@@ -186,7 +187,10 @@ public class PhotoViewActivity extends AppCompatActivity {
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
         }
-        else super.onBackPressed();
+        else {
+            Log.d("resulttt", "onBackPressed: "+Boolean.toString(fromAdapter));
+            super.onBackPressed();
+        }
 
     }
 }

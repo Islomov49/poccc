@@ -297,7 +297,8 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
         myTickedAdapter =new PhotoAdapter(myTickets,contex, new OpenIntentFromAdapter() {
             @Override
             public void startActivityFromFragmentForResult(Intent intent) {
-                startActivity(intent);
+                PocketAccounter.openActivity=true;
+                startActivityForResult(intent,REQUEST_DELETE_PHOTOS);
             }
         });
         myListPhoto.setAdapter(myTickedAdapter);
@@ -455,7 +456,7 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
                                            File f = new File(contex.getExternalFilesDir(null),"temp.jpg");
 
                                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-
+                                       PocketAccounter.openActivity=true;
                                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
                                    }
@@ -932,6 +933,7 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
         Intent i = new Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        PocketAccounter.openActivity=true;
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
 
@@ -939,8 +941,11 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-
+//        super.onActivityResult(requestCode,resultCode,data);
+        PocketAccounter.openActivity=false;
+        Log.d("resulttt", "onActivityResult: Keldi "+((data!=null)?"PUSTOY":"NIMADIRLA"));
         if(requestCode==REQUEST_DELETE_PHOTOS&&data!=null&&resultCode==RESULT_OK){
+            Log.d("resulttt", "onActivityResult: "+(int)data.getExtras().get(COUNT_DELETES));
         if((int)data.getExtras().get(COUNT_DELETES)!=0){
             for (int i = 0; i < (int)data.getExtras().get(COUNT_DELETES); i++) {
 

@@ -64,7 +64,7 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
         PocketAccounter.toolbar.setTitle(getResources().getString(R.string.records));
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd,LLL yyyy");
         PocketAccounter.toolbar.setSubtitle(dateFormat.format(date.getTime()));
-        ((Spinner) PocketAccounter.toolbar.findViewById(R.id.spToolbar)).setVisibility(View.GONE);
+        ( PocketAccounter.toolbar.findViewById(R.id.spToolbar)).setVisibility(View.GONE);
         PocketAccounter.toolbar.setNavigationOnClickListener(new OnClickListener() {
                 @Override
             public void onClick(View v) {
@@ -133,7 +133,8 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-
+        PocketAccounter.openActivity=false;
+        Log.d("resulttt", "onActivityResult: Otlab ketib qoldi");
     }
 
 
@@ -178,7 +179,8 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
             PhotoAdapter myTickedAdapter =new PhotoAdapter(result.get(position).getAllTickets(),context, new RecordEditFragment.OpenIntentFromAdapter() {
                 @Override
                 public void startActivityFromFragmentForResult(Intent intent) {
-                    startActivityForResult(intent,REQUEST_DELETE_PHOTOS);
+                    PocketAccounter.openActivity=true;
+                    startActivity(intent);
                 }
             },true);
             holder.rvTickets.hasFixedSize();

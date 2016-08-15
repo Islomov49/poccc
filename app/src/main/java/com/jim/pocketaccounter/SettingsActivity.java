@@ -1,38 +1,32 @@
 package com.jim.pocketaccounter;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.jim.pocketaccounter.PocketAccounter;
-import com.jim.pocketaccounter.R;
 import com.jim.pocketaccounter.finance.FinanceManager;
 import com.jim.pocketaccounter.syncbase.SyncBase;
 
@@ -42,8 +36,9 @@ import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import static android.graphics.Color.RED;
 
 
 /**
@@ -218,7 +213,119 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         });
 
 
+        CheckBoxPreference checkkSecure=(CheckBoxPreference)findPreference("secure");
+        checkkSecure.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if((Boolean)newValue&&PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).getBoolean("firstclick",true)) {
+                    final Dialog dialog = new Dialog(SettingsActivity.this);
+                    final View dialogView = getLayoutInflater().inflate(R.layout.password_layout_create, null);
+                    dialog.setTitle(R.string.new_password);
+                    dialog.setContentView(dialogView);
+
+                    final EditText myPassword1=(EditText)dialogView.findViewById(R.id.firstPassword);
+                    final EditText myPassword2=(EditText)dialogView.findViewById(R.id.secondPassword);
+                    final TextView myFourNumbers=(TextView)dialogView.findViewById(R.id.passwordTextShould);
+                    final TextView myRepiatPassword=(TextView)dialogView.findViewById(R.id.passwordRepiat);
+                    dialogView.findViewById(R.id.okbuttt).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            myRepiatPassword.setText(getString(R.string.repiat_yout_password));
+                            myRepiatPassword.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.black_for_secondary_text));
+
+                            if(myPassword1.getText().toString().length()!=4){
+                                myPassword1.setText("");
+                                myFourNumbers.setTextColor(RED);
+                                return;
+                            }
+                            else
+                                myFourNumbers.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.black_for_secondary_text));
+
+                            if (myPassword2.getText().toString().length()!=4){
+                                myPassword2.setText("");
+                                myRepiatPassword.setTextColor(RED);
+                                return;
+
+                            }
+                            else
+                                myRepiatPassword.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.black_for_secondary_text));
+
+                            if (myPassword1.getText().toString().matches(myPassword2.getText().toString())){
+
+                                PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit().putBoolean("firstclick",false  ).apply();
+                                PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit().putString("password",myPassword2.getText().toString()  ).apply();
+
+                                ((CheckBoxPreference) findPreference("secure")).setChecked(true);
+                                dialog.dismiss();
+                            }
+                            else  {
+                                myPassword2.setText("");
+                                myRepiatPassword.setText(R.string.please_repait_correct);
+                                myRepiatPassword.setTextColor(RED);
+                                return;
+
+                            }
+                        }
+                    });
+
+                    dialog.show();
+
+                return false;
+                }
+                else if(!(Boolean)newValue)
+                {
+                    Log.d("keeee", "onPreferenceChange: fasleee");
+                    final Dialog dialog = new Dialog(SettingsActivity.this);
+                    final View dialogView = getLayoutInflater().inflate(R.layout.password_layout_turn_off, null);
+                    dialog.setTitle(R.string.otklyuchit);
+                    dialog.setContentView(dialogView);
+                     final EditText myPassword1=(EditText)dialogView.findViewById(R.id.confirmpasword);
+                    final  TextView myFourNumbers=(TextView) dialogView.findViewById(R.id.passwordTextShouldRepiat);
+                    final Button okBut=(Button) dialogView.findViewById(R.id.okbuttt);
+                    okBut.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(myPassword1.getText().toString().length()!=4){
+                                myPassword1.setText("");
+                                myFourNumbers.setText(R.string.was_four_numbers);
+                                myFourNumbers.setTextColor(RED);
+                                return;
+                            }
+                            else
+                                myFourNumbers.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.black_for_secondary_text));
+
+                            if (myPassword1.getText().toString().matches(PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).getString("password",""))){
+                                PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).edit().putBoolean("secure",false  ).apply();
+                                ((CheckBoxPreference) findPreference("secure")).setChecked(false);
+                                dialog.dismiss();
+                            }
+                            else  {
+                                myPassword1.setText("");
+                                myFourNumbers.setText(R.string.try_one_more);
+                                myFourNumbers.setTextColor(RED);
+                                return;
+
+                            }
+                        }
+                    });
+                    dialog.show();
+
+
+                    return false;
+                }
+                else
+                return true;
+            }
+        });
+
+
+
+
+
+
+
     }
+
     private void lastUpload(){
 
         final FirebaseUser userik= FirebaseAuth.getInstance().getCurrentUser();

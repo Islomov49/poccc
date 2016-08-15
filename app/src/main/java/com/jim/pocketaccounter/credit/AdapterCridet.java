@@ -383,6 +383,7 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 date.set(arg1, arg2, arg3);
             }
         };
+
         enterDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

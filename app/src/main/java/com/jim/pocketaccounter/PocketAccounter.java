@@ -110,6 +110,7 @@ public class PocketAccounter extends AppCompatActivity {
     private Spinner spToolbar;
     public static SignInGoogleMoneyHold reg;
     public static boolean isCalcLayoutOpen = false;
+    public static boolean openActivity = false;
     boolean downloadnycCanRest = true;
     public static SyncBase mySync;
     Uri imageUri;
@@ -127,16 +128,7 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences.getBoolean("secure", false)) {
-            pwPassword.setVisibility(View.VISIBLE);
-            pwPassword.setOnPasswordRightEnteredListener(new OnPasswordRightEntered() {
-                @Override
-                public void onPasswordRight() {
-                    pwPassword.setVisibility(View.GONE);
-                }
-            });
-        }
+
 
     }
 
@@ -158,6 +150,8 @@ public class PocketAccounter extends AppCompatActivity {
         if (spref.getBoolean("FIRST_KEY", true)) {
             try {
                 Intent first = new Intent(this, IntroIndicator.class);
+                PocketAccounter.openActivity=true;
+
                 startActivity(first);
                 finish();
             } finally {
@@ -246,6 +240,22 @@ public class PocketAccounter extends AppCompatActivity {
                 }
             })).start();
         }
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean("secure", false)) {
+            pwPassword.setVisibility(View.VISIBLE);
+            pwPassword.setOnPasswordRightEnteredListener(new OnPasswordRightEntered() {
+                @Override
+                public void onPasswordRight() {
+                    pwPassword.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onExit() {
+                    finish();
+                }
+            });}
     }
 
     public void setLocale(String lang) {
@@ -392,8 +402,10 @@ public class PocketAccounter extends AppCompatActivity {
             else
                 expanse = expanse + PocketAccounterGeneral.getCost(records.get(i));
         }
-        for (Account account:PocketAccounter.financeManager.getAccounts())
-            income = income + PocketAccounterGeneral.getCost(date, account.getCurrency(), account.getAmount());
+        for (Account account:PocketAccounter.financeManager.getAccounts()) {
+            if (account.getCurrency() != null)
+                income = income + PocketAccounterGeneral.getCost(date, account.getCurrency(), account.getAmount());
+        }
         balance = income - expanse;
         String mainCurrencyAbbr = PocketAccounter.financeManager.getMainCurrency().getAbbr();
         DecimalFormat decFormat = new DecimalFormat("0.00");
@@ -405,6 +417,23 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getBoolean("secure", false)&&!openActivity) {
+            pwPassword.setVisibility(View.VISIBLE);
+            pwPassword.setOnPasswordRightEnteredListener(new OnPasswordRightEntered() {
+                @Override
+                public void onPasswordRight() {
+                    pwPassword.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onExit() {
+                    finish();
+                }
+            });
+        }
+
+
         financeManager.saveRecords();
         SharedPreferences sPref;
         sPref = getSharedPreferences("infoFirst", MODE_PRIVATE);
@@ -797,6 +826,7 @@ public class PocketAccounter extends AppCompatActivity {
                             case 13:
 
                                 Intent settings = new Intent(PocketAccounter.this, SettingsActivity.class);
+                                PocketAccounter.openActivity=true;
                                 for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
                                     fragmentManager.popBackStack();
                                 }
@@ -810,6 +840,8 @@ public class PocketAccounter extends AppCompatActivity {
 
                                 findViewById(R.id.change).setVisibility(View.VISIBLE);
                                 Intent rate_app_web = new Intent(Intent.ACTION_VIEW);
+                                PocketAccounter.openActivity=true;
+
                                 rate_app_web.setData(Uri.parse(getString(R.string.rate_app_web)));
                                 startActivity(rate_app_web);
                                 break;
@@ -821,6 +853,8 @@ public class PocketAccounter extends AppCompatActivity {
 
                                 findViewById(R.id.change).setVisibility(View.VISIBLE);
                                 Intent Email = new Intent(Intent.ACTION_SEND);
+                                PocketAccounter.openActivity=true;
+
                                 Email.setType("text/email");
                                 Email.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_app));
                                 Email.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text));
@@ -845,6 +879,8 @@ public class PocketAccounter extends AppCompatActivity {
 
     public static void openGmail(Activity activity, String[] email, String subject, String content) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        PocketAccounter.openActivity=true;
+
         emailIntent.putExtra(Intent.EXTRA_EMAIL, email);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         emailIntent.setType("text/plain");
@@ -1058,7 +1094,9 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("wsdaww", "onActivityResultPOCKET: ");
+        PocketAccounter.openActivity=false;
+
+        Log.d("resulttt", "onActivityResultPOCKET: ");
         findViewById(R.id.change).setVisibility(View.VISIBLE);
         if (requestCode == SignInGoogleMoneyHold.RC_SIGN_IN) {
             reg.regitRequstGet(data);

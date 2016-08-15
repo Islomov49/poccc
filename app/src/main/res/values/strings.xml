@@ -1315,4 +1315,15 @@
     </string-array>
     <string name="set_time_of_secure_title">Время</string>
     <string name="set_time_of_secure_summary">Установите время, через которого подействует защита</string>
+    <string name="please_repait_correct">Please repiat password correct</string>
+    <string name="repiat_yout_password">repiat your new password</string>
+    <string name="password_should_be_4_numbers">new password should be 4 numbers</string>
+    <string name="please_write_your_current_password">Please write your current password</string>
+    <string name="try_one_more">It is not current password please try write current password correct</string>
+    <string name="was_four_numbers">Your password was 4 numbers</string>
+    <string name="otklyuchit">Отключить пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="current_password">Текуший пароль</string>
+    <string name="izmenit_parol">Изменить пароль</string>
+    <string name="enter_your_password">Enter your password</string>
 </resources>

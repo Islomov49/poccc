@@ -106,7 +106,10 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				+ "account_name TEXT,"
 				+ "account_id TEXT,"
 				+ "icon INTEGER,"
-				+ "empty TEXT"
+				+ "start_amount REAL,"
+				+ "currency_id TEXT,"
+				+ "is_limited INTEGER,"
+				+ "limit_amount REAL"
 				+ ");");
 		//daily_record_table
 		db.execSQL("CREATE TABLE daily_record_table ("
@@ -1011,10 +1014,12 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
 			newAccount.setAmount(cursor.getDouble(cursor.getColumnIndex("start_amount")));
 			String currencyId = cursor.getString(cursor.getColumnIndex("currency_id"));
-			for (Currency currency:currencies) {
-				if (currency.getId().matches(currencyId)) {
-					newAccount.setCurrency(currency);
-					break;
+			if (currencyId != null) {
+				for (Currency currency:currencies) {
+					if (currency.getId().matches(currencyId)) {
+						newAccount.setCurrency(currency);
+						break;
+					}
 				}
 			}
 			newAccount.setLimited(cursor.getInt(cursor.getColumnIndex("is_limited")) != 0);
