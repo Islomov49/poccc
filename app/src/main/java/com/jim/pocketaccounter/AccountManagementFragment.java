@@ -38,6 +38,7 @@ import com.jim.pocketaccounter.finance.SubCategory;
 import com.jim.pocketaccounter.finance.TransferAccountAdapter;
 import com.jim.pocketaccounter.helper.FloatingActionButton;
 import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
+import com.jim.pocketaccounter.photocalc.PhotoDetails;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -180,6 +181,8 @@ public class AccountManagementFragment extends Fragment {
                 expRecord.setDate(date);
                 expRecord.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spAccManDialog.getSelectedItemPosition()));
                 expRecord.setRecordId(UUID.randomUUID().toString());
+                expRecord.setComment("");
+                expRecord.setAllTickets(new ArrayList<PhotoDetails>());
                 expRecord.setAmount(Double.parseDouble(etAccountEditName.getText().toString()));
                 for (int i=0; i<PocketAccounter.financeManager.getCategories().size(); i++) {
                     if (PocketAccounter.financeManager.getCategories().get(i).getId().matches(getResources().getString(R.string.from_transfer_id))) {
@@ -195,6 +198,8 @@ public class AccountManagementFragment extends Fragment {
                 incRecord.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spAccManDialog.getSelectedItemPosition()));
                 incRecord.setRecordId(UUID.randomUUID().toString());
                 incRecord.setAmount(Double.parseDouble(etAccountEditName.getText().toString()));
+                incRecord.setComment("");
+                incRecord.setAllTickets(new ArrayList<PhotoDetails>());
                 for (int i=0; i<PocketAccounter.financeManager.getCategories().size(); i++) {
                     if (PocketAccounter.financeManager.getCategories().get(i).getId().matches(getResources().getString(R.string.to_transfer_id))) {
                         incRecord.setCategory(PocketAccounter.financeManager.getCategories().get(i));

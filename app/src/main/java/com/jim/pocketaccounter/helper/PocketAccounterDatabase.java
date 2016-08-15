@@ -424,9 +424,9 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 
 	}
 	private void initAccounts(SQLiteDatabase db) {
+		String[] currenciesId = context.getResources().getStringArray(R.array.currency_ids);
 		String[] accountNames = context.getResources().getStringArray(R.array.account_names);
 		String[] accountIds = context.getResources().getStringArray(R.array.account_ids);
-
 		String[] accountIcons = context.getResources().getStringArray(R.array.account_icons);
 		int[] icons = new int[accountIcons.length];
 		for (int i=0; i<accountIcons.length; i++) {
@@ -438,6 +438,10 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			values.put("account_name", accountNames[i]);
 			values.put("icon", icons[i]);
 			values.put("account_id", accountIds[i]);
+			values.put("currency_id", currenciesId[0]);
+			values.put("start_amount", 0);
+			values.put("is_limited", 0);
+			values.put("limit_amount", 0);
 			db.insert("account_table", null, values);
 		}
 	}
@@ -1002,9 +1006,10 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 	}
 	//get all purses
 	public ArrayList<Account> loadAccounts() {
+		SQLiteDatabase db = this.getReadableDatabase();
 		ArrayList<Account> result = new ArrayList<Account>();
 		ArrayList<Currency> currencies = loadCurrencies();
-		SQLiteDatabase db = this.getReadableDatabase();
+		Log.d("sss", currencies.size()+"");
 		Cursor cursor = db.query("account_table", null, null, null, null, null, null);
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast()) {

@@ -54,6 +54,7 @@ import com.jim.pocketaccounter.debt.DebtBorrow;
 import com.jim.pocketaccounter.debt.DebtBorrowFragment;
 import com.jim.pocketaccounter.debt.InfoDebtBorrowFragment;
 import com.jim.pocketaccounter.finance.Account;
+import com.jim.pocketaccounter.finance.Currency;
 import com.jim.pocketaccounter.finance.FinanceManager;
 import com.jim.pocketaccounter.finance.FinanceRecord;
 import com.jim.pocketaccounter.helper.CircleImageView;
@@ -159,6 +160,9 @@ public class PocketAccounter extends AppCompatActivity {
             }
         }
         financeManager = new FinanceManager(this);
+        for (Currency currency:financeManager.getCurrencies()) {
+            Log.d("sss", currency.getId());
+        }
         fragmentManager = getSupportFragmentManager();
         mainRoot =findViewById(R.id.main);
         mainRoot.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -433,7 +437,7 @@ public class PocketAccounter extends AppCompatActivity {
             });
         }
 
-
+        Log.d("sss", financeManager.getAccounts().size()+"");
         financeManager.saveRecords();
         SharedPreferences sPref;
         sPref = getSharedPreferences("infoFirst", MODE_PRIVATE);

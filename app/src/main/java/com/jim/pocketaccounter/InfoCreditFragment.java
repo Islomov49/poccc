@@ -29,11 +29,15 @@ import android.widget.Toast;
 
 import com.jim.pocketaccounter.credit.CreditDetials;
 import com.jim.pocketaccounter.credit.ReckingCredit;
+import com.jim.pocketaccounter.debt.DebtBorrow;
 import com.jim.pocketaccounter.debt.PockerTag;
+import com.jim.pocketaccounter.debt.Recking;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.FinanceManager;
+import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -358,15 +362,12 @@ public class InfoCreditFragment extends Fragment {
 
         return V;
     }
-
     public String parseToWithoutNull(double A) {
         if (A == (int) A)
             return Integer.toString((int) A);
         else
             return formater.format(A);
-
     }
-
     public static int[] getDateDifferenceInDDMMYYYY(Date from, Date to) {
         Calendar fromDate = Calendar.getInstance();
         Calendar toDate = Calendar.getInstance();
@@ -405,7 +406,6 @@ public class InfoCreditFragment extends Fragment {
     }
 
     ArrayList<Account> accaunt_AC;
-
     private void openDialog() {
         final Dialog dialog = new Dialog(context);
         View dialogView = ((PocketAccounter) context).getLayoutInflater().inflate(R.layout.add_pay_debt_borrow_info_mod, null);
@@ -467,7 +467,64 @@ public class InfoCreditFragment extends Fragment {
                 double total_paid=0;
                 for(ReckingCredit item:rcList)
                     total_paid+=item.getAmount();
+
                 if(!amount.matches("")){
+                    Account account = accaunt_AC.get(accountSp.getSelectedItemPosition());
+                    if (account.isLimited()&&currentCredit.isKey_for_include()) {
+                        double limit = account.getLimitSum();
+                        double accounted = account.getAmount();
+                        for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
+                            if (PocketAccounter.financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
+                                if (PocketAccounter.financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
+                                    accounted = accounted + PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                                else
+                                    accounted = accounted - PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                            }
+                        }
+                        for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
+                            if (debtBorrow.isCalculate()) {
+                                if (debtBorrow.getAccount().getId().matches(account.getId())) {
+                                    if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                        accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                    }
+                                    else {
+                                        accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                    }
+                                    for (Recking recking:debtBorrow.getReckings()) {
+                                        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                                        Calendar cal = Calendar.getInstance();
+                                        try {
+                                            cal.setTime(format.parse(recking.getPayDate()));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                            accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                        }
+                                        else {
+                                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
+                            if (creditDetials.isKey_for_include()) {
+                                for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
+                                    if (account.getId().matches(reckingCredit.getAccountId())) {
+                                        Calendar cal = Calendar.getInstance();
+                                        cal.setTimeInMillis(reckingCredit.getPayDate());
+                                        accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(), reckingCredit.getAmount());
+                                    }
+                                }
+                            }
+                        }
+                        accounted = accounted - PocketAccounterGeneral.getCost(date, currentCredit.getValyute_currency(), Double.parseDouble(amount));
+                        if (-limit > accounted) {
+                            Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
                     if(Double.parseDouble(amount)>currentCredit.getValue_of_credit_with_procent()-total_paid){
 
                         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -477,6 +534,7 @@ public class InfoCreditFragment extends Fragment {
                                 currentCredit.getValyute_currency().getAbbr())
                                 .setPositiveButton(context.getString(R.string.imsure), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialoge, int id) {
+
                                         ReckingCredit rec=null;
                                         if(!amount.matches("")&&currentCredit.isKey_for_include())
                                             rec=new ReckingCredit(date.getTimeInMillis(),Double.parseDouble(amount),accaunt_AC.get(accountSp.getSelectedItemPosition()).getId(),

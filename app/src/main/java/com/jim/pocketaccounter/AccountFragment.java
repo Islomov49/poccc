@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.os.ParcelableCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -247,10 +249,16 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				}
 			}
 			chbLimit.setChecked(account.isLimited());
+			if (chbLimit.isChecked()) {
+				etLimit.setVisibility(View.VISIBLE);
+			}
+			else {
+				etLimit.setVisibility(View.VISIBLE);
+			}
 			etLimit.setText(format.format(account.getLimitSum()));
 		}
 		String mainCurrencyId = PocketAccounter.financeManager.getMainCurrency().getId();
-		String[] currencies = new String[PocketAccounter.financeManager.getCurrencies().size()];
+		final String[] currencies = new String[PocketAccounter.financeManager.getCurrencies().size()];
 		boolean mainCurrPosFound = false;
 		int mainCurrencyPos = 0;
 		for (int i=0; i<currencies.length; i++) {
@@ -261,6 +269,17 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				mainCurrPosFound = true;
 			}
 		}
+		chbLimit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked)
+					etLimit.setVisibility(View.GONE);
+				else
+					etLimit.setVisibility(View.VISIBLE);
+
+			}
+		});
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, currencies);
 		spStartMoney.setAdapter(adapter);
 		spStartMoney.setSelection(mainCurrencyPos);
@@ -311,8 +330,8 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 					else
 						account.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
 					account.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					account.setLimited(chbLimit.isChecked());
 					if (chbLimit.isChecked()) {
-						account.setLimited(true);
 						if (etLimit.getText().toString().matches(""))
 							account.setLimitSum(0);
 						else
@@ -329,8 +348,8 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 					else
 						newAccount.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
 					newAccount.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					newAccount.setLimited(chbLimit.isChecked());
 					if (chbLimit.isChecked()) {
-						newAccount.setLimited(true);
 						if (etLimit.getText().toString().matches(""))
 							newAccount.setLimitSum(0);
 						else
@@ -338,6 +357,7 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 					}
 					PocketAccounter.financeManager.getAccounts().add(newAccount);
 				}
+				PocketAccounter.financeManager.saveAccounts();
 				dialog.dismiss();
 				refreshList(mode);
 			}

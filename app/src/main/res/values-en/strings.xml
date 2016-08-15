@@ -1304,4 +1304,6 @@
     </string-array>
     <string name="set_time_of_secure_title">Время</string>
     <string name="set_time_of_secure_summary">Установите время, через которого подействует защита</string>
+    <string name="start_money">Начальная сумма</string>
+    <string name="limit_exceed">Для этого счета лимит превышен</string>
 </resources>
