@@ -1447,6 +1447,13 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 					+ "is_limited INTEGER,"
 					+ "limit_amount REAL"
 					+ ");");
+
+			db.execSQL("CREATE TABLE record_photo_table ("
+					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ "photopath TEXT,"
+					+ "photopathCache TEXT,"
+					+ "record_id TEXT"
+					+ ");");
 		}
 	}
 	private void upgradeFromThreeToFour(SQLiteDatabase db) {

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,8 @@ import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
 import com.jim.pocketaccounter.photocalc.PhotoDetails;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
@@ -95,7 +98,7 @@ public class AccountManagementFragment extends Fragment {
         dialog.setContentView(dialogView);
         final EditText etAccountEditName = (EditText) dialogView.findViewById(R.id.etAccountEditName);
         final Spinner spTransferFirst = (Spinner) dialogView.findViewById(R.id.spTransferFirst);
-        TransferAccountAdapter firstAdapter = new TransferAccountAdapter(getContext(), PocketAccounter.financeManager.getAccounts());
+        final TransferAccountAdapter firstAdapter = new TransferAccountAdapter(getContext(), PocketAccounter.financeManager.getAccounts());
         final Spinner spAccManDialog = (Spinner) dialogView.findViewById(R.id.spAccManDialog);
         String[] currs = new String[PocketAccounter.financeManager.getCurrencies().size()];
         for (int i=0; i<PocketAccounter.financeManager.getCurrencies().size(); i++) {
@@ -109,7 +112,9 @@ public class AccountManagementFragment extends Fragment {
         spTransferFirst.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long pos) {
+
                 first = PocketAccounter.financeManager.getAccounts().get(i);
+                Log.d("sss", first.getName());
                 temp.clear();
                 for (int j=0; j<PocketAccounter.financeManager.getAccounts().size(); j++) {
                     if (!PocketAccounter.financeManager.getAccounts().get(j).getId().matches(first.getId()))
@@ -128,6 +133,7 @@ public class AccountManagementFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 second = temp.get(i);
+                Log.d("sss", second.getName());
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -140,6 +146,62 @@ public class AccountManagementFragment extends Fragment {
                 if (etAccountEditName.getText().toString().matches("")) {
                     etAccountEditName.setError(getResources().getString(R.string.enter_amount));
                     return;
+                }
+                Log.d("sss", first.getName()+" "+second.getName());
+                if (first != null && first.isLimited()) {
+                    double limit = first.getLimitSum();
+                    double accounted = first.getAmount();
+                    for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
+                        if (PocketAccounter.financeManager.getRecords().get(i).getAccount().getId().matches(first.getId())) {
+                            if (PocketAccounter.financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
+                                accounted = accounted + PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                            else
+                                accounted = accounted - PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                        }
+                    }
+                    for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
+                        if (debtBorrow.isCalculate()) {
+                            if (debtBorrow.getAccount().getId().matches(first.getId())) {
+                                if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                    accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                }
+                                else {
+                                    accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                }
+                                for (Recking recking:debtBorrow.getReckings()) {
+                                    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                                    Calendar cal = Calendar.getInstance();
+                                    try {
+                                        cal.setTime(format.parse(recking.getPayDate()));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                        accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                    }
+                                    else {
+                                        accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
+                        if (creditDetials.isKey_for_include()) {
+                            for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
+                                if (reckingCredit.getAccountId().matches(first.getId())) {
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTimeInMillis(reckingCredit.getPayDate());
+                                    accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(), reckingCredit.getAmount());
+                                }
+                            }
+                        }
+                    }
+                    accounted = accounted - Double.parseDouble(etAccountEditName.getText().toString());
+                    if (-limit > accounted) {
+                        Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
                 boolean toCategoryFound = false;
                 boolean fromCategoryFound = false;
@@ -181,8 +243,8 @@ public class AccountManagementFragment extends Fragment {
                 expRecord.setDate(date);
                 expRecord.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spAccManDialog.getSelectedItemPosition()));
                 expRecord.setRecordId(UUID.randomUUID().toString());
-                expRecord.setComment("");
                 expRecord.setAllTickets(new ArrayList<PhotoDetails>());
+                expRecord.setComment("");
                 expRecord.setAmount(Double.parseDouble(etAccountEditName.getText().toString()));
                 for (int i=0; i<PocketAccounter.financeManager.getCategories().size(); i++) {
                     if (PocketAccounter.financeManager.getCategories().get(i).getId().matches(getResources().getString(R.string.from_transfer_id))) {
@@ -197,9 +259,9 @@ public class AccountManagementFragment extends Fragment {
                 incRecord.setDate(date);
                 incRecord.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spAccManDialog.getSelectedItemPosition()));
                 incRecord.setRecordId(UUID.randomUUID().toString());
-                incRecord.setAmount(Double.parseDouble(etAccountEditName.getText().toString()));
-                incRecord.setComment("");
                 incRecord.setAllTickets(new ArrayList<PhotoDetails>());
+                incRecord.setComment("");
+                incRecord.setAmount(Double.parseDouble(etAccountEditName.getText().toString()));
                 for (int i=0; i<PocketAccounter.financeManager.getCategories().size(); i++) {
                     if (PocketAccounter.financeManager.getCategories().get(i).getId().matches(getResources().getString(R.string.to_transfer_id))) {
                         incRecord.setCategory(PocketAccounter.financeManager.getCategories().get(i));
@@ -232,6 +294,7 @@ public class AccountManagementFragment extends Fragment {
         date.set(Calendar.SECOND, 59);
         date.set(Calendar.MILLISECOND, 59);
         ArrayList<FinanceRecord> records = new ArrayList<>();
+
         for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
             if (PocketAccounter.financeManager.getRecords().get(i).getDate().compareTo(date) <= 0)
                 records.add(PocketAccounter.financeManager.getRecords().get(i));
@@ -489,6 +552,51 @@ public class AccountManagementFragment extends Fragment {
                     accountManagementObjects.add(accountManagementObject);
 
                 }
+
+            }
+        }
+        for (int i=0; i<PocketAccounter.financeManager.getAccounts().size(); i++) {
+            boolean accFount = false;
+            int pos = 0;
+            for (int j=0; j<accountManagementObjects.size(); j++) {
+                if (accountManagementObjects.get(j).getAccount().getId().matches(PocketAccounter.financeManager.getAccounts().get(i).getId())) {
+                    accFount = true;
+                    pos = j;
+                    break;
+                }
+            }
+            if (accFount) {
+                boolean currFound = false;
+                int curPos = 0;
+                for (int k=0; k<accountManagementObjects.get(pos).getCurAmounts().size(); k++) {
+                    if (accountManagementObjects.get(pos).getCurAmounts().get(k).getCurrency().getId().matches(PocketAccounter.financeManager.getAccounts().get(i).getCurrency().getId())) {
+                        currFound = true;
+                        curPos = k;
+                        break;
+
+                    }
+                }
+                if (currFound) {
+                    double amount = accountManagementObjects.get(pos).getCurAmounts().get(curPos).getAmount()-PocketAccounter.financeManager.getAccounts().get(i).getAmount();
+                    accountManagementObjects.get(pos).getCurAmounts().get(curPos).setAmount(amount);
+                }
+                else {
+                    CurrencyAmount currencyAmount = new CurrencyAmount();
+                    currencyAmount.setCurrency(PocketAccounter.financeManager.getAccounts().get(i).getCurrency());
+                    currencyAmount.setAmount(PocketAccounter.financeManager.getAccounts().get(i).getAmount());
+                    accountManagementObjects.get(pos).getCurAmounts().add(currencyAmount);
+                }
+            }
+            else {
+                AccountManagementObject accountManagementObject = new AccountManagementObject();
+                accountManagementObject.setAccount(PocketAccounter.financeManager.getAccounts().get(i));
+                CurrencyAmount currencyAmount = new CurrencyAmount();
+                currencyAmount.setCurrency(PocketAccounter.financeManager.getAccounts().get(i).getCurrency());
+                currencyAmount.setAmount(PocketAccounter.financeManager.getAccounts().get(i).getAmount());
+                ArrayList<CurrencyAmount> currencyAmounts = new ArrayList<>();
+                currencyAmounts.add(currencyAmount);
+                accountManagementObject.setCurAmounts(currencyAmounts);
+                accountManagementObjects.add(accountManagementObject);
             }
         }
         MyAdapter myAdapter = new MyAdapter(accountManagementObjects);

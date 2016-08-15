@@ -25,6 +25,7 @@ import com.google.firebase.storage.StreamDownloadTask;
 import com.google.firebase.storage.UploadTask;
 import com.jim.pocketaccounter.R;
 import com.jim.pocketaccounter.SettingsActivity;
+import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.RootCategory;
 import com.jim.pocketaccounter.finance.SubCategory;
 
@@ -132,7 +133,10 @@ public class SyncBase {
                                   + "empty TEXT"
                                   + ");");
                       }
-                      upgradeFromThreeToFour(received);
+                      if (received.getVersion() == 3)
+                          upgradeFromThreeToFour(received);
+                      if (received.getVersion() == 4)
+                          upgradeFromFourToFive(received);
                       received.setVersion(current.getVersion());
                       File currentDB = new File(fileDirectory.getAbsolutePath());
                       File backupDB = new File(file.getAbsolutePath());
@@ -218,6 +222,37 @@ public class SyncBase {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+    private void upgradeFromFourToFive(SQLiteDatabase db) {
+        ArrayList<Account> result = new ArrayList<Account>();
+        Cursor cursor = db.query("account_table", null, null, null, null, null, null);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()) {
+            Account newAccount = new Account();
+            newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
+            newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
+            newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
+            result.add(newAccount);
+            cursor.moveToNext();
+        }
+        db.execSQL("DROP TABLE account_table");
+        //account table
+        db.execSQL("CREATE TABLE account_table ("
+                + "_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "account_name TEXT,"
+                + "account_id TEXT,"
+                + "icon INTEGER,"
+                + "start_amount REAL,"
+                + "currency_id TEXT,"
+                + "is_limited INTEGER,"
+                + "limit_amount REAL"
+                + ");");
+        db.execSQL("CREATE TABLE record_photo_table ("
+                + "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "photopath TEXT,"
+                + "photopathCache TEXT,"
+                + "record_id TEXT"
+                + ");");
     }
     private void upgradeFromThreeToFour(SQLiteDatabase db) {
         String[] resCatsId = context.getResources().getStringArray(R.array.cat_values);

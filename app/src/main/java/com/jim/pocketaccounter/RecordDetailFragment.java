@@ -134,7 +134,6 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
         PocketAccounter.openActivity=false;
-        Log.d("resulttt", "onActivityResult: Otlab ketib qoldi");
     }
 
 
