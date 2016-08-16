@@ -472,6 +472,11 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PocketAccounter.openActivity=false;
+    }
 
     private void updatePrefs(String key) {
 

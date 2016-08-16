@@ -486,11 +486,10 @@ public class InfoCreditFragment extends Fragment {
                                 if (debtBorrow.getAccount().getId().matches(account.getId())) {
                                     if (debtBorrow.getType() == DebtBorrow.BORROW) {
                                         accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
-                                    }
-                                    else {
+                                    } else {
                                         accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
                                     }
-                                    for (Recking recking:debtBorrow.getReckings()) {
+                                    for (Recking recking : debtBorrow.getReckings()) {
                                         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                                         Calendar cal = Calendar.getInstance();
                                         try {
@@ -499,10 +498,9 @@ public class InfoCreditFragment extends Fragment {
                                             e.printStackTrace();
                                         }
                                         if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                            accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), debtBorrow.getAmount());
-                                        }
-                                        else {
-                                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                            accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                        } else {
+                                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
                                         }
                                     }
                                 }

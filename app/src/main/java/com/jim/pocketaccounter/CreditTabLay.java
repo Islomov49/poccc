@@ -64,6 +64,10 @@ public class CreditTabLay extends Fragment  implements View.OnClickListener, Vie
             }
         });
         ((ImageView)PocketAccounter.toolbar.findViewById(R.id.ivToolbarExcel)).setVisibility(View.GONE);
+
+        PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight).setVisibility(View.GONE);
+        PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight).setOnClickListener(null);
+
         viewPager = (ViewPager) V.findViewById(R.id.viewpager);
         list = new ArrayList<>();
         CreditFragment creditFragment = new CreditFragment();
@@ -105,6 +109,11 @@ public class CreditTabLay extends Fragment  implements View.OnClickListener, Vie
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override

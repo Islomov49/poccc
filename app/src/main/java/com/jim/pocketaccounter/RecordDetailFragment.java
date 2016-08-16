@@ -133,7 +133,8 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
-        PocketAccounter.openActivity=false;
+
+        Log.d("resulttt", "onActivityResult: Otlab ketib qoldi");
     }
 
 
@@ -163,8 +164,16 @@ public class RecordDetailFragment extends Fragment implements OnClickListener {
                 holder.tvRecordComment.setText(result.get(position).getComment());
                 holder.rlVisibleWhenHaveComment.setVisibility(View.VISIBLE);
             }
-
-            if(result.get(position).getAllTickets().size()==0){
+            boolean keyik=true;
+            for (PhotoDetails temp:result.get(position).getAllTickets()){
+                File tmpFile=new File(temp.getPhotopath());
+                File tmpCacheFile=new File(temp.getPhotopathCache());
+                if(tmpFile.exists()&&tmpCacheFile.exists()){
+                    keyik=false;
+                    break;
+                }
+            }
+            if(keyik){
                 holder.rlVisibleWhenHaveTickets.setVisibility(View.GONE);
             }
             else{

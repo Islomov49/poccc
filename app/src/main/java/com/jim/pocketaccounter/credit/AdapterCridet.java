@@ -411,6 +411,8 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     total_paid+=item.getAmount();
 
                 if(!amount.matches("")){
+                   //
+
                     Account account = accaunt_AC.get(accountSp.getSelectedItemPosition());
                     if (account.isLimited()&&current.isKey_for_include()) {
                         double limit = account.getLimitSum();
@@ -441,10 +443,10 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                             e.printStackTrace();
                                         }
                                         if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                            accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                            accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
                                         }
                                         else {
-                                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
                                         }
                                     }
                                 }
@@ -466,6 +468,8 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                             Toast.makeText(context, R.string.limit_exceed, Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        //
                     }
                     if(Double.parseDouble(amount)>current.getValue_of_credit_with_procent()-total_paid){
 

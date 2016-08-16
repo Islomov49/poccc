@@ -19,6 +19,13 @@ public class Recking {
         this.comment = comment;
     }
 
+    public Recking(String payDate, double amount, String id, String comment) {
+        this.payDate = payDate;
+        this.amount = amount;
+        this.id = id;
+        this.comment = comment;
+    }
+
     public String getComment() {
         return comment;
     }

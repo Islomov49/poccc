@@ -3,6 +3,7 @@ package com.jim.pocketaccounter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.Fragment;
@@ -108,7 +109,7 @@ public class PhotoViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(PhotoViewActivity.this);
-                builder.setMessage("Really you want delete what ticket?")
+                builder.setMessage(R.string.really_dellete)
                         .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
@@ -170,9 +171,15 @@ public class PhotoViewActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        PocketAccounter.openActivity=false;
+    }
+
     @Override
     public void onBackPressed(){
-        PocketAccounter.openActivity=false;
         if(!fromAdapter){
             Log.d("resulttt", "onBackPressed: "+Boolean.toString(fromAdapter)+" - "+myDeletedListPhotos.size());
             Intent resultIntent=null;

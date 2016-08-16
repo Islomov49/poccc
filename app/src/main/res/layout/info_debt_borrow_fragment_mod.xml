@@ -142,14 +142,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/grey_light_backgr"
+                android:paddingLeft="@dimen/twenty_dp"
+                android:paddingRight="@dimen/twenty_dp"
                 android:visibility="visible">
 
                 <LinearLayout
 
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/twenty_dp"
-                    android:layout_marginRight="@dimen/sixteen_dp"
+
                     android:orientation="vertical">
 
                     <RelativeLayout

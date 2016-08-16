@@ -38,9 +38,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jim.pocketaccounter.PocketAccounter;
 import com.jim.pocketaccounter.R;
+import com.jim.pocketaccounter.credit.CreditDetials;
+import com.jim.pocketaccounter.credit.ReckingCredit;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.Currency;
 import com.jim.pocketaccounter.finance.FinanceManager;
@@ -51,6 +54,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -227,7 +231,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spiner_gravity_right, accaounts);
 
-        ArrayAdapter<String> arrayValyuAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> arrayValyuAdapter = new ArrayAdapter<>(
                 getContext(), R.layout.spiner_gravity_right, valyuts);
 
         arrayAdapter.setDropDownViewResource(
@@ -345,19 +349,25 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                     break;
                 }
             }
+            if (currentDebtBorrow.isCalculate())
             for (int i = 0; i < accaounts.length; i++) {
                 if (accaounts[i].matches(currentDebtBorrow.getAccount().getName())) {
                     PersonAccount.setSelection(i);
                     break;
                 }
             }
+            calculate.setChecked(currentDebtBorrow.isCalculate());
             PersonSumm.setText(String.valueOf(currentDebtBorrow.getAmount()));
             PersonDataGet.setText(simpleDateFormat.format(currentDebtBorrow.getTakenDate().getTime()));
             getDate = (Calendar) currentDebtBorrow.getTakenDate().clone();
-            PersonDataRepeat.setText(simpleDateFormat.format(currentDebtBorrow.getReturnDate().getTime()));
-            returnDate = (Calendar) currentDebtBorrow.getReturnDate().clone();
-            if (!currentDebtBorrow.getPerson().getPhoto().isEmpty())
+            if (currentDebtBorrow.getReturnDate() != null) {
+                returnDate = (Calendar) currentDebtBorrow.getReturnDate().clone();
+                PersonDataRepeat.setText(simpleDateFormat.format(currentDebtBorrow.getReturnDate().getTime()));
+            }
+            if (!currentDebtBorrow.getPerson().getPhoto().isEmpty()) {
                 imageView.setImageBitmap(decodeFile(new File(currentDebtBorrow.getPerson().getPhoto())));
+                photoPath = currentDebtBorrow.getPerson().getPhoto();
+            }
             if (!currentDebtBorrow.getReckings().isEmpty() && currentDebtBorrow.getReckings().get(0).getPayDate().matches(simpleDateFormat.format(getDate.getTime())))
                 firstPay.setText("" + currentDebtBorrow.getReckings().get(0).getAmount());
         }
@@ -418,6 +428,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
 
                     DebtBorrowFragment fragment = new DebtBorrowFragment();
                     if (currentDebtBorrow != null) {
+                        if (calculate.isChecked())
                         currentDebtBorrow.setAccount(account);
                         currentDebtBorrow.setPerson(new Person(PersonName.getText().toString(),
                                 PersonNumber.getText().toString(), file != null ? file.getAbsolutePath() : photoPath == "" ? "" : photoPath));
@@ -427,6 +438,9 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                         currentDebtBorrow.setInfo(mode + ":" + sequence);
                         currentDebtBorrow.setReturnDate(returnDate);
                         currentDebtBorrow.setTakenDate(getDate);
+                        if (!isMumkin(currentDebtBorrow)) {
+                            return;
+                        }
                         if (!firstPay.getText().toString().isEmpty()) {
                             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                             if (!currentDebtBorrow.getReckings().isEmpty() && currentDebtBorrow.getReckings().get(0)
@@ -439,6 +453,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                                         account.getId(), ""));
                             }
                         }
+
                         Bundle bundle = new Bundle();
                         bundle.putInt("pos", currentDebtBorrow.getType());
                         fragment.setArguments(bundle);
@@ -453,6 +468,9 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                                 Double.parseDouble(PersonSumm.getText().toString()),
                                 TYPE, calculate.isChecked()
                         );
+                        if (!isMumkin(debtBorrow)) {
+                            return;
+                        }
                         if (!firstPay.getText().toString().isEmpty()) {
                             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
                             reckings.add(new Recking(
@@ -475,6 +493,74 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
                 }
             }
         }
+    }
+
+    private boolean isMumkin (DebtBorrow debt) {
+        Account account = manager.getAccounts().get(PersonAccount.getSelectedItemPosition());
+        if (account.isLimited() && calculate.isChecked()) {
+            double limit = account.getLimitSum();
+            double accounted = account.getAmount();
+            for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
+                if (PocketAccounter.financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
+                    if (PocketAccounter.financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
+                        accounted = accounted + PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                    else
+                        accounted = accounted - PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                }
+            }
+            for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
+                if (debtBorrow.isCalculate()) {
+                    if (debtBorrow.getAccount().getId().matches(account.getId())) {
+                        if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                        } else {
+                            accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                        }
+                        for (Recking recking : debtBorrow.getReckings()) {
+                            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                            Calendar cal = Calendar.getInstance();
+                            try {
+                                cal.setTime(format.parse(recking.getPayDate()));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                            } else {
+                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
+                if (creditDetials.isKey_for_include()) {
+                    for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
+                        if (reckingCredit.getAccountId().matches(account.getId())) {
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTimeInMillis(reckingCredit.getPayDate());
+                            accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(), reckingCredit.getAmount());
+                        }
+                    }
+                }
+            }
+
+            if (debt.getType() == DebtBorrow.BORROW) {
+                accounted = accounted + PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(),
+                        Double.parseDouble(PersonSumm.getText().toString()) - (!firstPay.getText().toString().isEmpty() ? Double.parseDouble(firstPay.getText().toString()) : 0));
+            } else {
+                accounted = accounted - PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(),
+                        Double.parseDouble(PersonSumm.getText().toString()) - (!firstPay.getText().toString().isEmpty() ? Double.parseDouble(firstPay.getText().toString()) : 0));
+            }
+
+            if (-limit > accounted) {
+                Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            return true;
+        }
+        return true;
     }
 
     private void openNotifSettingDialog() {
@@ -676,6 +762,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void getContact() {
+        PocketAccounter.openActivity = true;
         Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
         intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
@@ -683,6 +770,7 @@ public class AddBorrowFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void getPhoto() {
+        PocketAccounter.openActivity = true;
         Intent i = new Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

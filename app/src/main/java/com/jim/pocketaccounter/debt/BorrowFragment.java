@@ -37,9 +37,13 @@ import android.widget.Toast;
 
 import com.jim.pocketaccounter.PocketAccounter;
 import com.jim.pocketaccounter.R;
+import com.jim.pocketaccounter.credit.CreditDetials;
+import com.jim.pocketaccounter.credit.ReckingCredit;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.FinanceManager;
+import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,6 +109,7 @@ public class BorrowFragment extends Fragment {
         return view;
     }
 
+
     public void setDebtBorrowFragment(DebtBorrowFragment debtBorrowFragment) {
         this.debtBorrowFragment = debtBorrowFragment;
     }
@@ -119,20 +124,16 @@ public class BorrowFragment extends Fragment {
         private ArrayList<DebtBorrow> allPersons;
 
         public MyAdapter() {
-            try {
-                allPersons = financeManager.getDebtBorrows();
-                persons = new ArrayList<>();
-                for (DebtBorrow person : financeManager.getDebtBorrows()) {
-                    if (!person.isTo_archive() && person.getType() == TYPE) {
+            allPersons = financeManager.getDebtBorrows();
+            persons = new ArrayList<>();
+            for (DebtBorrow person : financeManager.getDebtBorrows()) {
+                if (!person.isTo_archive() && person.getType() == TYPE) {
+                    persons.add(person);
+                } else {
+                    if (person.isTo_archive() && TYPE == 2) {
                         persons.add(person);
-                    } else {
-                        if (person.isTo_archive() && TYPE == 2) {
-                            persons.add(person);
-                        }
                     }
                 }
-            } catch (NullPointerException e) {
-                recyclerView.setAdapter(myAdapter);
             }
         }
 
@@ -177,6 +178,7 @@ public class BorrowFragment extends Fragment {
                     view.BorrowPersonPhotoPath.setImageBitmap(bit);
                 }
             }
+
             view.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -203,7 +205,6 @@ public class BorrowFragment extends Fragment {
                 view.call.setVisibility(View.INVISIBLE);
             }
 
-
             view.call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -227,7 +228,10 @@ public class BorrowFragment extends Fragment {
                         final EditText enterPay = (EditText) dialogView.findViewById(R.id.etInfoDebtBorrowPaySumm);
                         final EditText comment = (EditText) dialogView.findViewById(R.id.etInfoDebtBorrowPayComment);
                         final Spinner accountSp = (Spinner) dialogView.findViewById(R.id.spInfoDebtBorrowAccount);
-
+                        RelativeLayout relativeLayout = (RelativeLayout) dialogView.findViewById(R.id.is_calc);
+                        if (!person.isCalculate()) {
+                            relativeLayout.setVisibility(View.GONE);
+                        }
                         String[] accaounts = new String[financeManager.getAccounts().size()];
                         for (int i = 0; i < accaounts.length; i++) {
                             accaounts[i] = financeManager.getAccounts().get(i).getName();
@@ -277,16 +281,24 @@ public class BorrowFragment extends Fragment {
                             public void onClick(View v) {
                                 final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                                 String ac = "";
-                                for (Account account : financeManager.getAccounts()) {
-                                    if (account.getName().matches(accountSp.getSelectedItem().toString())) {
-                                        ac = account.getId();
-                                        break;
+                                if (person.isCalculate()) {
+                                    for (Account account : financeManager.getAccounts()) {
+                                        if (account.getName().matches(accountSp.getSelectedItem().toString())) {
+                                            ac = account.getId();
+                                            break;
+                                        }
                                     }
                                 }
+                                boolean tek = false;
                                 if (!enterPay.getText().toString().isEmpty()) {
                                     int len = person.getCurrency().getAbbr().length();
                                     if (Double.parseDouble(view.BorrowPersonSumm.getText().toString().substring(0, view.BorrowPersonSumm.getText().toString().length() - len))
                                             - Double.parseDouble(enterPay.getText().toString()) < 0) {
+
+                                        if (person.isCalculate() && isMumkin(person, ac, Double.parseDouble(enterPay.getText().toString())))
+                                            tek = true;
+                                        if (!person.isCalculate()) tek = true;
+
                                         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                                         final String finalAc = ac;
                                         builder.setMessage(getResources().getString(R.string.incorrect_pay))
@@ -298,11 +310,70 @@ public class BorrowFragment extends Fragment {
                                                 }).setNegativeButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface d, int id) {
                                                 d.cancel();
-                                                Recking recking = new Recking(format.format(date.getTime()),
-                                                        Double.parseDouble(enterPay.getText().toString()),
-                                                        persons.get(position).getId(), finalAc,
-                                                        comment.getText().toString());
+                                                if (person.isCalculate()) {
+                                                    Recking recking = new Recking(format.format(date.getTime()),
+                                                            Double.parseDouble(enterPay.getText().toString()),
+                                                            persons.get(position).getId(), finalAc,
+                                                            comment.getText().toString());
 
+                                                    persons.get(position).getReckings().add(0, recking);
+                                                    double total = 0;
+                                                    for (Recking recking1 : persons.get(position).getReckings()) {
+                                                        total += recking1.getAmount();
+                                                    }
+                                                    if (persons.get(position).getAmount() <= total) {
+                                                        view.pay.setText(getString(R.string.archive));
+                                                    }
+                                                    view.BorrowPersonSumm.setText(getResources().getString(R.string.repaid));
+                                                    dialog.dismiss();
+                                                } else {
+                                                    Recking recking = new Recking(format.format(date.getTime()),
+                                                            Double.parseDouble(enterPay.getText().toString()),
+                                                            persons.get(position).getId(), comment.getText().toString());
+
+                                                    persons.get(position).getReckings().add(0, recking);
+                                                    double total = 0;
+                                                    for (Recking recking1 : persons.get(position).getReckings()) {
+                                                        total += recking1.getAmount();
+                                                    }
+                                                    if (persons.get(position).getAmount() <= total) {
+                                                        view.pay.setText(getString(R.string.archive));
+                                                    }
+                                                    view.BorrowPersonSumm.setText(getResources().getString(R.string.repaid));
+                                                    dialog.dismiss();
+                                                }
+                                            }
+                                        });
+                                        if (tek) {
+                                            builder.create().show();
+                                        }
+                                    } else {
+                                        Recking recking = null;
+                                        if (person.isCalculate() && isMumkin(person, ac, Double.parseDouble(enterPay.getText().toString()))) {
+                                            Toast.makeText(getContext(), "" + isMumkin(person, ac, Double.parseDouble(enterPay.getText().toString())), Toast.LENGTH_SHORT).show();
+                                            recking = new Recking(format.format(date.getTime()),
+                                                    Double.parseDouble(enterPay.getText().toString()),
+                                                    persons.get(position).getId(), ac,
+                                                    comment.getText().toString());
+                                            persons.get(position).getReckings().add(0, recking);
+                                            double total = 0;
+                                            for (Recking recking1 : persons.get(position).getReckings()) {
+                                                total += recking1.getAmount();
+                                            }
+                                            if (persons.get(position).getAmount() <= total) {
+                                                view.pay.setText(getString(R.string.archive));
+                                            }
+                                            view.BorrowPersonSumm.setText("" + ((persons.get(position).getAmount() - total) ==
+                                                    ((int) (persons.get(position).getAmount() - total)) ?
+                                                    ("" + (int) (persons.get(position).getAmount() - total)) :
+                                                    ("" + (persons.get(position).getAmount() - total))) + person.getCurrency().getAbbr());
+                                            dialog.dismiss();
+                                        } else {
+                                            if (!person.isCalculate()) {
+                                                recking = new Recking(format.format(date.getTime()),
+                                                        Double.parseDouble(enterPay.getText().toString()),
+                                                        persons.get(position).getId(),
+                                                        comment.getText().toString());
                                                 persons.get(position).getReckings().add(0, recking);
                                                 double total = 0;
                                                 for (Recking recking1 : persons.get(position).getReckings()) {
@@ -311,31 +382,14 @@ public class BorrowFragment extends Fragment {
                                                 if (persons.get(position).getAmount() <= total) {
                                                     view.pay.setText(getString(R.string.archive));
                                                 }
-                                                view.BorrowPersonSumm.setText(getResources().getString(R.string.repaid));
+                                                view.BorrowPersonSumm.setText("" + ((persons.get(position).getAmount() - total) ==
+                                                        ((int) (persons.get(position).getAmount() - total)) ?
+                                                        ("" + (int) (persons.get(position).getAmount() - total)) :
+                                                        ("" + (persons.get(position).getAmount() - total))) + person.getCurrency().getAbbr());
                                                 dialog.dismiss();
                                             }
-                                        });
-                                        builder.create().show();
-                                    } else {
-                                        Recking recking = new Recking(format.format(date.getTime()),
-                                                Double.parseDouble(enterPay.getText().toString()),
-                                                persons.get(position).getId(), ac,
-                                                comment.getText().toString());
-
-                                        persons.get(position).getReckings().add(0, recking);
-                                        double total = 0;
-                                        for (Recking recking1 : persons.get(position).getReckings()) {
-                                            total += recking1.getAmount();
                                         }
-                                        if (persons.get(position).getAmount() <= total) {
-                                            view.pay.setText(getString(R.string.archive));
-                                        }
-                                        view.BorrowPersonSumm.setText("" + ((persons.get(position).getAmount() - total) ==
-                                                ((int) (persons.get(position).getAmount() - total)) ?
-                                                ("" + (int) (persons.get(position).getAmount() - total)) :
-                                                ("" + (persons.get(position).getAmount() - total))) + person.getCurrency().getAbbr());
                                     }
-                                    dialog.dismiss();
                                 } else {
                                     enterPay.setError(getString(R.string.enter_pay_value));
                                 }
@@ -350,7 +404,11 @@ public class BorrowFragment extends Fragment {
                             if (financeManager.getDebtBorrows().get(i).getId().matches(person.getId())) {
                                 financeManager.getDebtBorrows().get(i).setTo_archive(true);
                                 allPersons.get(i).setTo_archive(true);
-                                persons.remove(position);
+                                try {
+                                    persons.remove(position);
+                                } catch (IndexOutOfBoundsException e) {
+                                    return;
+                                }
                                 break;
                             }
                         }
@@ -360,6 +418,74 @@ public class BorrowFragment extends Fragment {
                     }
                 }
             });
+        }
+
+        private boolean isMumkin(DebtBorrow debt, String accountId, Double summ) {
+            Account account = null;
+            for (Account ac : financeManager.getAccounts()) {
+                if (ac.getId().matches(accountId)) {
+                    account = ac;
+                    break;
+                }
+            }
+            if (account.isLimited() && debt.isCalculate()) {
+                double limit = account.getLimitSum();
+                double accounted = account.getAmount();
+                for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
+                    if (PocketAccounter.financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
+                        if (PocketAccounter.financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
+                            accounted = accounted + PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                        else
+                            accounted = accounted - PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                    }
+                }
+                for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
+                    if (debtBorrow.isCalculate()) {
+                        if (debtBorrow.getAccount().getId().matches(account.getId())) {
+                            if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                            } else {
+                                accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                            }
+                            for (Recking recking : debtBorrow.getReckings()) {
+                                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                                Calendar cal = Calendar.getInstance();
+                                try {
+                                    cal.setTime(format.parse(recking.getPayDate()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                    accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                } else {
+                                    accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                }
+                            }
+                        }
+                    }
+                }
+
+                for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
+                    if (creditDetials.isKey_for_include()) {
+                        for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
+                            if (reckingCredit.getAccountId().matches(account.getId())) {
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTimeInMillis(reckingCredit.getPayDate());
+                                accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(), reckingCredit.getAmount());
+                            }
+                        }
+                    }
+                }
+
+                accounted = accounted - PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(), summ);
+
+                if (-limit > accounted) {
+                    Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                return true;
+            }
+            return true;
         }
 
         private Bitmap queryContactImage(int imageDataRow) {

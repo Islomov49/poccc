@@ -79,7 +79,7 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
         bundle.putInt("type", type);
-         TYPE = type;
+        TYPE = type;
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -107,7 +107,7 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
         id = getArguments().getString("id");
         isHaveReking = (FrameLayout) view.findViewById(R.id.ifListHave);
         ((ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight)).setVisibility(View.VISIBLE);
-        ((ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight)).setImageResource(R.drawable.ic_more_vert_black_48dp);
+
         manager = PocketAccounter.financeManager;
         debtBorrow = new DebtBorrow();
         if (manager.getDebtBorrows() != null) {
@@ -123,52 +123,81 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
         for (int i = 0; i < isCheks.length; i++) {
             isCheks[i] = false;
         }
+        ((ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight)).setImageResource(R.drawable.ic_delete_black);
+        if (!debtBorrow.isTo_archive()) {
+            ((ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight)).setImageResource(R.drawable.ic_more_vert_black_48dp);
+            PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    final AlertDialog.Builder builderChouse = new AlertDialog.Builder(getActivity());
+                    builderChouse.setTitle("Choose type action").setItems(R.array.more_option_for_credit_debt, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
 
-                final AlertDialog.Builder builderChouse = new AlertDialog.Builder(getActivity());
-                builderChouse.setTitle("Choose type action").setItems(R.array.more_option_for_credit_debt, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which==0) {
+                                AddBorrowFragment temp = (AddBorrowFragment) AddBorrowFragment.getInstance(TYPE);
+                                temp.shareDetialDebtBorrow(debtBorrow);
+                                ((PocketAccounter) getContext()).replaceFragment(temp);
 
-                          AddBorrowFragment temp= (AddBorrowFragment) AddBorrowFragment.getInstance(TYPE);
-                            temp.shareDetialDebtBorrow(debtBorrow);
-                            ((PocketAccounter) getContext()).replaceFragment(temp);
-
-                        }
-                        else {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setMessage(debtBorrow.isCalculate() ?
-                                    getResources().getString(R.string.delete_credit) : getString(R.string.delete))
-                                    .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
-                                    }).setNegativeButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    manager.getDebtBorrows().remove(debtBorrow);
-                                    manager.saveDebtBorrows();
-                                    manager.loadDebtBorrows();
-                                    ((PocketAccounter) getContext()).getSupportFragmentManager().popBackStack();
-                                    DebtBorrowFragment fragment = new DebtBorrowFragment();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("pos", debtBorrow.isTo_archive() ? 2 : debtBorrow.getType());
-                                    fragment.setArguments(bundle);
-                                    ((PocketAccounter) getContext()).replaceFragment(fragment, PockerTag.DEBTS);
-                                }
-                            });
-                            builder.create().show();
-                        }
-
-
-                    }
-                });
-                builderChouse.create().show();
+                            } else {
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                                builder.setMessage(debtBorrow.isCalculate() ?
+                                        getResources().getString(R.string.delete_credit) : getString(R.string.delete))
+                                        .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                            }
+                                        }).setNegativeButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        manager.getDebtBorrows().remove(debtBorrow);
+                                        manager.saveDebtBorrows();
+                                        manager.loadDebtBorrows();
+                                        ((PocketAccounter) getContext()).getSupportFragmentManager().popBackStack();
+                                        DebtBorrowFragment fragment = new DebtBorrowFragment();
+                                        Bundle bundle = new Bundle();
+                                        bundle.putInt("pos", debtBorrow.isTo_archive() ? 2 : debtBorrow.getType());
+                                        fragment.setArguments(bundle);
+                                        ((PocketAccounter) getContext()).replaceFragment(fragment, PockerTag.DEBTS);
+                                    }
+                                });
+                                builder.create().show();
                             }
-        });
+
+
+                        }
+                    });
+                    builderChouse.create().show();
+                }
+            });
+        } else {
+            PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                    builder.setMessage(debtBorrow.isCalculate() ?
+                            getResources().getString(R.string.delete_credit) : getString(R.string.delete))
+                            .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            }).setNegativeButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            manager.getDebtBorrows().remove(debtBorrow);
+                            manager.saveDebtBorrows();
+                            manager.loadDebtBorrows();
+                            ((PocketAccounter) getContext()).getSupportFragmentManager().popBackStack();
+                            DebtBorrowFragment fragment = new DebtBorrowFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("pos", debtBorrow.isTo_archive() ? 2 : debtBorrow.getType());
+                            fragment.setArguments(bundle);
+                            ((PocketAccounter) getContext()).replaceFragment(fragment, PockerTag.DEBTS);
+                        }
+                    });
+                    builder.create().show();
+                }
+            });
+        }
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
         phoneNumber.setText(debtBorrow.getPerson().getPhoneNumber());
         tvInfoDebtBorrowTakeDate.setText(format.format(debtBorrow.getTakenDate().getTime()));
@@ -525,7 +554,7 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
                 });
             }
             if (!list.get(position).getComment().matches("")) {
-                view.comment.setText(getResources().getString(R.string.comment)+": " + list.get(position).getComment());
+                view.comment.setText(getResources().getString(R.string.comment) + ": " + list.get(position).getComment());
             } else {
                 view.comment.setVisibility(View.GONE);
             }

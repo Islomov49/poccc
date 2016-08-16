@@ -1328,4 +1328,5 @@
     <string name="enter_your_password">Enter your password</string>
     <string name="start_money">Начальная сумма</string>
     <string name="limit_exceed">Для этого счета лимит превышен</string>
+    <string name="really_dellete">Really you want delete what ticket?</string>
 </resources>

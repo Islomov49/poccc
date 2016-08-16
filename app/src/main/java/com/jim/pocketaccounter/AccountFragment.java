@@ -253,7 +253,7 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				etLimit.setVisibility(View.VISIBLE);
 			}
 			else {
-				etLimit.setVisibility(View.VISIBLE);
+				etLimit.setVisibility(View.GONE);
 			}
 			etLimit.setText(format.format(account.getLimitSum()));
 		}
@@ -274,9 +274,9 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked)
-					etLimit.setVisibility(View.GONE);
-				else
 					etLimit.setVisibility(View.VISIBLE);
+				else
+					etLimit.setVisibility(View.GONE);
 
 			}
 		});

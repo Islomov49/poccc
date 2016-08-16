@@ -948,7 +948,6 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
 //        super.onActivityResult(requestCode,resultCode,data);
-        PocketAccounter.openActivity=false;
         Log.d("resulttt", "onActivityResult: Keldi "+((data!=null)?"PUSTOY":"NIMADIRLA"));
         if(requestCode==REQUEST_DELETE_PHOTOS&&data!=null&&resultCode==RESULT_OK){
             Log.d("resulttt", "onActivityResult: "+(int)data.getExtras().get(COUNT_DELETES));
