@@ -1,5 +1,7 @@
 package com.jim.pocketaccounter.helper;
 
+import android.util.Log;
+
 import com.jim.pocketaccounter.PocketAccounter;
 import com.jim.pocketaccounter.finance.Currency;
 import com.jim.pocketaccounter.finance.FinanceRecord;
@@ -54,6 +56,7 @@ public class PocketAccounterGeneral {
 			pos++;
 		}
 		amount = amount/koeff;
+		Log.d("sss", "getCost: "+amount);
 		return amount;
 	}
 

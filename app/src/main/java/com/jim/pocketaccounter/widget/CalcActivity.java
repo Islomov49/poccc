@@ -148,11 +148,7 @@ package com.jim.pocketaccounter.widget;
             otherSymbols.setDecimalSeparator('.');
             otherSymbols.setGroupingSeparator('.');
             decimalFormat = new DecimalFormat("0.##", otherSymbols);
-
-
             uid_code= "record_" + UUID.randomUUID().toString();
-
-
             category = new RootCategory();
             String catId = getIntent().getStringExtra(WidgetKeys.KEY_FOR_INTENT_ID);
             WIDGET_ID = getIntent().getIntExtra(WidgetKeys.ACTION_WIDGET_RECEIVER_CHANGE_DIAGRAM_ID,  AppWidgetManager.INVALID_APPWIDGET_ID);

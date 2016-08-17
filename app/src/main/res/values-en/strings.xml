@@ -111,7 +111,7 @@
         <item>£</item>
         <item>лв</item>
         <item>₸</item>
-        <item>Br</item>
+        <item>BYN</item>
         <item>РА</item>
         <item>₪</item>
         <item>¥</item>
@@ -1276,10 +1276,10 @@
     <string name="sbrosit">Reset</string>
     <string name="sbrosit_about">All datas and settings will be deleted</string>
     <string name="sbrosit_title">Reset</string>
-    <string name="start_amount">Начальная сумма</string>
+    <string name="start_amount">Start sum</string>
     <string name="secure">Security</string>
     <string name="secure_on">Включить защиту</string>
-    <string name="enter_password">Ввести пароль</string>
+    <string name="enter_password">Enter password</string>
     <string-array name="secure_times_titles">
         <item>1 мин.</item>
         <item>5 мин.</item>
@@ -1304,6 +1304,25 @@
     </string-array>
     <string name="set_time_of_secure_title">Время</string>
     <string name="set_time_of_secure_summary">Установите время, через которого подействует защита</string>
-    <string name="start_money">Начальная сумма</string>
-    <string name="limit_exceed">Для этого счета лимит превышен</string>
+    <string name="start_money">Start sum</string>
+    <string name="limit_exceed">The current account limit exceeded</string>
+    <string name="add_comment">Add comment +</string>
+    <string name="commenti">Write comment</string>
+    <string name="current_password">Current password</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="izmenit_parol">Change password</string>
+    <string name="limit">Limit</string>
+    <string name="limit_sum">Sum of limit</string>
+    <string name="new_password">New password</string>
+    <string name="otklyuchit">Turn off password</string>
+    <string name="password_should_be_4_numbers">Password should be 4 numbers</string>
+    <string name="please_repait_correct">Check your password</string>
+    <string name="please_write_your_current_password">Please write your current password</string>
+    <string name="really_dellete">Do you want to delete?</string>
+    <string name="repiat_yout_password">Repeat new password</string>
+    <string name="scetimeet">Set limit</string>
+    <string name="share_ticket">Share</string>
+    <string name="try_one_more">Entered password is incorrect, try again</string>
+    <string name="was_four_numbers">Your password must consist of 4 numbers</string>
+    <string name="start_moneyy">Start sum</string>
 </resources>
