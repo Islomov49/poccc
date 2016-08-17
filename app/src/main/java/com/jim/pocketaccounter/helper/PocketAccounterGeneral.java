@@ -30,8 +30,9 @@ public class PocketAccounterGeneral {
 		}
 		int pos = 0;
 		while (diff >= 0 && pos < record.getCurrency().getCosts().size()) {
-			koeff = record.getCurrency().getCosts().get(pos).getCost();
 			diff = record.getDate().getTimeInMillis() - record.getCurrency().getCosts().get(pos).getDay().getTimeInMillis();
+			if(diff>=0)
+			koeff = record.getCurrency().getCosts().get(pos).getCost();
 			pos++;
 		}
 		amount = record.getAmount()/koeff;
@@ -47,13 +48,51 @@ public class PocketAccounterGeneral {
 		}
 		int pos = 0;
 		while (diff >= 0 && pos < currency.getCosts().size()) {
-			koeff = currency.getCosts().get(pos).getCost();
 			diff = date.getTimeInMillis() - currency.getCosts().get(pos).getDay().getTimeInMillis();
+			if(diff>=0)
+			koeff = currency.getCosts().get(pos).getCost();
 			pos++;
 		}
 		amount = amount/koeff;
 		return amount;
 	}
+
+	public static double getCost(Calendar date, Currency fromCurrency,Currency toCurrency, double amount) {
+		//TODO tekwir bir yana
+		if (fromCurrency.getId().matches(toCurrency.getId())) return amount;
+		double tokoeff = 1.0;
+		double fromkoeff2 = 1.0;
+		long todiff1 = date.getTimeInMillis() - toCurrency.getCosts().get(0).getDay().getTimeInMillis();
+		long fromdiff = date.getTimeInMillis() - fromCurrency.getCosts().get(0).getDay().getTimeInMillis();
+
+		if (todiff1 < 0) {
+			tokoeff = toCurrency.getCosts().get(0).getCost();
+		}
+		if(fromdiff < 0){
+			fromkoeff2 = fromCurrency.getCosts().get(0).getCost();
+		}
+
+
+		int pos = 0;
+		while (todiff1 >= 0 && pos < toCurrency.getCosts().size()) {
+			todiff1 = date.getTimeInMillis() - toCurrency.getCosts().get(pos).getDay().getTimeInMillis();
+			if(todiff1>=0)
+			tokoeff = toCurrency.getCosts().get(pos).getCost();
+			pos++;
+		}
+		pos=0;
+		while (fromdiff >= 0 && pos < toCurrency.getCosts().size()) {
+			fromdiff = date.getTimeInMillis() - toCurrency.getCosts().get(pos).getDay().getTimeInMillis();
+			if(fromdiff>=0)
+			fromkoeff2 = toCurrency.getCosts().get(pos).getCost();
+			pos++;
+		}
+
+
+		amount = amount/fromkoeff2*tokoeff;
+		return amount;
+	}
+
 	public static double calculateAction(RootCategory category, Calendar date) {
 		double result = 0.0;
 		if (category == null) return 0.0;
@@ -84,4 +123,5 @@ public class PocketAccounterGeneral {
 		result = 100*result/totalAmount;
 		return result;
 	}
+
 }

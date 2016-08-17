@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -224,8 +225,16 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 		final FABIcon fabAccountIcon = (FABIcon) dialogView.findViewById(R.id.fabAccountIcon);
 		final EditText etStartMoney = (EditText) dialogView.findViewById(R.id.etStartMoney);
 		final Spinner spStartMoney = (Spinner) dialog.findViewById(R.id.spStartMoneyCurrency);
+		final Spinner spLimit = (Spinner) dialog.findViewById(R.id.spLimitCurrency);
 		final CheckBox chbLimit = (CheckBox) dialogView.findViewById(R.id.chbLimit);
+		final CheckBox chbNachalniy = (CheckBox) dialogView.findViewById(R.id.checkBox);
 		final EditText etLimit = (EditText) dialogView.findViewById(R.id.etLimit);
+
+		final RelativeLayout goneWhenNacalniyaSumma=(RelativeLayout) dialogView.findViewById(R.id.goneWhenNacalniyaSumma);
+		final RelativeLayout goneWhenLimit=(RelativeLayout) dialogView.findViewById(R.id.goneWhenLimit);
+
+		goneWhenNacalniyaSumma.setVisibility(View.GONE);
+		goneWhenLimit.setVisibility(View.GONE);
 		String[] tempIcons = getResources().getStringArray(R.array.icons);
 		final int[] icons = new int[tempIcons.length];
 		for (int i=0; i<tempIcons.length; i++)
@@ -234,13 +243,28 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
 		otherSymbols.setDecimalSeparator('.');
 		otherSymbols.setGroupingSeparator('.');
-		DecimalFormat format = new DecimalFormat("0.00##", otherSymbols);
+		DecimalFormat format = new DecimalFormat("0.##", otherSymbols);
+
+		String mainCurrencyId = PocketAccounter.financeManager.getMainCurrency().getId();
+		final String[] currencies = new String[PocketAccounter.financeManager.getCurrencies().size()];
+		boolean mainCurrPosFound = false;
+		int mainCurrencyPos = 0;
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, currencies);
+		spStartMoney.setAdapter(adapter);
+		spStartMoney.setSelection(mainCurrencyPos);
+
+		ArrayAdapter<String> adapteret = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, currencies);
+		spLimit.setAdapter(adapteret);
+		spLimit.setSelection(mainCurrencyPos);
+
+
+
 		if (account != null) {
 			etAccountEditName.setText(account.getName());
 			selectedIcon = account.getIcon();
 			etStartMoney.setText(format.format(account.getAmount()));
-			if (account.getCurrency() != null) {
-				String curId = account.getCurrency().getId();
+			if (account.getStartMoneyCurrency() != null) {
+				String curId = account.getStartMoneyCurrency().getId();
 				for (int i = 0; i<PocketAccounter.financeManager.getCurrencies().size(); i++) {
 					if (curId.matches(PocketAccounter.financeManager.getCurrencies().get(i).getId())) {
 						spStartMoney.setSelection(i);
@@ -248,19 +272,40 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 					}
 				}
 			}
+			if (account.getLimitCurrency() != null) {
+				String curId = account.getLimitCurrency().getId();
+				for (int i = 0; i<PocketAccounter.financeManager.getCurrencies().size(); i++) {
+					if (curId.matches(PocketAccounter.financeManager.getCurrencies().get(i).getId())) {
+						spStartMoney.setSelection(i);
+						break;
+					}
+				}
+			}
+
 			chbLimit.setChecked(account.isLimited());
+			chbNachalniy.setChecked(account.getAmount()!=0);
+
 			if (chbLimit.isChecked()) {
-				etLimit.setVisibility(View.VISIBLE);
+				goneWhenLimit.setVisibility(View.VISIBLE);
 			}
 			else {
-				etLimit.setVisibility(View.GONE);
+				goneWhenLimit.setVisibility(View.GONE);
 			}
+
+			if (chbNachalniy.isChecked()) {
+				goneWhenNacalniyaSumma.setVisibility(View.VISIBLE);
+			}
+			else {
+				goneWhenNacalniyaSumma.setVisibility(View.GONE);
+			}
+
+
+			etStartMoney.setText(format.format(account.getAmount()));
 			etLimit.setText(format.format(account.getLimitSum()));
+
 		}
-		String mainCurrencyId = PocketAccounter.financeManager.getMainCurrency().getId();
-		final String[] currencies = new String[PocketAccounter.financeManager.getCurrencies().size()];
-		boolean mainCurrPosFound = false;
-		int mainCurrencyPos = 0;
+
+
 		for (int i=0; i<currencies.length; i++) {
 			currencies[i] = PocketAccounter.financeManager.getCurrencies().get(i).getAbbr();
 			if (mainCurrPosFound) continue;
@@ -269,20 +314,40 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				mainCurrPosFound = true;
 			}
 		}
+		chbNachalniy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked){
+
+					goneWhenNacalniyaSumma.setVisibility(View.VISIBLE);
+				}
+				else{
+
+					goneWhenNacalniyaSumma.setVisibility(View.GONE);
+				}
+
+			}
+		});
+
 		chbLimit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked)
-					etLimit.setVisibility(View.VISIBLE);
-				else
-					etLimit.setVisibility(View.GONE);
+				if (isChecked){
+
+					goneWhenLimit.setVisibility(View.VISIBLE);
+				}
+				else{
+
+					goneWhenLimit.setVisibility(View.GONE);
+				}
 
 			}
 		});
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, currencies);
-		spStartMoney.setAdapter(adapter);
-		spStartMoney.setSelection(mainCurrencyPos);
+
+
+
 		Bitmap temp = BitmapFactory.decodeResource(getResources(), selectedIcon);
 		Bitmap icon = Bitmap.createScaledBitmap(temp, (int)getResources().getDimension(R.dimen.twentyfive_dp), (int)getResources().getDimension(R.dimen.twentyfive_dp), false);
 		fabAccountIcon.setImageBitmap(icon);
@@ -325,36 +390,52 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				if (account != null) {
 					account.setName(etAccountEditName.getText().toString());
 					account.setIcon(selectedIcon);
-					if (etStartMoney.getText().toString().matches(""))
-						account.setAmount(0);
-					else
-						account.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
-					account.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					if(chbNachalniy.isChecked())
+						if (etStartMoney.getText().toString().matches(""))
+							account.setAmount(0);
+						else
+							account.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
+					else account.setAmount(0);
+
+					account.setStartMoneyCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					account.setLimitCurrency(PocketAccounter.financeManager.getCurrencies().get(spLimit.getSelectedItemPosition()));
+
 					account.setLimited(chbLimit.isChecked());
+
 					if (chbLimit.isChecked()) {
 						if (etLimit.getText().toString().matches(""))
 							account.setLimitSum(0);
 						else
 							account.setLimitSum(Double.parseDouble(etLimit.getText().toString()));
 					}
+					else account.setLimitSum(0);
 				}
 				else {
 					Account newAccount = new Account();
 					newAccount.setName(etAccountEditName.getText().toString());
 					newAccount.setIcon(selectedIcon);
 					newAccount.setId("account_"+UUID.randomUUID().toString());
-					if (etStartMoney.getText().toString().matches(""))
-						newAccount.setAmount(0);
-					else
-						newAccount.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
-					newAccount.setCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+
+					if(chbNachalniy.isChecked())
+						if (etStartMoney.getText().toString().matches(""))
+							newAccount.setAmount(0);
+						else
+							newAccount.setAmount(Double.parseDouble(etStartMoney.getText().toString()));
+					else newAccount.setAmount(0);
+
+					newAccount.setStartMoneyCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+					newAccount.setLimitCurrency(PocketAccounter.financeManager.getCurrencies().get(spLimit.getSelectedItemPosition()));
+
+
 					newAccount.setLimited(chbLimit.isChecked());
+
 					if (chbLimit.isChecked()) {
 						if (etLimit.getText().toString().matches(""))
 							newAccount.setLimitSum(0);
 						else
 							newAccount.setLimitSum(Double.parseDouble(etLimit.getText().toString()));
 					}
+					else newAccount.setLimitSum(0);
 					PocketAccounter.financeManager.getAccounts().add(newAccount);
 				}
 				PocketAccounter.financeManager.saveAccounts();

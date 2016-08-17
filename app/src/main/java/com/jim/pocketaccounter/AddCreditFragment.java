@@ -904,9 +904,9 @@ public class AddCreditFragment extends Fragment {
                         if (debtBorrow.isCalculate()) {
                             if (debtBorrow.getAccount().getId().matches(account.getId())) {
                                 if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                    accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
-                                } else {
                                     accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                } else {
+                                    accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
                                 }
                                 for (Recking recking : debtBorrow.getReckings()) {
                                     SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
@@ -917,9 +917,26 @@ public class AddCreditFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                     if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                        accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                        accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
                                     } else {
-                                        accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                        accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                    }
+                                }
+                            } else {
+                                for (Recking recking : debtBorrow.getReckings()) {
+                                    SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                                    Calendar cal = Calendar.getInstance();
+                                    if (recking.getAccountId().matches(account.getId())) {
+                                        try {
+                                            cal.setTime(format.parse(recking.getPayDate()));
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                            accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                        } else {
+                                            accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                        }
                                     }
                                 }
                             }

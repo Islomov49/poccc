@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/one_dp"
         android:background="@color/message_color" />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/five_dp"
@@ -58,11 +58,16 @@
             android:layout_weight="1"
             android:ems="10"
             android:maxLength="25"
+            android:layout_marginLeft="@dimen/five_dp"
             android:textColor="@color/toolbar_text_color"
             android:textSize="@dimen/sixteen_sp"
             android:hint="@string/cat_name"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/ten_dp"/>
+            android:layout_marginRight="@dimen/ten_dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignBottom="@+id/fabAccountIcon"
+            android:layout_alignTop="@+id/fabAccountIcon" />
 
         <com.jim.pocketaccounter.helper.FABIcon
             android:id="@+id/fabAccountIcon"
@@ -70,27 +75,45 @@
             android:layout_height="@dimen/fiftysix_dp"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="@dimen/twelve_dp"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/twelve_dp"
-            android:layout_marginRight="@dimen/ten_dp"/>
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/start_money"
-        android:layout_marginLeft="@dimen/thirtytwo_dp"
-        android:textSize="@dimen/fourteen_dp"/>
-    <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/one_dp"
-        android:background="@color/toolbar_color"
-        android:layout_marginLeft="@dimen/sixteen_dp"
-        android:layout_marginRight="@dimen/sixteen_dp"/>
-    <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Имеется началная сумма"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:textColor="@color/black_for_glavniy_text"
+            android:layout_marginTop="@dimen/sixteen_sp"
+            android:textSize="@dimen/sixteen_sp"
+            android:layout_toLeftOf="@+id/checkBox"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/checkBox" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/goneWhenNacalniyaSumma"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
-        android:layout_marginTop="@dimen/five_dp">
+        >
 
         <EditText
             android:id="@+id/etStartMoney"
@@ -98,34 +121,65 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:layout_marginLeft="@dimen/five_dp"
             android:maxLength="25"
-            android:textColor="@color/toolbar_text_color"
+            android:hint="@string/start_money"
+            android:textColor="@color/black_for_glavniy_text"
             android:textSize="@dimen/sixteen_sp"
             android:inputType="numberDecimal"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/ten_dp"/>
+
+            android:layout_toLeftOf="@+id/spStartMoneyCurrency"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spStartMoneyCurrency"
-            android:layout_gravity="center_vertical"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/etStartMoney"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/five_dp"
         android:layout_marginBottom="@dimen/ten_dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sixteen_dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black_for_glavniy_text"
+            android:text="@string/scetimeet"
+            android:layout_toLeftOf="@+id/chbLimit"
+            android:layout_marginRight="@dimen/sixteen_dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
         <CheckBox
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/limit"
+            android:layout_height="wrap_content"
             android:id="@+id/chbLimit"
-            android:layout_marginRight="@dimen/ten_dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/goneWhenLimit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/sixteen_dp"
+        android:paddingLeft="@dimen/sixteen_dp"
+        android:layout_marginBottom="@dimen/sixteen_dp">
         <EditText
             android:id="@+id/etLimit"
             android:layout_width="wrap_content"
@@ -133,13 +187,27 @@
             android:layout_weight="1"
             android:ems="10"
             android:maxLength="25"
+            android:layout_marginLeft="@dimen/five_dp"
             android:textColor="@color/toolbar_text_color"
             android:textSize="@dimen/sixteen_sp"
             android:hint="@string/limit_sum"
             android:inputType="numberDecimal"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/ten_dp"
-            android:visibility="gone"
-            />
-    </LinearLayout>
+            android:visibility="visible"
+            android:layout_toLeftOf="@+id/spLimitCurrency"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spLimitCurrency"
+            android:layout_gravity="center_vertical"
+            android:gravity="right"
+            android:layout_marginLeft="@dimen/sixteen_dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/etLimit"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+
 </LinearLayout>

@@ -6,7 +6,7 @@ public class Account {
 	private String name, id;
 	private int icon;
 	private double amount;
-	private Currency currency;
+	private Currency startMoneyCurrency, limitCurrency;
 	private boolean limited;
 	private double limitSum;
 	private Calendar calendar;
@@ -14,8 +14,19 @@ public class Account {
 	public void setCalendar(Calendar calendar) {this.calendar = calendar;}
 	public double getAmount() {return amount;}
 	public void setAmount(double amount) {this.amount = amount;}
-	public Currency getCurrency() {return currency;}
-	public void setCurrency(Currency currency) {this.currency = currency;}
+
+	public Currency getStartMoneyCurrency() {
+		return startMoneyCurrency;
+	}
+	public void setStartMoneyCurrency(Currency startMoneyCurrency) {
+		this.startMoneyCurrency = startMoneyCurrency;
+	}
+	public Currency getLimitCurrency() {
+		return limitCurrency;
+	}
+	public void setLimitCurrency(Currency limitCurrency) {
+		this.limitCurrency = limitCurrency;
+	}
 	public String getName() {
 		return name;
 	}

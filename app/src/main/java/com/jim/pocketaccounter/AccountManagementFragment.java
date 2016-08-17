@@ -569,7 +569,7 @@ public class AccountManagementFragment extends Fragment {
                 boolean currFound = false;
                 int curPos = 0;
                 for (int k=0; k<accountManagementObjects.get(pos).getCurAmounts().size(); k++) {
-                    if (accountManagementObjects.get(pos).getCurAmounts().get(k).getCurrency().getId().matches(PocketAccounter.financeManager.getAccounts().get(i).getCurrency().getId())) {
+                    if (accountManagementObjects.get(pos).getCurAmounts().get(k).getCurrency().getId().matches(PocketAccounter.financeManager.getAccounts().get(i).getStartMoneyCurrency().getId())) {
                         currFound = true;
                         curPos = k;
                         break;
@@ -582,7 +582,7 @@ public class AccountManagementFragment extends Fragment {
                 }
                 else {
                     CurrencyAmount currencyAmount = new CurrencyAmount();
-                    currencyAmount.setCurrency(PocketAccounter.financeManager.getAccounts().get(i).getCurrency());
+                    currencyAmount.setCurrency(PocketAccounter.financeManager.getAccounts().get(i).getStartMoneyCurrency());
                     currencyAmount.setAmount(PocketAccounter.financeManager.getAccounts().get(i).getAmount());
                     accountManagementObjects.get(pos).getCurAmounts().add(currencyAmount);
                 }
@@ -591,7 +591,7 @@ public class AccountManagementFragment extends Fragment {
                 AccountManagementObject accountManagementObject = new AccountManagementObject();
                 accountManagementObject.setAccount(PocketAccounter.financeManager.getAccounts().get(i));
                 CurrencyAmount currencyAmount = new CurrencyAmount();
-                currencyAmount.setCurrency(PocketAccounter.financeManager.getAccounts().get(i).getCurrency());
+                currencyAmount.setCurrency(PocketAccounter.financeManager.getAccounts().get(i).getStartMoneyCurrency());
                 currencyAmount.setAmount(PocketAccounter.financeManager.getAccounts().get(i).getAmount());
                 ArrayList<CurrencyAmount> currencyAmounts = new ArrayList<>();
                 currencyAmounts.add(currencyAmount);

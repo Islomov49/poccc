@@ -48,7 +48,8 @@
             android:name=".PocketAccounter"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -83,9 +84,12 @@
         <activity
             android:name=".widget.CalcActivity"
             android:label=""
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleInstance"
-            android:noHistory="true" />
-        <activity android:name=".PhotoViewActivity"
+            />
+        <activity
+            android:name=".PhotoViewActivity"
             android:screenOrientation="portrait"></activity>
     </application>
 

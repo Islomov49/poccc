@@ -2,10 +2,13 @@ package com.jim.pocketaccounter.widget;
 
 
     import android.app.Dialog;
+    import android.appwidget.AppWidgetManager;
     import android.content.Context;
     import android.content.DialogInterface;
     import android.content.Intent;
+    import android.content.SharedPreferences;
     import android.content.pm.PackageManager;
+    import android.content.res.Resources;
     import android.database.Cursor;
     import android.graphics.Bitmap;
     import android.graphics.BitmapFactory;
@@ -15,9 +18,9 @@ package com.jim.pocketaccounter.widget;
     import android.os.Build;
     import android.os.Bundle;
     import android.os.Handler;
+    import android.preference.PreferenceManager;
     import android.provider.MediaStore;
     import android.support.v4.app.ActivityCompat;
-    import android.support.v4.app.Fragment;
     import android.support.v4.app.FragmentManager;
     import android.support.v4.content.ContextCompat;
     import android.support.v7.app.AlertDialog;
@@ -25,12 +28,10 @@ package com.jim.pocketaccounter.widget;
     import android.support.v7.widget.ActionBarOverlayLayout;
     import android.support.v7.widget.LinearLayoutManager;
     import android.support.v7.widget.RecyclerView;
+    import android.support.v7.widget.Toolbar;
     import android.util.DisplayMetrics;
     import android.util.Log;
-    import android.view.LayoutInflater;
     import android.view.View;
-    import android.view.View.OnClickListener;
-    import android.view.ViewGroup;
     import android.view.ViewTreeObserver;
     import android.view.Window;
     import android.view.animation.Animation;
@@ -48,12 +49,15 @@ package com.jim.pocketaccounter.widget;
     import android.widget.Toast;
 
     import com.jim.pocketaccounter.R;
+    import com.jim.pocketaccounter.RecordEditFragment;
+    import com.jim.pocketaccounter.SettingsActivity;
     import com.jim.pocketaccounter.credit.CreditDetials;
     import com.jim.pocketaccounter.credit.ReckingCredit;
     import com.jim.pocketaccounter.debt.DebtBorrow;
     import com.jim.pocketaccounter.debt.Recking;
     import com.jim.pocketaccounter.finance.Account;
     import com.jim.pocketaccounter.finance.Currency;
+    import com.jim.pocketaccounter.finance.FinanceManager;
     import com.jim.pocketaccounter.finance.FinanceRecord;
     import com.jim.pocketaccounter.finance.RecordAccountAdapter;
     import com.jim.pocketaccounter.finance.RecordCategoryAdapter;
@@ -95,11 +99,10 @@ package com.jim.pocketaccounter.widget;
     public class CalcActivity extends AppCompatActivity implements View.OnClickListener {
         private boolean keyforback=false;
         private TextView tvRecordEditDisplay;
-        private ImageView ivToolbarMostRight, ivRecordEditCategory, ivRecordEditSubCategory, ivToolbaExcel;
+        private ImageView ivRecordEditCategory, ivRecordEditSubCategory;
         private Spinner spRecordEdit, spToolbar;
         private RootCategory category;
         private SubCategory subCategory;
-        private FinanceRecord record;
         private Currency currency;
         private Account account;
         private Calendar date;
@@ -118,110 +121,78 @@ package com.jim.pocketaccounter.widget;
         private String oraliqComment="";
         boolean keykeboard=false;
         private final int PERMISSION_READ_STORAGE = 6;
-        Context contex;
         private boolean keyForDeleteAllPhotos=true;
+        boolean isCalcLayoutOpen=false;
         static final int REQUEST_IMAGE_CAPTURE = 112;
         private String uid_code;
         RecyclerView myListPhoto;
         ArrayList<PhotoDetails> myTickets;
         ArrayList<PhotoDetails> myTicketsFromBackRoll;
         PhotoAdapter myTickedAdapter;
-        boolean fromEdit=false;
         boolean openAddingDialog=false;
-        View mainView;
+        FinanceManager financeManager;
+        private int WIDGET_ID;
+        LinearLayout mainView;
+        public static String KEY_FOR_INSTALAZING="key_for_init";
 
-
-
-        public RecordEditFragment(RootCategory category, Calendar date, FinanceRecord record, int parent) {
-            this.parent = parent;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_calc);
+            mainView=(LinearLayout) findViewById(R.id.llRoot);
+            financeManager=new FinanceManager(this);
+            comment = (TextView) findViewById(R.id.textView18);
+            comment_add = (EditText) findViewById(R.id.comment_add);
+            date=Calendar.getInstance();
             DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
             otherSymbols.setDecimalSeparator('.');
             otherSymbols.setGroupingSeparator('.');
-            decimalFormat = new DecimalFormat("0.00##", otherSymbols);
-            if (category != null) {
-                for (int i = 0; i < PocketAccounter.financeManager.getCategories().size(); i++) {
-                    if (category.getId().matches(PocketAccounter.financeManager.getCategories().get(i).getId()))
-                        this.category = PocketAccounter.financeManager.getCategories().get(i);
-                }
-                this.subCategory = null;
-            } else {
-                this.category = record.getCategory();
-                this.subCategory = record.getSubCategory();
-            }
-            this.date = (Calendar) date.clone();
-            this.record = record;
-
-        }
-        public  interface OpenIntentFromAdapter{
-            void startActivityFromFragmentForResult(Intent intent);
-        }
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            setRetainInstance(true);
-            mainView= inflater.inflate(R.layout.record_edit_modern, container, false);
-            contex=getActivity();
-            comment = (TextView) mainView.findViewById(R.id.textView18);
-            comment_add = (EditText) mainView.findViewById(R.id.comment_add);
-
+            decimalFormat = new DecimalFormat("0.##", otherSymbols);
 
 
             uid_code= "record_" + UUID.randomUUID().toString();
 
-            buttonClick = AnimationUtils.loadAnimation(getContext(), R.anim.button_click);
-            ((PocketAccounter) getContext()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            ((PocketAccounter) getContext()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back_button);
-            PocketAccounter.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (openAddingDialog){
-                        closeLayout();
-                        return;
-                    }
-                    else {
-                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if(imm==null)
-                            return;
-                        imm.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
 
-                        (new Handler()).postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                ((PocketAccounter) getContext()).getSupportFragmentManager().popBackStack();
-                                if (parent == PocketAccounterGeneral.MAIN) {
-                                    ((PocketAccounter) getContext()).initialize(date);
-                                } else {
-                                    ((PocketAccounter) getContext()).replaceFragment(new RecordDetailFragment(date));
-                                }
-
-                            }
-                        }, 100);
-                    }
+            category = new RootCategory();
+            String catId = getIntent().getStringExtra(WidgetKeys.KEY_FOR_INTENT_ID);
+            WIDGET_ID = getIntent().getIntExtra(WidgetKeys.ACTION_WIDGET_RECEIVER_CHANGE_DIAGRAM_ID,  AppWidgetManager.INVALID_APPWIDGET_ID);
+            for (int i=0; i<financeManager.getCategories().size(); i++) {
+                if (financeManager.getCategories().get(i).getId().matches(catId)) {
+                    category = financeManager.getCategories().get(i);
+                    break;
                 }
-            });
-            PocketAccounter.toolbar.setTitle("");
-            PocketAccounter.toolbar.setSubtitle("");
-            spRecordEdit = (Spinner) mainView.findViewById(R.id.spRecordEdit);
-            spToolbar = (Spinner) PocketAccounter.toolbar.findViewById(R.id.spToolbar);
+            }
+
+
+
+            buttonClick = AnimationUtils.loadAnimation(CalcActivity.this, R.anim.button_click);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            toolbar.setTitle("");
+            toolbar.setSubtitle("");
+            spRecordEdit = (Spinner) findViewById(R.id.spRecordEdit);
+            spToolbar = (Spinner) toolbar.findViewById(R.id.spToolbar);
             spToolbar.setVisibility(View.VISIBLE);
-            RecordAccountAdapter accountAdapter = new RecordAccountAdapter(getContext(), PocketAccounter.financeManager.getAccounts());
+            RecordAccountAdapter accountAdapter = new RecordAccountAdapter(CalcActivity.this, financeManager.getAccounts());
             spToolbar.setAdapter(accountAdapter);
             spToolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    account = PocketAccounter.financeManager.getAccounts().get(position);
+                    account = financeManager.getAccounts().get(position);
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-            final String[] currencies = new String[PocketAccounter.financeManager.getCurrencies().size()];
-            for (int i = 0; i < PocketAccounter.financeManager.getCurrencies().size(); i++)
-                currencies[i] = PocketAccounter.financeManager.getCurrencies().get(i).getAbbr();
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_single_item_calc, currencies);
+            final String[] currencies = new String[financeManager.getCurrencies().size()];
+            for (int i = 0; i < financeManager.getCurrencies().size(); i++)
+                currencies[i] = financeManager.getCurrencies().get(i).getAbbr();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalcActivity.this, R.layout.spinner_single_item_calc, currencies);
             spRecordEdit.setAdapter(adapter);
-            for (int i = 0; i < PocketAccounter.financeManager.getCurrencies().size(); i++) {
-                if (PocketAccounter.financeManager.getCurrencies().get(i).getId().matches(PocketAccounter.financeManager.getMainCurrency().getId())) {
+            for (int i = 0; i < financeManager.getCurrencies().size(); i++) {
+                if (financeManager.getCurrencies().get(i).getId().matches(financeManager.getMainCurrency().getId())) {
                     spRecordEdit.setSelection(i);
                     break;
                 }
@@ -229,91 +200,52 @@ package com.jim.pocketaccounter.widget;
             spRecordEdit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    currency = PocketAccounter.financeManager.getCurrencies().get(position);
+                    currency = financeManager.getCurrencies().get(position);
                 }
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                 }
             });
-            ivToolbarMostRight = (ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarMostRight);
-            ivToolbarMostRight.setVisibility(View.GONE);
 
 
-            ivToolbaExcel = (ImageView) PocketAccounter.toolbar.findViewById(R.id.ivToolbarExcel);
-            ivToolbaExcel.setVisibility(View.GONE);
-            ivRecordEditCategory = (ImageView) mainView.findViewById(R.id.ivRecordEditCategory);
-            ivRecordEditSubCategory = (ImageView) mainView.findViewById(R.id.ivRecordEditSubCategory);
-            tvRecordEditDisplay = (TextView) mainView.findViewById(R.id.tvRecordEditDisplay);
-            rlCategory = (RelativeLayout) mainView.findViewById(R.id.rlCategory);
+            ivRecordEditCategory = (ImageView) findViewById(R.id.ivRecordEditCategory);
+            ivRecordEditSubCategory = (ImageView) findViewById(R.id.ivRecordEditSubCategory);
+            tvRecordEditDisplay = (TextView) findViewById(R.id.tvRecordEditDisplay);
+            rlCategory = (RelativeLayout) findViewById(R.id.rlCategory);
             rlCategory.setOnClickListener(this);
-            rlSubCategory = (RelativeLayout) mainView.findViewById(R.id.rlSubcategory);
+            rlSubCategory = (RelativeLayout) findViewById(R.id.rlSubcategory);
             rlSubCategory.setOnClickListener(this);
-            setNumericOnClickListener(mainView);
-            setOperatorOnClickListener(mainView);
-            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
-            otherSymbols.setDecimalSeparator('.');
-            otherSymbols.setGroupingSeparator('.');
-            DecimalFormat decimalFormat = new DecimalFormat("0.00", otherSymbols);
+            setNumericOnClickListener();
+            setOperatorOnClickListener();
             if (category != null) {
                 ivRecordEditSubCategory.setImageResource(R.drawable.category_not_selected);
-                int resId = getResources().getIdentifier(category.getIcon(), "drawable", getContext().getPackageName());
+                int resId = getResources().getIdentifier(category.getIcon(), "drawable", CalcActivity.this.getPackageName());
 
                 ivRecordEditCategory.setImageResource(resId);
             }
-            if (record != null) {
-                fromEdit=true;
 
-                int resId = getResources().getIdentifier(record.getCategory().getIcon(), "drawable", getContext().getPackageName());
-                ivRecordEditCategory.setImageResource(resId);
-                if (record.getSubCategory() != null) {
-                    resId = getResources().getIdentifier(record.getSubCategory().getIcon(), "drawable", getContext().getPackageName());
-                    ivRecordEditSubCategory.setImageResource(resId);
-                }
-                else
-                    ivRecordEditSubCategory.setImageResource(R.drawable.category_not_selected);
-                tvRecordEditDisplay.setText(decimalFormat.format(record.getAmount()));
-                for (int i = 0; i < PocketAccounter.financeManager.getCurrencies().size(); i++) {
-                    if (PocketAccounter.financeManager.getCurrencies().get(i).getId().matches(record.getCurrency().getId())) {
-                        spRecordEdit.setSelection(i);
-                        break;
-                    }
-                }
-                for (int i = 0; i < PocketAccounter.financeManager.getAccounts().size(); i++) {
-                    if (PocketAccounter.financeManager.getAccounts().get(i).getId().matches(record.getAccount().getId())) {
-                        spToolbar.setSelection(i);
-                        break;
-                    }
-                }
-                myTickets= (ArrayList<PhotoDetails>) record.getAllTickets().clone();
-                myTicketsFromBackRoll= (ArrayList<PhotoDetails>) myTickets.clone();
-                if(record.getComment()!=null&&!record.getComment().matches("")){
-                    oraliqComment=record.getComment();
-                    comment.setText(oraliqComment);
-                    comment_add.setText(oraliqComment);
-                }
-            }
             if(myTickets==null)
                 myTickets=new ArrayList<>();
             if(myTicketsFromBackRoll==null)
                 myTicketsFromBackRoll=new ArrayList<>();
             LinearLayoutManager layoutManager
-                    = new LinearLayoutManager(contex, LinearLayoutManager.HORIZONTAL, false);
-            myListPhoto = (RecyclerView) mainView.findViewById(R.id.recycler_calc);
+                    = new LinearLayoutManager(CalcActivity.this, LinearLayoutManager.HORIZONTAL, false);
+            myListPhoto = (RecyclerView) findViewById(R.id.recycler_calc);
             myListPhoto.setLayoutManager(layoutManager);
-            myTickedAdapter =new PhotoAdapter(myTickets,contex, new com.jim.pocketaccounter.RecordEditFragment.OpenIntentFromAdapter() {
+
+            myTickedAdapter =new PhotoAdapter(myTickets,CalcActivity.this, new RecordEditFragment.OpenIntentFromAdapter() {
                 @Override
                 public void startActivityFromFragmentForResult(Intent intent) {
-                    PocketAccounter.openActivity=true;
+
                     startActivityForResult(intent,REQUEST_DELETE_PHOTOS);
                 }
             });
             myListPhoto.setAdapter(myTickedAdapter);
 
 
-            return mainView;
         }
 
-        private void setNumericOnClickListener(View view) {
+        private void setNumericOnClickListener() {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -368,10 +300,10 @@ package com.jim.pocketaccounter.widget;
                 }
             };
             for (int id:numericButtons)
-                view.findViewById(id).setOnClickListener(listener);
+               findViewById(id).setOnClickListener(listener);
         }
 
-        private void setOperatorOnClickListener(final View view) {
+        private void setOperatorOnClickListener() {
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -406,8 +338,8 @@ package com.jim.pocketaccounter.widget;
                 }
             };
             for (int id : operatorButtons)
-                view.findViewById(id).setOnClickListener(listener);
-            view.findViewById(R.id.rlDot).setOnClickListener(new View.OnClickListener() {
+                findViewById(id).setOnClickListener(listener);
+           findViewById(R.id.rlDot).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     v.startAnimation(buttonClick);
@@ -419,26 +351,26 @@ package com.jim.pocketaccounter.widget;
                     }
                 }
             });
-            view.findViewById(R.id.choose_photo).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.choose_photo).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CalcActivity.this);
                     builder.setTitle("Choose type adding")
                             .setItems(R.array.adding_ticket_type, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if(which==0){
-                                        int permission = ContextCompat.checkSelfPermission(getContext(),
+                                        int permission = ContextCompat.checkSelfPermission(CalcActivity.this,
                                                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                         if (permission != PackageManager.PERMISSION_GRANTED) {
-                                            if (ActivityCompat.shouldShowRequestPermissionRationale(((PocketAccounter) getContext()),
+                                            if (ActivityCompat.shouldShowRequestPermissionRationale(( CalcActivity.this),
                                                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
+                                                android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(CalcActivity.this);
                                                 builder.setMessage("Permission to access the SD-CARD is required for this app to Download PDF.")
                                                         .setTitle("Permission required");
 
                                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int id) {
-                                                        ActivityCompat.requestPermissions((PocketAccounter) getContext(),
+                                                        ActivityCompat.requestPermissions( CalcActivity.this,
                                                                 new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                                 PERMISSION_READ_STORAGE);
                                                     }
@@ -447,7 +379,7 @@ package com.jim.pocketaccounter.widget;
                                                 dialogik.show();
 
                                             } else {
-                                                ActivityCompat.requestPermissions((PocketAccounter) getContext(),
+                                                ActivityCompat.requestPermissions( CalcActivity.this,
                                                         new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                         PERMISSION_READ_STORAGE);
                                             }
@@ -457,12 +389,11 @@ package com.jim.pocketaccounter.widget;
                                     }
                                     else if(which==1){
                                         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                        if (takePictureIntent.resolveActivity(contex.getPackageManager()) != null) {
+                                        if (takePictureIntent.resolveActivity(CalcActivity.this.getPackageManager()) != null) {
 
-                                            File f = new File(contex.getExternalFilesDir(null),"temp.jpg");
+                                            File f = new File(CalcActivity.this.getExternalFilesDir(null),"temp.jpg");
 
                                             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                                            PocketAccounter.openActivity=true;
                                             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
                                         }
@@ -475,7 +406,7 @@ package com.jim.pocketaccounter.widget;
 
                 }
             });
-            view.findViewById(R.id.rlBackspaceSign).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.rlBackspaceSign).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     v.startAnimation(buttonClick);
@@ -504,19 +435,19 @@ package com.jim.pocketaccounter.widget;
             comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    LinearLayout linbutview=(LinearLayout) view.findViewById(R.id.numbersbut);
+                    LinearLayout linbutview=(LinearLayout) findViewById(R.id.numbersbut);
                     TransitionManager.beginDelayedTransition(linbutview);
                     linbutview.setVisibility(View.GONE);
                     keyforback=false;
                     openAddingDialog=true;
-                    PocketAccounter.isCalcLayoutOpen=true;
+                    isCalcLayoutOpen=true;
                     (new Handler()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             comment_add.setFocusableInTouchMode(true);
                             comment_add.requestFocus();
-                            final InputMethodManager inputMethodManager = (InputMethodManager) getContext()
-                                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+                            final InputMethodManager inputMethodManager = (InputMethodManager) CalcActivity.this
+                                    .getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
                             if(inputMethodManager==null)
                                 return;
                             inputMethodManager.showSoftInput(comment_add, InputMethodManager.SHOW_IMPLICIT);
@@ -526,16 +457,15 @@ package com.jim.pocketaccounter.widget;
 
                 }
             });
-            view.findViewById(R.id.savesecbut).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.savesecbut).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     keyForDeleteAllPhotos=false;
                     if(keykeboard){
-                        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        if(imm==null)
-                            return;
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
-                        PocketAccounter.isCalcLayoutOpen=false;
+                        InputMethodManager imm = (InputMethodManager)CalcActivity.this.getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
+
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                        isCalcLayoutOpen=false;
 
                         (new Handler()).postDelayed(new Runnable() {
                             @Override
@@ -560,13 +490,13 @@ package com.jim.pocketaccounter.widget;
             });
 
 
-
-            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            mainView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    int heightDiff = view.getRootView().getHeight() - view.getHeight();
-                    if (heightDiff > PocketAccounter.convertDpToPixel( 200,contex)) { // if more than 200 dp, it's probably a keyboard...
-                        if(keykeboard!=true){
+                    int heightDiff = mainView.getRootView().getHeight() - mainView.getHeight();
+                    if (heightDiff > convertDpToPixel( 200,CalcActivity.this)) { // if more than 200 dp, it's probably a keyboard...
+                        if(!keykeboard){
+                            Log.d("test", "onGlobalLayout: KeyBoardOpen");
 
                             keykeboard=true;
 
@@ -576,7 +506,7 @@ package com.jim.pocketaccounter.widget;
                                 public void run() {
 
 
-                                    RelativeLayout headermain= (RelativeLayout) view.findViewById(R.id.headermain);
+                                    RelativeLayout headermain= (RelativeLayout) findViewById(R.id.headermain);
                                     AutoTransition cus=new AutoTransition();
                                     cus.setDuration(200);
                                     cus.setStartDelay(0);
@@ -586,13 +516,13 @@ package com.jim.pocketaccounter.widget;
 
 
                                     comment.setVisibility(View.GONE);
-                                    view.findViewById(R.id.addphotopanel).setVisibility(View.GONE);
-                                    view.findViewById(R.id.pasdigi).setVisibility(View.GONE);
+                                    findViewById(R.id.addphotopanel).setVisibility(View.GONE);
+                                    findViewById(R.id.pasdigi).setVisibility(View.GONE);
                                     myListPhoto.setVisibility(View.GONE);
 
-                                    view.findViewById(R.id.scroleditext).setVisibility(View.VISIBLE);
-                                    view.findViewById(R.id.commenee).setVisibility(View.VISIBLE);
-                                    view.findViewById(R.id.savepanel).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.scroleditext).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.commenee).setVisibility(View.VISIBLE);
+                                    findViewById(R.id.savepanel).setVisibility(View.VISIBLE);
                                 }
                             }, 50);
 
@@ -603,6 +533,7 @@ package com.jim.pocketaccounter.widget;
                     }
                     else {
                         if(keykeboard){
+                            Log.d("test", "onGlobalLayout: KeyBoardClose");
                             keykeboard=false;
 
                             if (keyforback){
@@ -614,7 +545,7 @@ package com.jim.pocketaccounter.widget;
                                         AutoTransition cus=new AutoTransition();
                                         cus.setDuration(300);
                                         cus.setStartDelay(0);
-                                        LinearLayout linbutview=(LinearLayout) view.findViewById(R.id.numbersbut);
+                                        LinearLayout linbutview=(LinearLayout) findViewById(R.id.numbersbut);
                                         TransitionManager.beginDelayedTransition(linbutview,cus);
                                         TransitionManager.beginDelayedTransition(myListPhoto);
                                         myListPhoto.setVisibility(View.VISIBLE);
@@ -636,13 +567,13 @@ package com.jim.pocketaccounter.widget;
 
 
 
-            view.findViewById(R.id.addcomment).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.addcomment).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openAddingDialog=false;
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
                         if(keykeboard) {
-                            RelativeLayout headermain = (RelativeLayout) view.findViewById(R.id.headermain);
+                            RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                             keyforback = true;
 
                             (new Handler()).postDelayed(new Runnable() {
@@ -650,10 +581,10 @@ package com.jim.pocketaccounter.widget;
                                 public void run() {
 
                                     try {
-                                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        InputMethodManager imm = (InputMethodManager) CalcActivity.this.getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
                                         if(imm==null)
                                             return;
-                                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                        imm.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
                                     }
                                     catch (Exception o){
                                         o.printStackTrace();
@@ -662,14 +593,14 @@ package com.jim.pocketaccounter.widget;
                                 }
                             }, 120);
 
-                            PocketAccounter.isCalcLayoutOpen=false;
+                            isCalcLayoutOpen=false;
                             comment.setVisibility(View.VISIBLE);
-                            view.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                            view.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                            findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                            findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
-                            view.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                            view.findViewById(R.id.commenee).setVisibility(View.GONE);
-                            view.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                            findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                            findViewById(R.id.commenee).setVisibility(View.GONE);
+                            findViewById(R.id.savepanel).setVisibility(View.GONE);
                             oraliqComment = comment_add.getText().toString();
                             if (!oraliqComment.matches("")) {
                                 comment.setText(oraliqComment);
@@ -677,10 +608,10 @@ package com.jim.pocketaccounter.widget;
                                 comment.setText(getString(R.string.add_comment));
                             }
 
-                            headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                            headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
                         }
                         else{
-                            RelativeLayout headermain = (RelativeLayout) view.findViewById(R.id.headermain);
+                            RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                             keyforback = true;
 
 
@@ -689,7 +620,7 @@ package com.jim.pocketaccounter.widget;
                                 public void run() {
                                     try {
 
-                                        LinearLayout linbutview=(LinearLayout) view.findViewById(R.id.numbersbut);
+                                        LinearLayout linbutview=(LinearLayout) findViewById(R.id.numbersbut);
                                         myListPhoto.setVisibility(View.VISIBLE);
                                         linbutview.setVisibility(View.VISIBLE);
                                     }
@@ -703,13 +634,13 @@ package com.jim.pocketaccounter.widget;
 
 
                             comment.setVisibility(View.VISIBLE);
-                            view.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                            view.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                            findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                            findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
 
-                            view.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                            view.findViewById(R.id.commenee).setVisibility(View.GONE);
-                            view.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                            findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                            findViewById(R.id.commenee).setVisibility(View.GONE);
+                            findViewById(R.id.savepanel).setVisibility(View.GONE);
                             oraliqComment = comment_add.getText().toString();
                             if (!oraliqComment.matches("")) {
                                 comment.setText(oraliqComment);
@@ -717,17 +648,18 @@ package com.jim.pocketaccounter.widget;
                                 comment.setText(getString(R.string.add_comment));
                             }
 
-                            headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                            headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
 
                         }
                     }
                     else
                     if(keykeboard) {
-                        RelativeLayout headermain = (RelativeLayout) view.findViewById(R.id.headermain);
+                        Log.d("testtt", "onClick: ");
+                        RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                         AutoTransition cus = new AutoTransition();
                         keyforback = true;
 
-                        PocketAccounter.isCalcLayoutOpen=false;
+                        isCalcLayoutOpen=false;
                         cus.addListener(new Transition.TransitionListener() {
                             @Override
                             public void onTransitionStart(Transition transition) {
@@ -736,19 +668,19 @@ package com.jim.pocketaccounter.widget;
 
                             @Override
                             public void onTransitionEnd(Transition transition) {
-                                if(mainView==null){
-                                    return;
-                                }
-
+//                                if(mainView==null){
+//                                    return;
+//                                }
+                                Log.d("testtt", "onClick: pip");
 
                                 (new Handler()).postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         try {
-                                            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            InputMethodManager imm = (InputMethodManager) CalcActivity.this.getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
                                             if(imm==null)
                                                 return;
-                                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                            imm.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
 
                                         }
                                         catch (Exception o){
@@ -779,12 +711,12 @@ package com.jim.pocketaccounter.widget;
                         cus.setStartDelay(0);
                         TransitionManager.beginDelayedTransition(headermain, cus);
                         comment.setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                        findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                        findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
-                        view.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                        view.findViewById(R.id.commenee).setVisibility(View.GONE);
-                        view.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                        findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                        findViewById(R.id.commenee).setVisibility(View.GONE);
+                        findViewById(R.id.savepanel).setVisibility(View.GONE);
                         oraliqComment = comment_add.getText().toString();
                         if (!oraliqComment.matches("")) {
                             comment.setText(oraliqComment);
@@ -792,10 +724,10 @@ package com.jim.pocketaccounter.widget;
                             comment.setText(getString(R.string.add_comment));
                         }
 
-                        headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                        headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
                     }
                     else{
-                        RelativeLayout headermain = (RelativeLayout) view.findViewById(R.id.headermain);
+                        RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                         AutoTransition cus = new AutoTransition();
                         keyforback = true;
                         cus.addListener(new Transition.TransitionListener() {
@@ -806,15 +738,15 @@ package com.jim.pocketaccounter.widget;
 
                             @Override
                             public void onTransitionEnd(Transition transition) {
-                                if(mainView==null){
-                                    return;
-                                }
+//                                if(mainView==null){
+//                                    return;
+//                                }
                                 try {
 
                                     AutoTransition cus=new AutoTransition();
                                     cus.setDuration(300);
                                     cus.setStartDelay(0);
-                                    LinearLayout linbutview=(LinearLayout) view.findViewById(R.id.numbersbut);
+                                    LinearLayout linbutview=(LinearLayout) findViewById(R.id.numbersbut);
                                     TransitionManager.beginDelayedTransition(myListPhoto);
                                     myListPhoto.setVisibility(View.VISIBLE);
                                     TransitionManager.beginDelayedTransition(linbutview,cus);
@@ -845,13 +777,13 @@ package com.jim.pocketaccounter.widget;
                         cus.setStartDelay(0);
                         TransitionManager.beginDelayedTransition(headermain, cus);
                         comment.setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                        view.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                        findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                        findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
 
-                        view.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                        view.findViewById(R.id.commenee).setVisibility(View.GONE);
-                        view.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                        findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                        findViewById(R.id.commenee).setVisibility(View.GONE);
+                        findViewById(R.id.savepanel).setVisibility(View.GONE);
                         oraliqComment = comment_add.getText().toString();
                         if (!oraliqComment.matches("")) {
                             comment.setText(oraliqComment);
@@ -859,7 +791,7 @@ package com.jim.pocketaccounter.widget;
                             comment.setText(getString(R.string.add_comment));
                         }
 
-                        headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                        headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
 
                     }
 
@@ -867,7 +799,7 @@ package com.jim.pocketaccounter.widget;
                 }
             });
 
-            view.findViewById(R.id.rlBackspaceSign).setOnLongClickListener(new View.OnLongClickListener() {
+            findViewById(R.id.rlBackspaceSign).setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     v.startAnimation(buttonClick);
@@ -879,15 +811,15 @@ package com.jim.pocketaccounter.widget;
                     return true;
                 }
             });
-            view.findViewById(R.id.imOK).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.imOK).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
                     keyForDeleteAllPhotos=false;
                     if(keykeboard){
-                        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager)CalcActivity.this.getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
                         if(imm==null)
                             return;
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 
                         (new Handler()).postDelayed(new Runnable() {
                             @Override
@@ -911,7 +843,7 @@ package com.jim.pocketaccounter.widget;
 
                 }
             });
-            view.findViewById(R.id.rlEqualSign).setOnClickListener(new View.OnClickListener() {
+            findViewById(R.id.rlEqualSign).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     v.startAnimation(buttonClick);
@@ -939,7 +871,6 @@ package com.jim.pocketaccounter.widget;
             Intent i = new Intent(
                     Intent.ACTION_PICK,
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            PocketAccounter.openActivity=true;
             startActivityForResult(i, RESULT_LOAD_IMAGE);
         }
 
@@ -990,7 +921,7 @@ package com.jim.pocketaccounter.widget;
             if (requestCode == RESULT_LOAD_IMAGE && null != data) {
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                Cursor cursor = CalcActivity.this.getContentResolver().query(selectedImage,
                         filePathColumn, null, null, null);
                 cursor.moveToFirst();
 
@@ -1114,7 +1045,7 @@ package com.jim.pocketaccounter.widget;
             }
             if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
-                File fileDir = new File(contex.getExternalFilesDir(null),"temp.jpg");
+                File fileDir = new File(CalcActivity.this.getExternalFilesDir(null),"temp.jpg");
 
                 if(!fileDir.exists()){
                     return;
@@ -1237,8 +1168,8 @@ package com.jim.pocketaccounter.widget;
             view.startAnimation(buttonClick);
             switch (view.getId()) {
                 case R.id.rlCategory:
-                    final Dialog dialog = new Dialog(getActivity());
-                    View dialogView = getActivity().getLayoutInflater().inflate(R.layout.category_choose_list, null);
+                    final Dialog dialog = new Dialog(CalcActivity.this);
+                    View dialogView = CalcActivity.this.getLayoutInflater().inflate(R.layout.category_choose_list, null);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(dialogView);
                     ListView lvCategoryChoose = (ListView) dialogView.findViewById(R.id.lvCategoryChoose);
@@ -1247,21 +1178,21 @@ package com.jim.pocketaccounter.widget;
                     String[] items = new String[2];
                     items[0] = expanse;
                     items[1] = income;
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, items);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(CalcActivity.this, android.R.layout.simple_list_item_1, items);
                     lvCategoryChoose.setAdapter(adapter);
                     lvCategoryChoose.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                             ArrayList<RootCategory> categories = new ArrayList<RootCategory>();
                             if (position == 0) {
-                                for (int i = 0; i < PocketAccounter.financeManager.getCategories().size(); i++) {
-                                    if (PocketAccounter.financeManager.getCategories().get(i).getType() == PocketAccounterGeneral.EXPENSE)
-                                        categories.add(PocketAccounter.financeManager.getCategories().get(i));
+                                for (int i = 0; i < financeManager.getCategories().size(); i++) {
+                                    if (financeManager.getCategories().get(i).getType() == PocketAccounterGeneral.EXPENSE)
+                                        categories.add(financeManager.getCategories().get(i));
                                 }
                             } else {
-                                for (int i = 0; i < PocketAccounter.financeManager.getCategories().size(); i++) {
-                                    if (PocketAccounter.financeManager.getCategories().get(i).getType() == PocketAccounterGeneral.INCOME)
-                                        categories.add(PocketAccounter.financeManager.getCategories().get(i));
+                                for (int i = 0; i < financeManager.getCategories().size(); i++) {
+                                    if (financeManager.getCategories().get(i).getType() == PocketAccounterGeneral.INCOME)
+                                        categories.add(financeManager.getCategories().get(i));
                                 }
                             }
                             dialog.dismiss();
@@ -1285,14 +1216,13 @@ package com.jim.pocketaccounter.widget;
             if (account.isLimited()) {
                 double limit = account.getLimitSum();
                 double accounted = account.getAmount();
-                for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
-                    if (PocketAccounter.financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
-                        if (record != null && PocketAccounter.financeManager.getRecords().get(i).getRecordId().matches(record.getRecordId()))
-                            continue;
-                        if (PocketAccounter.financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
-                            accounted = accounted + PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                for (int i = 0; i < financeManager.getRecords().size(); i++) {
+                    if (financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
+
+                        if (financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
+                            accounted = accounted + PocketAccounterGeneral.getCost(financeManager.getRecords().get(i));
                         else
-                            accounted = accounted - PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                            accounted = accounted - PocketAccounterGeneral.getCost(financeManager.getRecords().get(i));
                     }
                 }
                 try {
@@ -1303,7 +1233,7 @@ package com.jim.pocketaccounter.widget;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
+                for (DebtBorrow debtBorrow : financeManager.getDebtBorrows()) {
                     if (debtBorrow.isCalculate()) {
                         if (debtBorrow.getAccount().getId().matches(account.getId())) {
                             if (debtBorrow.getType() == DebtBorrow.BORROW) {
@@ -1330,7 +1260,7 @@ package com.jim.pocketaccounter.widget;
                         }
                     }
                 }
-                for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
+                for (CreditDetials creditDetials : financeManager.getCredits()) {
                     if (creditDetials.isKey_for_include()) {
                         for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
                             if (reckingCredit.getAccountId().matches(account.getId())) {
@@ -1342,21 +1272,12 @@ package com.jim.pocketaccounter.widget;
                     }
                 }
                 if (-limit > accounted) {
-                    Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CalcActivity.this, R.string.limit_exceed, Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
             if (Double.parseDouble(value) != 0) {
-                if (record != null) {
-                    record.setCategory(category);
-                    record.setSubCategory(subCategory);
-                    record.setDate(date);
-                    record.setAccount(account);
-                    record.setCurrency(currency);
-                    record.setAllTickets(myTickets);
-                    record.setComment(comment_add.getText().toString());
-                    record.setAmount(Double.parseDouble(tvRecordEditDisplay.getText().toString()));
-                } else {
+
                     FinanceRecord newRecord = new FinanceRecord();
                     newRecord.setCategory(category);
                     newRecord.setSubCategory(subCategory);
@@ -1367,16 +1288,18 @@ package com.jim.pocketaccounter.widget;
                     newRecord.setRecordId(uid_code);
                     newRecord.setAllTickets(myTickets);
                     newRecord.setComment(comment_add.getText().toString());
-                    PocketAccounter.financeManager.getRecords().add(newRecord);
-                }
+                    financeManager.getRecords().add(newRecord);
+                    financeManager.saveRecords();
+                PreferenceManager.getDefaultSharedPreferences(CalcActivity.this).edit().putBoolean(KEY_FOR_INSTALAZING,true).apply();
+                if(AppWidgetManager.INVALID_APPWIDGET_ID!=WIDGET_ID)
+                    WidgetProvider.updateWidget(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()),
+                            WIDGET_ID);
+
+                finish();
+
             }
             else {
-                if(fromEdit){
-                    record.setAllTickets(myTicketsFromBackRoll);
-                    for (PhotoDetails temp:myTicketsFromBackRoll) {
-                        myTickets.remove(temp);
-                    }
-                }
+
                 (new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -1394,32 +1317,21 @@ package com.jim.pocketaccounter.widget;
                     }
                 })).start();
             }
-            if (parent != PocketAccounterGeneral.MAIN) {
-                if (((PocketAccounter) getContext()).getSupportFragmentManager().getBackStackEntryCount() != 0) {
-                    FragmentManager fm = ((PocketAccounter) getContext()).getSupportFragmentManager();
-                    for (int i = 0; i < fm.getBackStackEntryCount(); i++)
-                        fm.popBackStack();
-                    ((PocketAccounter) getContext()).replaceFragment(new RecordDetailFragment(date));
-                }
-            }
-            else {
-                ((PocketAccounter) getContext()).initialize(date);
-                ((PocketAccounter) getContext()).getSupportFragmentManager().popBackStack();
-            }
+
         }
 
         private void openCategoryDialog(final ArrayList<RootCategory> categories) {
-            final Dialog dialog = new Dialog(getActivity());
-            View dialogView = getActivity().getLayoutInflater().inflate(R.layout.category_choose_list, null);
+            final Dialog dialog = new Dialog(CalcActivity.this);
+            View dialogView = CalcActivity.this.getLayoutInflater().inflate(R.layout.category_choose_list, null);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(dialogView);
             ListView lvCategoryChoose = (ListView) dialogView.findViewById(R.id.lvCategoryChoose);
-            RecordCategoryAdapter adapter = new RecordCategoryAdapter(getContext(), categories);
+            RecordCategoryAdapter adapter = new RecordCategoryAdapter(CalcActivity.this, categories);
             lvCategoryChoose.setAdapter(adapter);
             lvCategoryChoose.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    int resId = getResources().getIdentifier(categories.get(position).getIcon(), "drawable", getContext().getPackageName());
+                    int resId = getResources().getIdentifier(categories.get(position).getIcon(), "drawable", CalcActivity.this.getPackageName());
                     ivRecordEditCategory.setImageResource(resId);
                     ivRecordEditSubCategory.setImageResource(R.drawable.category_not_selected);
                     category = categories.get(position);
@@ -1433,8 +1345,8 @@ package com.jim.pocketaccounter.widget;
         }
 
         private void openSubCategoryDialog() {
-            final Dialog dialog = new Dialog(getActivity());
-            View dialogView = getActivity().getLayoutInflater().inflate(R.layout.category_choose_list, null);
+            final Dialog dialog = new Dialog(CalcActivity.this);
+            View dialogView = CalcActivity.this.getLayoutInflater().inflate(R.layout.category_choose_list, null);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(dialogView);
             ListView lvCategoryChoose = (ListView) dialogView.findViewById(R.id.lvCategoryChoose);
@@ -1446,7 +1358,7 @@ package com.jim.pocketaccounter.widget;
             subCategories.add(noSubCategory);
             for (int i = 0; i < category.getSubCategories().size(); i++)
                 subCategories.add(category.getSubCategories().get(i));
-            RecordSubCategoryAdapter adapter = new RecordSubCategoryAdapter(getContext(), subCategories);
+            RecordSubCategoryAdapter adapter = new RecordSubCategoryAdapter(CalcActivity.this, subCategories);
             lvCategoryChoose.setAdapter(adapter);
             lvCategoryChoose.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -1455,7 +1367,7 @@ package com.jim.pocketaccounter.widget;
                         subCategory = null;
                     else
                         subCategory = subCategories.get(position);
-                    int resId = getResources().getIdentifier(subCategories.get(position).getIcon(), "drawable", getContext().getPackageName());
+                    int resId = getResources().getIdentifier(subCategories.get(position).getIcon(), "drawable", CalcActivity.this.getPackageName());
                     ivRecordEditSubCategory.setImageResource(resId);
                     dialog.dismiss();
                 }
@@ -1470,12 +1382,6 @@ package com.jim.pocketaccounter.widget;
         public void onDestroy(){
             super.onDestroy();
             if(keyForDeleteAllPhotos){
-                if(fromEdit){
-                    for (PhotoDetails temp:myTicketsFromBackRoll) {
-                        myTickets.remove(temp);
-                    }
-                    record.setAllTickets(myTicketsFromBackRoll);
-                }
                 (new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -1493,24 +1399,23 @@ package com.jim.pocketaccounter.widget;
                     }
                 })).start();
             }
-            PocketAccounter.isCalcLayoutOpen=false;
-            mainView=null;
+            isCalcLayoutOpen=false;
         }
         public void closeLayout(){
             openAddingDialog=false;
 
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
                 if(keykeboard) {
-                    RelativeLayout headermain = (RelativeLayout) mainView.findViewById(R.id.headermain);
+                    RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                     keyforback = true;
-                    PocketAccounter.isCalcLayoutOpen=false;
+                    isCalcLayoutOpen=false;
 
 
                     (new Handler()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                InputMethodManager imm = (InputMethodManager) CalcActivity.this.getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
                                 if(imm==null)
                                     return;
                                 imm.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
@@ -1525,13 +1430,13 @@ package com.jim.pocketaccounter.widget;
                     }, 300);
 
                     comment.setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                    findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                    findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
 
-                    mainView.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.commenee).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                    findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                    findViewById(R.id.commenee).setVisibility(View.GONE);
+                    findViewById(R.id.savepanel).setVisibility(View.GONE);
                     comment_add.setText(oraliqComment);
                     if (!oraliqComment.matches("")) {
                         comment.setText(oraliqComment);
@@ -1539,19 +1444,19 @@ package com.jim.pocketaccounter.widget;
                         comment.setText(getString(R.string.add_comment));
                     }
 
-                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
                 }
                 else{
-                    RelativeLayout headermain = (RelativeLayout) mainView.findViewById(R.id.headermain);
+                    RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                     keyforback = true;
-                    PocketAccounter.isCalcLayoutOpen=false;
+                    isCalcLayoutOpen=false;
 
 
                     (new Handler()).postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             try{
-                                LinearLayout linbutview=(LinearLayout) mainView.findViewById(R.id.numbersbut);
+                                LinearLayout linbutview=(LinearLayout) findViewById(R.id.numbersbut);
                                 myListPhoto.setVisibility(View.VISIBLE);
                                 linbutview.setVisibility(View.VISIBLE);
                             }
@@ -1564,13 +1469,13 @@ package com.jim.pocketaccounter.widget;
                     }, 300);
 
                     comment.setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                    findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                    findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
 
-                    mainView.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.commenee).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                    findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                    findViewById(R.id.commenee).setVisibility(View.GONE);
+                    findViewById(R.id.savepanel).setVisibility(View.GONE);
 
                     comment_add.setText(oraliqComment);
                     if (!oraliqComment.matches("")) {
@@ -1579,16 +1484,16 @@ package com.jim.pocketaccounter.widget;
                         comment.setText(getString(R.string.add_comment));
                     }
 
-                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
 
                 }
             }
             else {
                 if(keykeboard) {
-                    RelativeLayout headermain = (RelativeLayout) mainView.findViewById(R.id.headermain);
+                    RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                     AutoTransition cus = new AutoTransition();
                     keyforback = true;
-                    PocketAccounter.isCalcLayoutOpen=false;
+                    isCalcLayoutOpen=false;
                     cus.addListener(new Transition.TransitionListener() {
                         @Override
                         public void onTransitionStart(Transition transition) {
@@ -1597,9 +1502,9 @@ package com.jim.pocketaccounter.widget;
 
                         @Override
                         public void onTransitionEnd(Transition transition) {
-                            if(mainView==null){
-                                return;
-                            }
+//                            if(mainView==null){
+//                                return;
+//                            }
 
 
                             (new Handler()).postDelayed(new Runnable() {
@@ -1607,7 +1512,7 @@ package com.jim.pocketaccounter.widget;
                                 public void run() {
                                     try {
 
-                                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        InputMethodManager imm = (InputMethodManager) CalcActivity.this.getSystemService(CalcActivity.this.INPUT_METHOD_SERVICE);
                                         if(imm==null)
                                             return;
                                         imm.hideSoftInputFromWindow(mainView.getWindowToken(), 0);
@@ -1640,13 +1545,13 @@ package com.jim.pocketaccounter.widget;
                     cus.setStartDelay(0);
                     TransitionManager.beginDelayedTransition(headermain, cus);
                     comment.setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                    findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                    findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
 
-                    mainView.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.commenee).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                    findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                    findViewById(R.id.commenee).setVisibility(View.GONE);
+                    findViewById(R.id.savepanel).setVisibility(View.GONE);
                     comment_add.setText(oraliqComment);
                     if (!oraliqComment.matches("")) {
                         comment.setText(oraliqComment);
@@ -1654,13 +1559,13 @@ package com.jim.pocketaccounter.widget;
                         comment.setText(getString(R.string.add_comment));
                     }
 
-                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
                 }
                 else{
-                    RelativeLayout headermain = (RelativeLayout) mainView.findViewById(R.id.headermain);
+                    RelativeLayout headermain = (RelativeLayout) findViewById(R.id.headermain);
                     AutoTransition cus = new AutoTransition();
                     keyforback = true;
-                    PocketAccounter.isCalcLayoutOpen=false;
+                    isCalcLayoutOpen=false;
 
                     cus.addListener(new Transition.TransitionListener() {
                         @Override
@@ -1670,14 +1575,14 @@ package com.jim.pocketaccounter.widget;
 
                         @Override
                         public void onTransitionEnd(Transition transition) {
-                            if(mainView==null){
-                                return;
-                            }
+//                            if(mainView==null){
+//                                return;
+//                            }
                             try{
                                 AutoTransition cus=new AutoTransition();
                                 cus.setDuration(300);
                                 cus.setStartDelay(0);
-                                LinearLayout linbutview=(LinearLayout) mainView.findViewById(R.id.numbersbut);
+                                LinearLayout linbutview=(LinearLayout) findViewById(R.id.numbersbut);
                                 TransitionManager.beginDelayedTransition(myListPhoto);
                                 myListPhoto.setVisibility(View.VISIBLE);
                                 TransitionManager.beginDelayedTransition(linbutview,cus);
@@ -1706,13 +1611,13 @@ package com.jim.pocketaccounter.widget;
                     cus.setStartDelay(0);
                     TransitionManager.beginDelayedTransition(headermain, cus);
                     comment.setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
-                    mainView.findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
+                    findViewById(R.id.addphotopanel).setVisibility(View.VISIBLE);
+                    findViewById(R.id.pasdigi).setVisibility(View.VISIBLE);
 
 
-                    mainView.findViewById(R.id.scroleditext).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.commenee).setVisibility(View.GONE);
-                    mainView.findViewById(R.id.savepanel).setVisibility(View.GONE);
+                    findViewById(R.id.scroleditext).setVisibility(View.GONE);
+                    findViewById(R.id.commenee).setVisibility(View.GONE);
+                    findViewById(R.id.savepanel).setVisibility(View.GONE);
 
                     comment_add.setText(oraliqComment);
                     if (!oraliqComment.matches("")) {
@@ -1721,7 +1626,7 @@ package com.jim.pocketaccounter.widget;
                         comment.setText(getString(R.string.add_comment));
                     }
 
-                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) PocketAccounter.convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), contex)));
+                    headermain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) convertDpToPixel((getResources().getDimension(R.dimen.hundred_fivety_four) / getResources().getDisplayMetrics().density), CalcActivity.this)));
 
                 }
             }
@@ -1798,5 +1703,22 @@ package com.jim.pocketaccounter.widget;
                 e.printStackTrace();
             }
             return 0;
+        }
+        public  float convertDpToPixel(float dp, Context context) {
+            Resources resources = context.getResources();
+            DisplayMetrics metrics = resources.getDisplayMetrics();
+            float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+            return px;
+        }
+
+        @Override
+        public void onBackPressed() {
+            if (isCalcLayoutOpen ) {
+                Log.d("kakdi", "onBackPressed: ");
+                closeLayout();
+                return;
+
+            }
+            super.onBackPressed();
         }
     }

@@ -259,8 +259,8 @@ public class WidgetProvider extends AppWidgetProvider {
                 expanse = expanse + PocketAccounterGeneral.getCost(records.get(i));
         }
         for (Account account : manager.getAccounts()) {
-            if (account.getCurrency() != null)
-                income = income + PocketAccounterGeneral.getCost(date, account.getCurrency(), account.getAmount());
+            if (account.getStartMoneyCurrency() != null)
+                income = income + PocketAccounterGeneral.getCost(date, account.getStartMoneyCurrency(), account.getAmount());
         }
         //calculating debt borrows
         if (balanceSolve.matches(whole)) {

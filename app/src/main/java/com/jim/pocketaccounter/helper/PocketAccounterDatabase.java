@@ -107,7 +107,8 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				+ "account_id TEXT,"
 				+ "icon INTEGER,"
 				+ "start_amount REAL,"
-				+ "currency_id TEXT,"
+				+ "start_money_currency_id TEXT,"
+				+ "limit_currency_id TEXT,"
 				+ "is_limited INTEGER,"
 				+ "limit_amount REAL"
 				+ ");");
@@ -988,7 +989,8 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				values.put("account_id", purses.get(i).getId());
 				values.put("icon", purses.get(i).getIcon());
 				values.put("start_amount", purses.get(i).getAmount());
-				values.put("currency_id", purses.get(i).getCurrency().getId());
+				values.put("start_money_currency_id", purses.get(i).getStartMoneyCurrency().getId());
+				values.put("limit_currency_id", purses.get(i).getLimitCurrency().getId());
 				values.put("is_limited", purses.get(i).isLimited());
 				values.put("limit_amount", purses.get(i).getLimitSum());
 				db.insert("account_table", null, values);
@@ -1018,11 +1020,20 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
 			newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
 			newAccount.setAmount(cursor.getDouble(cursor.getColumnIndex("start_amount")));
-			String currencyId = cursor.getString(cursor.getColumnIndex("currency_id"));
-			if (currencyId != null) {
+			String startMoneyCurrencyId = cursor.getString(cursor.getColumnIndex("start_money_currency_id"));
+			String limitCurrencyId = cursor.getString(cursor.getColumnIndex("limit_currency_id"));
+			if (startMoneyCurrencyId != null) {
 				for (Currency currency:currencies) {
-					if (currency.getId().matches(currencyId)) {
-						newAccount.setCurrency(currency);
+					if (currency.getId().matches(startMoneyCurrencyId)) {
+						newAccount.setStartMoneyCurrency(currency);
+						break;
+					}
+				}
+			}
+			if (limitCurrencyId != null) {
+				for (Currency currency:currencies) {
+					if (currency.getId().matches(limitCurrencyId)) {
+						newAccount.setLimitCurrency(currency);
 						break;
 					}
 				}
@@ -1432,6 +1443,11 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
 				newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
 				newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
+				newAccount.setLimitCurrency(null);
+				newAccount.setStartMoneyCurrency(null);
+				newAccount.setAmount(0);
+				newAccount.setLimited(false);
+				newAccount.setLimitSum(0);
 				result.add(newAccount);
 				cursor.moveToNext();
 			}
@@ -1443,17 +1459,40 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 					+ "account_id TEXT,"
 					+ "icon INTEGER,"
 					+ "start_amount REAL,"
-					+ "currency_id TEXT,"
+					+ "start_money_currency_id TEXT,"
+					+ "limit_currency_id TEXT,"
 					+ "is_limited INTEGER,"
 					+ "limit_amount REAL"
 					+ ");");
-
+			db.beginTransaction();
+			try {
+				ContentValues values = new ContentValues();
+				for (Account account : result) {
+					values.put("account_name", account.getName());
+					values.put("account_id", account.getId());
+					values.put("icon", account.getIcon());
+					values.put("start_amount", account.getAmount());
+					values.put("start_money_currency_id", account.getStartMoneyCurrency().getId());
+					values.put("limit_currency_id", account.getLimitCurrency().getId());
+					values.put("is_limited", account.isLimited());
+					values.put("limit_amount", account.getLimitSum());
+					db.insert("account_table", null, values);
+					db.setTransactionSuccessful();
+				}
+			}
+			catch (Exception o) {
+				o.printStackTrace();
+			}
+			finally {
+				db.endTransaction();
+			}
 			db.execSQL("CREATE TABLE record_photo_table ("
 					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "photopath TEXT,"
 					+ "photopathCache TEXT,"
 					+ "record_id TEXT"
 					+ ");");
+
 		}
 	}
 	private void upgradeFromThreeToFour(SQLiteDatabase db) {

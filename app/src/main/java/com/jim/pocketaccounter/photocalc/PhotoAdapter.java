@@ -17,6 +17,7 @@ import com.jim.pocketaccounter.PocketAccounter;
 import com.jim.pocketaccounter.R;
 import com.jim.pocketaccounter.RecordEditFragment;
 import com.jim.pocketaccounter.credit.AdapterCridet;
+import com.jim.pocketaccounter.widget.CalcActivity;
 
 
 import java.io.File;
@@ -101,7 +102,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         holder.ticketView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent photoview=new Intent(((PocketAccounter)context), PhotoViewActivity.class);
+                Intent photoview=new Intent(context, PhotoViewActivity.class);
                 photoview.putExtra(COUNT_TICKKETS,myTicketsList.size());
                 photoview.putExtra(CURRENT_PHOTO_ID,position);
                 photoview.putExtra(FROM_ADAPTER_WITHOUT_DELETE,fromAdapter);

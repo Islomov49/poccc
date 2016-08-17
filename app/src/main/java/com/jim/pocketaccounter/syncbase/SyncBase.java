@@ -243,7 +243,8 @@ public class SyncBase {
                 + "account_id TEXT,"
                 + "icon INTEGER,"
                 + "start_amount REAL,"
-                + "currency_id TEXT,"
+                + "start_money_currency_id TEXT,"
+                + "limit_currency_id TEXT,"
                 + "is_limited INTEGER,"
                 + "limit_amount REAL"
                 + ");");

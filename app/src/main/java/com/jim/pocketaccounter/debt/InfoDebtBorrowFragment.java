@@ -30,14 +30,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jim.pocketaccounter.AddCreditFragment;
 import com.jim.pocketaccounter.PocketAccounter;
 import com.jim.pocketaccounter.R;
+import com.jim.pocketaccounter.credit.CreditDetials;
+import com.jim.pocketaccounter.credit.ReckingCredit;
 import com.jim.pocketaccounter.finance.Account;
 import com.jim.pocketaccounter.finance.FinanceManager;
+import com.jim.pocketaccounter.helper.PocketAccounterGeneral;
 import com.jim.pocketaccounter.intropage.IntroFrame;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -387,6 +392,97 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
+    private boolean isMumkin(DebtBorrow debt, String accountId, Double summ) {
+        Account account = null;
+        for (Account ac : manager.getAccounts()) {
+            if (ac.getId().matches(accountId)) {
+                account = ac;
+                break;
+            }
+        }
+        if (account.isLimited() && debt.isCalculate()) {
+            double limit = account.getLimitSum();
+            double accounted = account.getAmount();
+            for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
+                if (PocketAccounter.financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
+                    if (PocketAccounter.financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
+                        accounted = accounted + PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                    else
+                        accounted = accounted - PocketAccounterGeneral.getCost(PocketAccounter.financeManager.getRecords().get(i));
+                }
+            }
+            for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
+                if (debtBorrow.isCalculate()) {
+                    if (debtBorrow.getAccount().getId().matches(account.getId())) {
+                        if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                            accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                        } else {
+                            accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                        }
+                        for (Recking recking : debtBorrow.getReckings()) {
+                            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                            Calendar cal = Calendar.getInstance();
+                            try {
+                                cal.setTime(format.parse(recking.getPayDate()));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (debtBorrow.getType() == DebtBorrow.DEBT) {
+                                accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                            } else {
+                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                            }
+                        }
+                    }else {
+                        for (Recking recking : debtBorrow.getReckings()) {
+                            SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                            Calendar cal = Calendar.getInstance();
+                            if (recking.getAccountId().matches(account.getId())) {
+                                try {
+                                    cal.setTime(format.parse(recking.getPayDate()));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                    accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                } else {
+                                    accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
+                if (creditDetials.isKey_for_include()) {
+                    for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
+                        if (reckingCredit.getAccountId().matches(account.getId())) {
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTimeInMillis(reckingCredit.getPayDate());
+                            accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(), reckingCredit.getAmount());
+                        }
+                    }
+                }
+            }
+
+            if (debt.getType() == DebtBorrow.DEBT) {
+                accounted = accounted - PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(), summ);
+            } else {
+                accounted = accounted + PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(), summ);
+            }
+
+            if (-limit > accounted) {
+                Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            Toast.makeText(getContext(), "" + account.getName() + "\n" + accounted, Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return true;
+    }
+    boolean tek = false;
+
     private void openDialog() {
         if (!payText.getText().toString().matches(getResources().getString(R.string.archive))) {
             final Dialog dialog = new Dialog(getActivity());
@@ -398,7 +494,7 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
             final EditText comment = (EditText) dialogView.findViewById(R.id.etInfoDebtBorrowPayComment);
             accountSp = (Spinner) dialogView.findViewById(R.id.spInfoDebtBorrowAccount);
 
-            String[] accaounts = new String[manager.getAccounts().size()];
+            final String[] accaounts = new String[manager.getAccounts().size()];
             for (int i = 0; i < accaounts.length; i++) {
                 accaounts[i] = manager.getAccounts().get(i).getName();
             }
@@ -446,30 +542,41 @@ public class InfoDebtBorrowFragment extends Fragment implements View.OnClickList
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    tek =false;
                     final SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                     int len = debtBorrow.getCurrency().getAbbr().length();
                     if (!enterPay.getText().toString().isEmpty() && Double.parseDouble(enterPay.getText().toString()) != 0) {
+
+                        if (debtBorrow.isCalculate() && isMumkin(debtBorrow, manager.getAccounts().get(accountSp.getSelectedItemPosition()).getId(), Double.parseDouble(enterPay.getText().toString())))
+                            tek = true;
+                        if (!debtBorrow.isCalculate()) tek = true;
+
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                         if (Double.parseDouble(leftAmount.getText().toString().substring(0, leftAmount.getText().toString().length() - len))
                                 - Double.parseDouble(enterPay.getText().toString()) < 0) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                             builder.setMessage(getResources().getString(R.string.incorrect_pay))
                                     .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                        }
+                                        public void onClick(DialogInterface dialog, int id) {}
                                     }).setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface d, int id) {
                                     d.cancel();
-                                    peysAdapter.setDataChanged(format.format(date.getTime()), Double.parseDouble(enterPay.getText().toString()),
-                                            "" + accountSp.getSelectedItem(), comment.getText().toString());
-                                    dialog.dismiss();
+                                    if (tek) {
+                                        peysAdapter.setDataChanged(format.format(date.getTime()), Double.parseDouble(enterPay.getText().toString()),
+                                                "" + accountSp.getSelectedItem(), comment.getText().toString());
+                                        dialog.dismiss();
+                                    }
                                 }
                             });
-                            builder.create().show();
+                            if (tek) {
+                                builder.create().show();
+                            }
                         } else {
-                            peysAdapter.setDataChanged(format.format(date.getTime()), Double.parseDouble(enterPay.getText().toString()),
-                                    "" + accountSp.getSelectedItem(), comment.getText().toString());
+                            if (tek) {
+                                peysAdapter.setDataChanged(format.format(date.getTime()), Double.parseDouble(enterPay.getText().toString()),
+                                        "" + accountSp.getSelectedItem(), comment.getText().toString());
+                                dialog.dismiss();
+                            }
                         }
-                        dialog.dismiss();
                     } else {
                         enterPay.setError(getResources().getString(R.string.enter_pay_value));
                     }

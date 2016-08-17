@@ -75,6 +75,7 @@ import com.jim.pocketaccounter.helper.record.RecordIncomesView;
 import com.jim.pocketaccounter.intropage.IntroIndicator;
 import com.jim.pocketaccounter.syncbase.SignInGoogleMoneyHold;
 import com.jim.pocketaccounter.syncbase.SyncBase;
+import com.jim.pocketaccounter.widget.CalcActivity;
 import com.jim.pocketaccounter.widget.WidgetKeys;
 import com.jim.pocketaccounter.widget.WidgetProvider;
 
@@ -95,6 +96,7 @@ import java.util.Locale;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
 import static com.jim.pocketaccounter.R.color.toolbar_text_color;
+import static com.jim.pocketaccounter.widget.CalcActivity.KEY_FOR_INSTALAZING;
 
 public class PocketAccounter extends AppCompatActivity {
     TextView userName, userEmail;
@@ -128,7 +130,7 @@ public class PocketAccounter extends AppCompatActivity {
     View mainRoot;
     private AnimationDrawable mAnimationDrawable;
     private NotificationManagerCredit notific;
-
+    boolean keyFromCalc=false;
     public static boolean PRESSED = false;
 
 
@@ -139,6 +141,7 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        keyFromCalc=false;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String lang = prefs.getString("language", getResources().getString(R.string.language_default));
         if (lang.matches(getResources().getString(R.string.language_default)))
@@ -408,8 +411,8 @@ public class PocketAccounter extends AppCompatActivity {
                 expanse = expanse + PocketAccounterGeneral.getCost(records.get(i));
         }
         for (Account account:PocketAccounter.financeManager.getAccounts()) {
-            if (account.getCurrency() != null)
-                income = income + PocketAccounterGeneral.getCost(date, account.getCurrency(), account.getAmount());
+            if (account.getLimitCurrency() != null)
+                income = income + PocketAccounterGeneral.getCost(date, account.getLimitCurrency(), account.getAmount());
         }
         //calculating debt borrows
         if (balanceSolve.matches(whole)) {
@@ -501,13 +504,19 @@ public class PocketAccounter extends AppCompatActivity {
         tvRecordBalanse.setText(decFormat.format(balance) + mainCurrencyAbbr);
     }
 
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(PreferenceManager.getDefaultSharedPreferences(PocketAccounter.this).getBoolean(KEY_FOR_INSTALAZING,false)&&keyFromCalc){
+            PreferenceManager.getDefaultSharedPreferences(PocketAccounter.this).edit().putBoolean(KEY_FOR_INSTALAZING,false).apply();
+            financeManager = new FinanceManager(this);
+            initialize(new GregorianCalendar());
+        }
+    }
     @Override
     protected void onStop() {
         super.onStop();
 
-        Log.d("sss", financeManager.getAccounts().size()+"");
         financeManager.saveRecords();
         SharedPreferences sPref;
         sPref = getSharedPreferences("infoFirst", MODE_PRIVATE);
@@ -1134,6 +1143,7 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
+        keyFromCalc=true;
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences.getBoolean("secure", false)&&!openActivity) {

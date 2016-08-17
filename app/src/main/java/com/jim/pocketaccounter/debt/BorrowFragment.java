@@ -350,8 +350,7 @@ public class BorrowFragment extends Fragment {
                                     } else {
                                         Recking recking = null;
                                         if (person.isCalculate() && isMumkin(person, ac, Double.parseDouble(enterPay.getText().toString()))) {
-                                            Toast.makeText(getContext(), "" + isMumkin(person, ac, Double.parseDouble(enterPay.getText().toString())), Toast.LENGTH_SHORT).show();
-                                            recking = new Recking(format.format(date.getTime()),
+                                          recking = new Recking(format.format(date.getTime()),
                                                     Double.parseDouble(enterPay.getText().toString()),
                                                     persons.get(position).getId(), ac,
                                                     comment.getText().toString());
@@ -428,6 +427,7 @@ public class BorrowFragment extends Fragment {
                     break;
                 }
             }
+            Toast.makeText(getContext(), "" + account.getName(), Toast.LENGTH_SHORT).show();
             if (account.isLimited() && debt.isCalculate()) {
                 double limit = account.getLimitSum();
                 double accounted = account.getAmount();
@@ -443,9 +443,9 @@ public class BorrowFragment extends Fragment {
                     if (debtBorrow.isCalculate()) {
                         if (debtBorrow.getAccount().getId().matches(account.getId())) {
                             if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
-                            } else {
                                 accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                            } else {
+                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
                             }
                             for (Recking recking : debtBorrow.getReckings()) {
                                 SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
@@ -456,9 +456,26 @@ public class BorrowFragment extends Fragment {
                                     e.printStackTrace();
                                 }
                                 if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                    accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                    accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
                                 } else {
-                                    accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                    accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                }
+                            }
+                        } else {
+                            for (Recking recking : debtBorrow.getReckings()) {
+                                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                                Calendar cal = Calendar.getInstance();
+                                if (recking.getAccountId().matches(account.getId())) {
+                                    try {
+                                        cal.setTime(format.parse(recking.getPayDate()));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                        accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), recking.getAmount());
+                                    } else {
+                                        accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), recking.getAmount());
+                                    }
                                 }
                             }
                         }
@@ -477,12 +494,17 @@ public class BorrowFragment extends Fragment {
                     }
                 }
 
-                accounted = accounted - PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(), summ);
+                if (debt.getType() == DebtBorrow.DEBT) {
+                    accounted = accounted - PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(), summ);
+                } else {
+                    accounted = accounted + PocketAccounterGeneral.getCost(Calendar.getInstance(), debt.getCurrency(), summ);
+                }
 
                 if (-limit > accounted) {
                     Toast.makeText(getContext(), R.string.limit_exceed, Toast.LENGTH_SHORT).show();
                     return false;
                 }
+                Toast.makeText(getContext(), "" + accounted, Toast.LENGTH_SHORT).show();
                 return true;
             }
             return true;

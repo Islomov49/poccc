@@ -58,7 +58,7 @@ public class ReportByAccount {
             row.setDate(account.getCalendar());
             row.setCategory(cat);
             row.setSubCategory(null);
-            row.setCurrency(account.getCurrency());
+            row.setCurrency(account.getStartMoneyCurrency());
             row.setAmount(account.getAmount());
             result.add(row);
         }
