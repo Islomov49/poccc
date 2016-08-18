@@ -223,11 +223,11 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 		dialog.setContentView(dialogView);
 		final EditText etAccountEditName = (EditText) dialogView.findViewById(R.id.etAccountEditName);
 		final FABIcon fabAccountIcon = (FABIcon) dialogView.findViewById(R.id.fabAccountIcon);
-		final EditText etStartMoney = (EditText) dialogView.findViewById(R.id.etStartMoney);
 		final Spinner spStartMoney = (Spinner) dialog.findViewById(R.id.spStartMoneyCurrency);
 		final Spinner spLimit = (Spinner) dialog.findViewById(R.id.spLimitCurrency);
 		final CheckBox chbLimit = (CheckBox) dialogView.findViewById(R.id.chbLimit);
 		final CheckBox chbNachalniy = (CheckBox) dialogView.findViewById(R.id.checkBox);
+		final EditText etStartMoney = (EditText) dialogView.findViewById(R.id.etStartMoney);
 		final EditText etLimit = (EditText) dialogView.findViewById(R.id.etLimit);
 
 		final RelativeLayout goneWhenNacalniyaSumma=(RelativeLayout) dialogView.findViewById(R.id.goneWhenNacalniyaSumma);
@@ -314,37 +314,40 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 				mainCurrPosFound = true;
 			}
 		}
-		chbNachalniy.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
+		chbNachalniy.setClickable(false);
+		dialogView.findViewById(R.id.checkBoxSum).setOnClickListener(new OnClickListener() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked){
-
-					goneWhenNacalniyaSumma.setVisibility(View.VISIBLE);
-				}
-				else{
-
+			public void onClick(View v) {
+				if(chbNachalniy.isChecked()){
+					chbNachalniy.setChecked(false);
+					etStartMoney.setText("");
 					goneWhenNacalniyaSumma.setVisibility(View.GONE);
 				}
-
+				else {
+					chbNachalniy.setChecked(true);
+					goneWhenNacalniyaSumma.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 
-		chbLimit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
+		chbLimit.setClickable(false);
+		dialogView.findViewById(R.id.checkBoxLimit).setOnClickListener(new OnClickListener() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (isChecked){
-
-					goneWhenLimit.setVisibility(View.VISIBLE);
-				}
-				else{
-
+			public void onClick(View v) {
+				if(chbLimit.isChecked()){
+					chbLimit.setChecked(false);
+					etLimit.setText("0");
 					goneWhenLimit.setVisibility(View.GONE);
 				}
+				else {
+					chbLimit.setChecked(true);
+					goneWhenLimit.setVisibility(View.VISIBLE);
 
+				}
 			}
 		});
+
 
 
 

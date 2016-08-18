@@ -86,6 +86,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/checkBoxSum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
@@ -126,7 +127,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:layout_marginLeft="@dimen/five_dp"
             android:maxLength="25"
             android:hint="@string/start_money"
             android:textColor="@color/black_for_glavniy_text"
@@ -153,6 +153,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/checkBoxLimit"
         android:layout_marginLeft="@dimen/sixteen_dp"
         android:layout_marginRight="@dimen/sixteen_dp"
         android:layout_marginTop="@dimen/five_dp"
@@ -193,7 +194,6 @@
             android:layout_weight="1"
             android:ems="10"
             android:maxLength="25"
-            android:layout_marginLeft="@dimen/five_dp"
             android:textColor="@color/toolbar_text_color"
             android:textSize="@dimen/sixteen_sp"
             android:hint="@string/limit_sum"
