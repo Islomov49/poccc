@@ -497,10 +497,12 @@ public class PocketAccounter extends AppCompatActivity {
 //            }
 //        }
 //        balance = income - expanse;
+        Log.d("sss", "calculateBalance: init "+financeManager.getMainCurrency().getAbbr());
         ArrayList<Double> result = financeManager.calculateBalance(date);
         double income = result.get(0);
         double expanse = result.get(1);
         double balance = result.get(2);
+        Log.d("sss", "income "+income + " exp: "+expanse+" balance: "+balance);
         String mainCurrencyAbbr = PocketAccounter.financeManager.getMainCurrency().getAbbr();
         DecimalFormat decFormat = new DecimalFormat("0.00");
         tvRecordIncome.setText(decFormat.format(income) + mainCurrencyAbbr);
@@ -520,7 +522,6 @@ public class PocketAccounter extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         financeManager.saveRecords();
         SharedPreferences sPref;
         sPref = getSharedPreferences("infoFirst", MODE_PRIVATE);

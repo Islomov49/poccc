@@ -80,19 +80,17 @@ public class PocketAccounterGeneral {
 		while (todiff1 >= 0 && pos < toCurrency.getCosts().size()) {
 			todiff1 = date.getTimeInMillis() - toCurrency.getCosts().get(pos).getDay().getTimeInMillis();
 			if(todiff1>=0)
-			tokoeff = toCurrency.getCosts().get(pos).getCost();
+				tokoeff = toCurrency.getCosts().get(pos).getCost();
 			pos++;
 		}
 		pos=0;
-		while (fromdiff >= 0 && pos < toCurrency.getCosts().size()) {
-			fromdiff = date.getTimeInMillis() - toCurrency.getCosts().get(pos).getDay().getTimeInMillis();
+		while (fromdiff >= 0 && pos < fromCurrency.getCosts().size()) {
+			fromdiff = date.getTimeInMillis() - fromCurrency.getCosts().get(pos).getDay().getTimeInMillis();
 			if(fromdiff>=0)
-			fromkoeff2 = toCurrency.getCosts().get(pos).getCost();
+			fromkoeff2 = fromCurrency.getCosts().get(pos).getCost();
 			pos++;
 		}
-
-
-		amount = amount/fromkoeff2*tokoeff;
+		amount = tokoeff*amount/fromkoeff2;
 		return amount;
 	}
 
