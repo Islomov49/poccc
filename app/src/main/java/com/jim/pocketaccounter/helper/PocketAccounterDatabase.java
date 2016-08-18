@@ -439,12 +439,14 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			values.put("account_name", accountNames[i]);
 			values.put("icon", icons[i]);
 			values.put("account_id", accountIds[i]);
-			values.put("currency_id", currenciesId[0]);
+			values.put("start_money_currency_id", currenciesId[0]);
+			values.put("limit_currency_id", currenciesId[0]);
 			values.put("start_amount", 0);
 			values.put("is_limited", 0);
 			values.put("limit_amount", 0);
 			db.insert("account_table", null, values);
 		}
+		Log.d("sss", "account_database");
 	}
 	public void saveDatasToArchiveCreditTable(ArrayList<CreditDetials> credits) {
 		SQLiteDatabase db = getWritableDatabase();
@@ -1435,7 +1437,38 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			upgradeFromThreeToFour(db);
 		}
 		if (arg1 == 4 && arg2 == 5) {
+			Log.d("sss", "4->5");
 			ArrayList<Account> result = new ArrayList<Account>();
+
+			Cursor curCursor = db.query("currency_table", null, null, null, null, null, null, null);
+			Cursor curCostCursor = db.query("currency_costs_table", null, null, null, null, null, null, null);
+			ArrayList<Currency> currencies = new ArrayList<Currency>();
+			curCursor.moveToFirst();
+			while (!curCursor.isAfterLast()) {
+				Currency newCurrency = new Currency(curCursor.getString(curCursor.getColumnIndex("currency_name")));
+				newCurrency.setAbbr(curCursor.getString(curCursor.getColumnIndex("currency_sign")));
+				String currId = curCursor.getString(curCursor.getColumnIndex("currency_id"));
+				newCurrency.setId(currId);
+				newCurrency.setMain(curCursor.getInt(curCursor.getColumnIndex("currency_main"))!=0);
+				curCostCursor.moveToFirst();
+				while(!curCostCursor.isAfterLast()) {
+					if (curCostCursor.getString(curCostCursor.getColumnIndex("currency_id")).matches(currId)) {
+						CurrencyCost newCurrencyCost = new CurrencyCost();
+						try {
+							Calendar day = Calendar.getInstance();
+							day.setTime(dateFormat.parse(curCostCursor.getString(curCostCursor.getColumnIndex("date"))));
+							newCurrencyCost.setDay(day);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						newCurrencyCost.setCost(curCostCursor.getDouble(curCostCursor.getColumnIndex("cost")));
+						newCurrency.getCosts().add(newCurrencyCost);
+					}
+					curCostCursor.moveToNext();
+				}
+				currencies.add(newCurrency);
+				curCursor.moveToNext();
+			}
 			Cursor cursor = db.query("account_table", null, null, null, null, null, null);
 			cursor.moveToFirst();
 			while(!cursor.isAfterLast()) {
@@ -1464,28 +1497,20 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 					+ "is_limited INTEGER,"
 					+ "limit_amount REAL"
 					+ ");");
-			db.beginTransaction();
-			try {
-				ContentValues values = new ContentValues();
-				for (Account account : result) {
-					values.put("account_name", account.getName());
-					values.put("account_id", account.getId());
-					values.put("icon", account.getIcon());
-					values.put("start_amount", account.getAmount());
-					values.put("start_money_currency_id", account.getStartMoneyCurrency().getId());
-					values.put("limit_currency_id", account.getLimitCurrency().getId());
-					values.put("is_limited", account.isLimited());
-					values.put("limit_amount", account.getLimitSum());
-					db.insert("account_table", null, values);
-					db.setTransactionSuccessful();
-				}
+
+			ContentValues values = new ContentValues();
+			for (Account account : result) {
+				values.put("account_name", account.getName());
+				values.put("account_id", account.getId());
+				values.put("icon", account.getIcon());
+				values.put("start_amount", account.getAmount());
+				values.put("start_money_currency_id", currencies.get(0).getId());
+				values.put("limit_currency_id", currencies.get(0).getId());
+				values.put("is_limited", account.isLimited());
+				values.put("limit_amount", account.getLimitSum());
+				db.insert("account_table", null, values);
 			}
-			catch (Exception o) {
-				o.printStackTrace();
-			}
-			finally {
-				db.endTransaction();
-			}
+
 			db.execSQL("CREATE TABLE record_photo_table ("
 					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "photopath TEXT,"

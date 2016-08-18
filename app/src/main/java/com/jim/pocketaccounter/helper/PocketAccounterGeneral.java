@@ -60,7 +60,8 @@ public class PocketAccounterGeneral {
 		return amount;
 	}
 
-	public static double getCost(Calendar date, Currency fromCurrency,Currency toCurrency, double amount) {
+	public static double getCost(Calendar date, Currency fromCurrency, Currency toCurrency, double amount) {
+
 		//TODO tekwir bir yana
 		if (fromCurrency.getId().matches(toCurrency.getId())) return amount;
 		double tokoeff = 1.0;
@@ -90,6 +91,7 @@ public class PocketAccounterGeneral {
 			fromkoeff2 = fromCurrency.getCosts().get(pos).getCost();
 			pos++;
 		}
+		Log.d("sss", "koeff1 "+tokoeff+" fromkoeff"+fromkoeff2);
 		amount = tokoeff*amount/fromkoeff2;
 		return amount;
 	}

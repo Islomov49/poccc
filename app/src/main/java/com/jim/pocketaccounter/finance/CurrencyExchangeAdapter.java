@@ -49,12 +49,12 @@ public class CurrencyExchangeAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View view = inflater.inflate(R.layout.curr_exchange_list_item, parent, false);
-		DecimalFormat decFormat = new DecimalFormat("0.00");
+		DecimalFormat decFormat = new DecimalFormat("0.00##");
 		TextView tvCurrencyExchangeListItem = (TextView) view.findViewById(R.id.tvCurrencyExchangeListItem);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-		String text = dateFormat.format(result.get(position).getDay().getTime()) 
-					  + "    1"+ PocketAccounter.financeManager.getMainCurrency().getAbbr()
-					  + "=" + decFormat.format(result.get(position).getCost())+abbr;
+		String text = dateFormat.format(result.get(position).getDay().getTime())
+					  + "    1"+ abbr
+					  + "=" + decFormat.format(1/result.get(position).getCost())+PocketAccounter.financeManager.getMainCurrency().getAbbr();
 		tvCurrencyExchangeListItem.setText(text);
 		CheckBox chbCurrencyExchangeListItem = (CheckBox) view.findViewById(R.id.chbCurrencyExchangeListItem);
 		chbCurrencyExchangeListItem.setOnCheckedChangeListener(new OnCheckedChangeListener() {
