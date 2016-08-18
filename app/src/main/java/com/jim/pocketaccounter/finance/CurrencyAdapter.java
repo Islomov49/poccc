@@ -65,7 +65,7 @@ public class CurrencyAdapter extends BaseAdapter {
 			SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 			DecimalFormat decFormat = new DecimalFormat("0.00##");
 			TextView tvCurrencyCost = (TextView) view.findViewById(R.id.tvCurrencyCost);
-			tvCurrencyCost.setText(format.format(result.get(position).getCosts().get(result.get(position).getCosts().size()-1).getDay().getTime())+"  "+"1"+manager.getMainCurrency().getAbbr()+": "+decFormat.format(result.get(position).getCosts().get(result.get(position).getCosts().size()-1).getCost()));
+			tvCurrencyCost.setText(format.format(result.get(position).getCosts().get(result.get(position).getCosts().size()-1).getDay().getTime())+"  "+"1"+result.get(position).getAbbr()+": "+decFormat.format(1/result.get(position).getCosts().get(result.get(position).getCosts().size()-1).getCost())+manager.getMainCurrency().getAbbr());
 		}
 		if (mode == PocketAccounterGeneral.EDIT_MODE) {
 			ivCurrencyMain.setVisibility(View.GONE);

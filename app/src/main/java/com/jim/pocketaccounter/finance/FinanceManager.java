@@ -96,7 +96,9 @@ public class FinanceManager {
 				}
 			}
 		}
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		for (BalanceObject object : objects) {
+			Log.d("sss", format.format(object.getCalendar().getTime()) + " "+object.getSum() + " test");
 			boolean found = false;
 			int pos = 0;
 			for (int i=0; i<accounts.size(); i++) {
@@ -249,8 +251,41 @@ public class FinanceManager {
 //					}
 					currencyAmount.setAmount(amount);
 				}
-				else
-					currencyAmount.setAmount(-object.getSum());
+				else {
+					double amount = object.getSum();
+					boolean hasAnySumMoreThanAmount = false;
+					int hasAnySumMoreThanAmountPos = 0;
+					for (int i=0; i<accounts.size(); i++) {
+						double findingAmount = PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(),
+								accounts.get(i).getCurrency(), amount);
+						if (accounts.get(i).getAmount() >= findingAmount) {
+							hasAnySumMoreThanAmount = true;
+							hasAnySumMoreThanAmountPos = i;
+							break;
+						}
+					}
+					if (hasAnySumMoreThanAmount) {
+						double findingAmount = PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), accounts.get(hasAnySumMoreThanAmountPos).getCurrency(), amount);
+						accounts.get(hasAnySumMoreThanAmountPos).setAmount(accounts.get(hasAnySumMoreThanAmountPos).getAmount()-findingAmount);
+					}
+					else {
+						int iter = 0;
+						while (amount != 0 && iter < accounts.size()) {
+							if (accounts.get(iter).getAmount() > 0) {
+								if (accounts.get(iter).getAmount() >= PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), accounts.get(iter).getCurrency(), amount)) {
+									accounts.get(iter).setAmount(accounts.get(iter).getAmount() - PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), accounts.get(iter).getCurrency(), amount));
+									amount = 0;
+								}
+								else {
+									amount = amount - PocketAccounterGeneral.getCost(object.getCalendar(), accounts.get(iter).getCurrency(), object.getCurrency(), accounts.get(iter).getAmount());
+									accounts.get(iter).setAmount(0);
+								}
+							}
+							iter++;
+						}
+						currencyAmount.setAmount(-amount);
+					}
+				}
 				accounts.add(currencyAmount);
 			}
 		}
@@ -258,10 +293,10 @@ public class FinanceManager {
 		Double expense = 0.0d, income = 0.0d, balance = 0.0d;
 		for (BalanceObject object : objects) {
 			if (object.getType() == PocketAccounterGeneral.INCOME) {
-				income = income + PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum());
+				income = income + PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), object.getSum());
 				Log.d("sss", "currency: "+object.getCurrency().getAbbr() + " amount: "+PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum()));
 			} else {
-				expense = expense + PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum());
+				expense = expense + PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), object.getSum());
 				Log.d("sss", "currency: "+object.getCurrency().getAbbr() + " amount: "+PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum()));
 
 			}
