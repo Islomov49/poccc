@@ -26,7 +26,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jim.pocketaccounter.finance.BalanceObject;
 import com.jim.pocketaccounter.finance.Currency;
+import com.jim.pocketaccounter.finance.CurrencyAmount;
 import com.jim.pocketaccounter.finance.CurrencyCost;
 import com.jim.pocketaccounter.finance.CurrencyExchangeAdapter;
 import com.jim.pocketaccounter.finance.FinanceManager;
@@ -190,13 +192,13 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
 		otherSymbols.setDecimalSeparator('.');
 		otherSymbols.setGroupingSeparator('.');
-		final DecimalFormat decFormat = new DecimalFormat("0.00", otherSymbols);
+		final DecimalFormat decFormat = new DecimalFormat("0.00##", otherSymbols);
 		etExchange.setText(decFormat.format(0.0));
 		double cost = 1.0;
 		if (currCost != null) {
 			tvExchangeEditDate.setText(dateFormat.format(currCost.getDay().getTime()));
 			day = (Calendar) currCost.getDay().clone();
-			cost = currCost.getCost();
+			cost = 1/currCost.getCost();
 		}
 		tvExchangeEditDate.setText(dateFormat.format(day.getTime()));
 		etExchange.setText(decFormat.format(cost));
@@ -210,7 +212,7 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 					return;
 				}
 				if (currCost != null) {
-					currCost.setCost(Double.parseDouble(etExchange.getText().toString()));
+					currCost.setCost(1/Double.parseDouble(etExchange.getText().toString()));
 					currCost.setDay(day);
 				}
 				else {
@@ -227,14 +229,23 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 						}
 					}
 					if (dayFound)
-						currency.getCosts().get(position).setCost(Double.parseDouble(etExchange.getText().toString()));
+						currency.getCosts().get(position).setCost(1/Double.parseDouble(etExchange.getText().toString()));
 					else {
 						CurrencyCost newCurrencyCost = new CurrencyCost();
-						newCurrencyCost.setCost(Double.parseDouble(etExchange.getText().toString()));
+						newCurrencyCost.setCost(1/Double.parseDouble(etExchange.getText().toString()));
 						newCurrencyCost.setDay(day);
 						currency.getCosts().add(newCurrencyCost);
 					}
 
+				}
+				for(int i = currency.getCosts().size()-1 ; i > 0 ; i--){
+					for(int j = 0 ; j < i ; j++){
+						if( currency.getCosts().get(j).getDay().compareTo(currency.getCosts().get(j+1).getDay()) > 0){
+							CurrencyCost balanceObject = currency.getCosts().get(j);
+							currency.getCosts().set(j, currency.getCosts().get(j+1));
+							currency.getCosts().set(j+1, balanceObject);
+						}
+					}
 				}
 				refreshExchangeList();
 				dialog.dismiss();

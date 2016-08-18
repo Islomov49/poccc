@@ -96,9 +96,7 @@ public class FinanceManager {
 				}
 			}
 		}
-		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		for (BalanceObject object : objects) {
-			Log.d("sss", format.format(object.getCalendar().getTime()) + " "+object.getSum() + " test");
 			boolean found = false;
 			int pos = 0;
 			for (int i=0; i<accounts.size(); i++) {
@@ -292,21 +290,22 @@ public class FinanceManager {
 		ArrayList<Double> result = new ArrayList<>();
 		Double expense = 0.0d, income = 0.0d, balance = 0.0d;
 		for (BalanceObject object : objects) {
-			if (object.getType() == PocketAccounterGeneral.INCOME) {
-				income = income + PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), object.getSum());
-				Log.d("sss", "currency: "+object.getCurrency().getAbbr() + " amount: "+PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum()));
-			} else {
-				expense = expense + PocketAccounterGeneral.getCost(object.getCalendar(), object.getCurrency(), object.getSum());
+			if (object.getType() == PocketAccounterGeneral.EXPENSE) {
+//				income = income + PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum());
+//				Log.d("sss", "currency: "+object.getCurrency().getAbbr() + " amount: "+PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum()));
+//			} else {
+				expense = expense + PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum());
 				Log.d("sss", "currency: "+object.getCurrency().getAbbr() + " amount: "+PocketAccounterGeneral.getCost(date, object.getCurrency(), object.getSum()));
 
 			}
 		}
-		result.add(income);
-		result.add(expense);
 		for (CurrencyAmount currencyAmount : accounts) {
 			Log.d("sss", currencyAmount.getCurrency().getAbbr() + " amount: "+currencyAmount.getAmount());
 			balance = balance + PocketAccounterGeneral.getCost(date, currencyAmount.getCurrency(), currencyAmount.getAmount());
 		}
+		income = expense + balance;
+		result.add(income);
+		result.add(expense);
 		result.add(balance);
 		return result;
 	}
