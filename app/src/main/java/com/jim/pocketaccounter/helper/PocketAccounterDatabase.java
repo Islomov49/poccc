@@ -1506,8 +1506,9 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 					+ "is_limited INTEGER,"
 					+ "limit_amount REAL"
 					+ ");");
-			Log.d("sss", "account_table_is_created");
+
 			Cursor csr = db.query("account_table", null, null, null, null, null, null);
+			Log.d("sss", "account_table_is_created " + (csr == null) + " cursor " + csr.getCount() + " accounts "+result.size());
 
 			Log.d("sss", "start_amount: "+csr.getColumnIndex("start_money")+" account_name: "+csr.getColumnIndex("start_money"));
 			ContentValues values = new ContentValues();
