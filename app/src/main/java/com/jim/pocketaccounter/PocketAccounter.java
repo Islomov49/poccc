@@ -812,6 +812,12 @@ public class PocketAccounter extends AppCompatActivity {
                                 }
                                 break;
                             case 1:
+                                Intent ssettings = new Intent(PocketAccounter.this, SettingsActivity.class);
+                                PocketAccounter.openActivity=true;
+                                for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+                                    fragmentManager.popBackStack();
+                                }
+                                startActivityForResult(ssettings, key_for_restat);
                             case 2:
                                 if (getSupportFragmentManager().getBackStackEntryCount() == 1
                                         && getSupportFragmentManager().findFragmentById(R.id.flMain).getTag()
@@ -892,12 +898,12 @@ public class PocketAccounter extends AppCompatActivity {
                                 break;
                             case 13:
 
-                                Intent ssettings = new Intent(PocketAccounter.this, SettingsActivity.class);
+                                Intent zssettings = new Intent(PocketAccounter.this, SettingsActivity.class);
                                 PocketAccounter.openActivity=true;
                                 for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
                                     fragmentManager.popBackStack();
                                 }
-                                startActivityForResult(ssettings, key_for_restat);
+                                startActivityForResult(zssettings, key_for_restat);
                                 break;
                             case 14:
                                 if (keyboardVisible) {

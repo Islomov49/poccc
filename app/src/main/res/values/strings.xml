@@ -1287,7 +1287,7 @@
     </string-array>
     <string name="start_amount">Start sum</string>
     <string name="secure">Security</string>
-    <string name="secure_on">Включить защиту</string>
+    <string name="secure_on">Enable security</string>
     <string name="enter_password">Enter password</string>
     <string-array name="secure_times_titles">
         <item>1 мин.</item>
@@ -1331,6 +1331,6 @@
     <string name="new_password">New password</string>
     <string name="otklyuchit">Turn off password</string>
     <string name="start_moneyy">Start sum</string>
-    <string name="securee">Защита</string>
-    <string name="data_izmenenia">Дата изменения:</string>
+    <string name="securee">Security</string>
+    <string name="data_izmenenia">Date:</string>
 </resources>

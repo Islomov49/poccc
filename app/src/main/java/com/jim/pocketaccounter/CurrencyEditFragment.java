@@ -260,9 +260,9 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 				dialog.dismiss();
 			}
 		});
-//		DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
-//		int width = dm.widthPixels;
-//		dialog.getWindow().setLayout(7*width/8, LayoutParams.WRAP_CONTENT);
+		DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
+		int width = dm.widthPixels;
+		dialog.getWindow().setLayout(7*width/8, LayoutParams.WRAP_CONTENT);
 		dialog.show();
 	}
 	private void deleteCosts() {

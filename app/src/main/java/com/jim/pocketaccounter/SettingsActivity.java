@@ -17,9 +17,11 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -221,13 +223,14 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                 if((Boolean)newValue&&PreferenceManager.getDefaultSharedPreferences(SettingsActivity.this).getBoolean("firstclick",true)) {
                     final Dialog dialog = new Dialog(SettingsActivity.this);
                     final View dialogView = getLayoutInflater().inflate(R.layout.password_layout_create, null);
-                    dialog.setTitle(R.string.new_password);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(dialogView);
 
                     final EditText myPassword1=(EditText)dialogView.findViewById(R.id.firstPassword);
                     final EditText myPassword2=(EditText)dialogView.findViewById(R.id.secondPassword);
                     final TextView myFourNumbers=(TextView)dialogView.findViewById(R.id.passwordTextShould);
                     final TextView myRepiatPassword=(TextView)dialogView.findViewById(R.id.passwordRepiat);
+                    final TextView Titlee=(TextView)dialogView.findViewById(R.id.idtitle);
                     dialogView.findViewById(R.id.okbuttt).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -268,7 +271,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                             }
                         }
                     });
-
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int width = dm.widthPixels;
+                    dialog.getWindow().setLayout(7*width/8, SlidingPaneLayout.LayoutParams.WRAP_CONTENT);
                     dialog.show();
 
                 return false;
@@ -278,7 +283,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                     Log.d("keeee", "onPreferenceChange: fasleee");
                     final Dialog dialog = new Dialog(SettingsActivity.this);
                     final View dialogView = getLayoutInflater().inflate(R.layout.password_layout_turn_off, null);
-                    dialog.setTitle(R.string.otklyuchit);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setContentView(dialogView);
                      final EditText myPassword1=(EditText)dialogView.findViewById(R.id.confirmpasword);
                     final  TextView myFourNumbers=(TextView) dialogView.findViewById(R.id.passwordTextShouldRepiat);
@@ -309,6 +314,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
                             }
                         }
                     });
+                    DisplayMetrics dm = getResources().getDisplayMetrics();
+                    int width = dm.widthPixels;
+                    dialog.getWindow().setLayout(7*width/8, SlidingPaneLayout.LayoutParams.WRAP_CONTENT);
                     dialog.show();
 
 

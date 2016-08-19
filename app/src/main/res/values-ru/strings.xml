@@ -1324,4 +1324,6 @@
     <string name="try_one_more">Введен неверный пароль</string>
     <string name="was_four_numbers">Ваш пароль должен состоять из 4-х цифр</string>
     <string name="start_moneyy">Начальная сумма</string>
+    <string name="data_izmenenia">Дата:</string>
+    <string name="securee">Защита</string>
 </resources>

@@ -7,7 +7,7 @@
     <TextView
         android:id="@+android:id/title"
 
-        android:paddingLeft="@dimen/sixteen_dp"
+        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
 
         android:textColor="@color/green_light_darker"
         android:textStyle="bold"
