@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -450,14 +451,26 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
 
     }
+    public boolean mListStyled;
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        // Set up a listener whenever a key changes
+        if (!mListStyled) {
+            View rootView = findViewById(android.R.id.content).getRootView();
+            if (rootView != null) {
+                ListView list = (ListView) rootView.findViewById(android.R.id.list);
+                list.setPadding(0, 0, 0, 0);
+                list.setDivider(null);
+                //any other styling call
+                mListStyled = true;
+            }
+        }
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
     }
+
+
 
     @Override
     public void onBackPressed() {

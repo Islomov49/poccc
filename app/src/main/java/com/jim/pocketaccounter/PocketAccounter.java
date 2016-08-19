@@ -813,13 +813,6 @@ public class PocketAccounter extends AppCompatActivity {
                                 break;
                             case 1:
                             case 2:
-//                                Intent settings = new Intent(PocketAccounter.this, SettingsActivity.class);
-//                                PocketAccounter.openActivity=true;
-//                                for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
-//                                    fragmentManager.popBackStack();
-//                                }
-//                                startActivityForResult(settings, key_for_restat);
-////                                break;
                                 if (getSupportFragmentManager().getBackStackEntryCount() == 1
                                         && getSupportFragmentManager().findFragmentById(R.id.flMain).getTag()
                                         .matches(com.jim.pocketaccounter.debt.PockerTag.CURRENCY))
@@ -1154,7 +1147,8 @@ public class PocketAccounter extends AppCompatActivity {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences.getBoolean("secure", false)&&!openActivity) {
-
+            if(!drawer.isClosed())
+            drawer.close();
             pwPassword.setVisibility(View.VISIBLE);
             pwPassword.setOnPasswordRightEnteredListener(new OnPasswordRightEntered() {
                 @Override

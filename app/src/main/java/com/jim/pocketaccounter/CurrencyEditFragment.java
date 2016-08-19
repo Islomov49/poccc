@@ -49,6 +49,7 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 	private Calendar day = Calendar.getInstance();
 	private int mode = PocketAccounterGeneral.NORMAL_MODE;
 	private boolean[] selected;
+
 	public CurrencyEditFragment(Currency currency) {
 		this.currency = currency;
 	}
@@ -188,6 +189,8 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 			}
 		});
 		final EditText etExchange = (EditText) dialogView.findViewById(R.id.etExchange);
+		final TextView glava=(TextView) dialogView.findViewById(R.id.glava);
+		glava.setText(1+currency.getAbbr()+"  = ");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols();
 		otherSymbols.setDecimalSeparator('.');
@@ -257,9 +260,9 @@ public class CurrencyEditFragment extends Fragment implements OnClickListener, O
 				dialog.dismiss();
 			}
 		});
-		DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
-		int width = dm.widthPixels;
-		dialog.getWindow().setLayout(6*width/7, LayoutParams.WRAP_CONTENT);
+//		DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
+//		int width = dm.widthPixels;
+//		dialog.getWindow().setLayout(7*width/8, LayoutParams.WRAP_CONTENT);
 		dialog.show();
 	}
 	private void deleteCosts() {

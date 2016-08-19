@@ -67,7 +67,6 @@ public class FilterFragment extends Fragment implements AdapterView.OnItemSelect
             @Override
             public void onClick(View v) {
              // ----- Save -------
-
             }
         });
 

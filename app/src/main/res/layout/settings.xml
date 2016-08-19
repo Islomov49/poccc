@@ -2,7 +2,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <PreferenceCategory android:title="@string/language">
+    <!--PreferenceCategory android:title="@string/language"-->
+    <Preference
+        android:title="@string/language"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <ListPreference
             android:defaultValue='@string/language_default'
             android:dialogIcon="@drawable/remove_red"
@@ -11,8 +16,12 @@
             android:key="language"
             android:selectable="true"
             android:summary="@string/choose_language" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/finance">
+    <!--<PreferenceCategory android:title="@string/finance">-->
+    <Preference
+        android:title="@string/finance"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/balance_mode_titles"
@@ -21,8 +30,12 @@
             android:selectable="true"
             android:summary="@string/balance_summary"
             android:title="@string/balance_title"/>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/notifications">
+    <!--<PreferenceCategory android:title="@string/notifications">-->
+    <Preference
+        android:title="@string/notifications"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <CheckBoxPreference
             android:defaultValue="@bool/notif_default"
             android:key="general_notif"
@@ -37,8 +50,12 @@
             android:dialogLayout="@layout/time_preference"
             android:title="@string/planning_notif_title"
             android:key="planningNotifTime" />
-     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/filters">
+    <!--<PreferenceCategory android:title="@string/filters">-->
+    <Preference
+        android:title="@string/filters"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <ListPreference
             android:defaultValue="2"
             android:entries="@array/filter_titles"
@@ -46,8 +63,12 @@
             android:key="report_filter"
             android:summary="@string/filter_subtitle"
             android:title="@string/filter_title" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/sync">
+    <!--<PreferenceCategory android:title="@string/sync">-->
+    <Preference
+        android:title="@string/sync"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <Preference
             android:key="save"
             android:summary="@string/setting_save"
@@ -56,8 +77,12 @@
             android:key="load"
             android:summary="@string/setting_repair"
             android:title="@string/repair" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/google_sync">
+    <!--<PreferenceCategory android:title="@string/google_sync">-->
+    <Preference
+        android:title="@string/google_sync"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <Preference
             android:key="backup"
             android:summary="@string/backup_summary"
@@ -65,12 +90,14 @@
         <Preference
             android:key="logout"
             android:title="@string/google_logout" />
-    </PreferenceCategory>
 
 
-    <PreferenceCategory
-        android:title="Защита"
-        >
+    <!--<PreferenceCategory      android:title="@string/securee">-->
+    <Preference
+        android:title="@string/securee"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <CheckBoxPreference
             android:defaultValue="@bool/secure_default"
             android:key="secure"
@@ -84,15 +111,15 @@
 
 
 
-    </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/sbrosit_title">
+    <!--<PreferenceCategory        android:title="@string/sbrosit_title">-->
+    <Preference
+        android:title="@string/sbrosit_title"
+        android:selectable="false"
+        android:layout="@layout/my_pref_layout"
+        />
         <Preference
             android:key="sbros"
             android:summary="@string/sbrosit_about"
             android:title="@string/sbrosit" />
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

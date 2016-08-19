@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,8 +44,10 @@ public class FilterDialog extends Dialog implements AdapterView.OnItemSelectedLi
     private ImageView saveBt;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private FilterSelectable filterSelectable = null;
+    private SharedPreferences sharedPreferences;
     public FilterDialog(Context context) {
         super(context);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
     public FilterDialog(Context context, int themeResId) {
         super(context, themeResId);
@@ -97,6 +101,8 @@ public class FilterDialog extends Dialog implements AdapterView.OnItemSelectedLi
                 dismiss();
             }
         });
+        int position = sharedPreferences.getInt("filter_pos", 0);
+
         saveBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +122,9 @@ public class FilterDialog extends Dialog implements AdapterView.OnItemSelectedLi
                     endDate.set(Calendar.SECOND, 59);
                     endDate.set(Calendar.MILLISECOND, 59);
                 }
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("filter_pos", 0);
+                editor.commit();
                 filterSelectable.onDateSelected(beginDate, endDate);
                 dismiss();
             }
@@ -136,7 +145,7 @@ public class FilterDialog extends Dialog implements AdapterView.OnItemSelectedLi
         yilFilter.setAdapter(yearAdapter);
         monthFilter.setAdapter(yearMonthAdapter);
         spinner.setAdapter(arrayAdapter);
-        spinner.setSelection(0);
+        spinner.setSelection(position);
         for (int i = 0; i < year.length; i++) {
             if (year[i].matches("" + Calendar.getInstance().get(Calendar.YEAR))) {
                 yearFilter.setSelection(i);

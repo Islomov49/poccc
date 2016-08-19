@@ -414,10 +414,11 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     total_paid+=item.getAmount();
 
                 if(!amount.matches("")){
+
                     Account account = accaunt_AC.get(accountSp.getSelectedItemPosition());
                     if (account.isLimited()&&current.isKey_for_include()) {
                         double limit =  account.getLimitSum();
-                        double accounted = PocketAccounterGeneral.getCost(date, account.getStartMoneyCurrency(), account.getLimitCurrency(), account.getAmount());;
+                        double accounted = PocketAccounterGeneral.getCost(date, account.getStartMoneyCurrency(), account.getLimitCurrency(), account.getAmount());
                         for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
                             FinanceRecord tempac=PocketAccounter.financeManager.getRecords().get(i);
                             if (tempac.getAccount().getId().matches(account.getId())) {
@@ -469,6 +470,7 @@ public class AdapterCridet extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                                 }
                             }
                         }
+                        //TODO editda tekwir ozini hisoblamaslini
                         for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
                             if (creditDetials.isKey_for_include()) {
                                 for (ReckingCredit reckingCredit : creditDetials.getReckings()) {

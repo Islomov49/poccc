@@ -4,13 +4,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,6 +152,9 @@ public class ReportByAccountFragment extends Fragment implements View.OnClickLis
         spToolbar.setAdapter(arrayAdapter);
         tbReportByAccount = (TableView) rootView.findViewById(R.id.tbReportByAccount);
         tvReportByAccountNoDatas = (TextView) rootView.findViewById(R.id.tvReportByAccountNoDatas);
+
+
+
         spToolbar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -162,7 +168,7 @@ public class ReportByAccountFragment extends Fragment implements View.OnClickLis
                 begin.set(Calendar.MINUTE, 0);
                 begin.set(Calendar.SECOND, 0);
                 begin.set(Calendar.MILLISECOND, 0);
-
+                PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("report_shp",account.getName()+", "+currency.getAbbr()).apply();
                 onCreateReportbyAccount(getContext(), begin, end, account, currency);
             }
 
@@ -172,7 +178,22 @@ public class ReportByAccountFragment extends Fragment implements View.OnClickLis
         });
 
         titles = rootView.getResources().getStringArray(R.array.report_by_account_titles);
-
+        String tekwir=PreferenceManager.getDefaultSharedPreferences(getContext()).getString("report_shp","");
+        if(!tekwir.matches("")){
+            int position=0;
+            for (String temp:result){
+                if (temp.equals(tekwir)){
+                    try {
+                        spToolbar.setSelection(position);
+                    }
+                    catch (Exception o){
+                        o.printStackTrace();
+                    }
+                    break;
+                }
+                position++;
+            }
+        }
         tbReportByAccount.setTitle(titles, true);
         return rootView;
     }

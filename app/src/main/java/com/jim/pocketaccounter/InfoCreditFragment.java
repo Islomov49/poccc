@@ -655,6 +655,7 @@ public class InfoCreditFragment extends Fragment {
                                 if (isCheks[t]) {
                                     rcList.remove(t);
                                     adapRecyc.notifyItemRemoved(t);
+                                    A1.change_item(currentCredit, currentPOS);
                                 } else adapRecyc.notifyItemChanged(t);
                             }
                             isCheks = new boolean[rcList.size()];
