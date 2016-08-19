@@ -1333,4 +1333,7 @@
     <string name="start_moneyy">Start sum</string>
     <string name="securee">Security</string>
     <string name="data_izmenenia">Date:</string>
+    <string name="choesetypeing">Select photo</string>
+    <string name="savein">SAVE</string>
+    <string name="ok_b">OK</string>
 </resources>

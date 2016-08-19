@@ -444,7 +444,7 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Choose type adding")
+                builder.setTitle(getString(R.string.choesetypeing))
                         .setItems(R.array.adding_ticket_type, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                if(which==0){

@@ -1334,4 +1334,5 @@
         <item>Редактировать</item>
         <item>Удалить</item>
     </string-array>
+    <string name="choesetypeing">Выберите фото</string>
 </resources>

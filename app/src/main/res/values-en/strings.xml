@@ -1335,4 +1335,5 @@
         <item>Edit</item>
         <item>Delete</item>
     </string-array>
+    <string name="choesetypeing">Select photo</string>
 </resources>

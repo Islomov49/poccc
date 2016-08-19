@@ -137,11 +137,18 @@ public class SyncBase {
                                   + "type INTEGER,"
                                   + "empty TEXT"
                                   + ");");
-                      }
-                      if (received.getVersion() == 3)
                           upgradeFromThreeToFour(received);
-                      if (received.getVersion() == 4)
                           upgradeFromFourToFive(received);
+                      }
+                      if (received.getVersion() == 3){
+                          upgradeFromThreeToFour(received);
+                          upgradeFromFourToFive(received);
+                      }
+
+                      if (received.getVersion() == 4){
+
+                          upgradeFromFourToFive(received);
+                      }
                       received.setVersion(current.getVersion());
                       File currentDB = new File(fileDirectory.getAbsolutePath());
                       File backupDB = new File(file.getAbsolutePath());
