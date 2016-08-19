@@ -26,6 +26,8 @@ import com.google.firebase.storage.UploadTask;
 import com.jim.pocketaccounter.R;
 import com.jim.pocketaccounter.SettingsActivity;
 import com.jim.pocketaccounter.finance.Account;
+import com.jim.pocketaccounter.finance.Currency;
+import com.jim.pocketaccounter.finance.CurrencyCost;
 import com.jim.pocketaccounter.finance.RootCategory;
 import com.jim.pocketaccounter.finance.SubCategory;
 
@@ -37,7 +39,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by DEV on 10.06.2016.
@@ -224,7 +229,39 @@ public class SyncBase {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
     private void upgradeFromFourToFive(SQLiteDatabase db) {
+        Log.d("sss", "f4->5");
+        upgradeFromThreeToFour(db);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         ArrayList<Account> result = new ArrayList<Account>();
+        Cursor curCursor = db.query("currency_table", null, null, null, null, null, null, null);
+        Cursor curCostCursor = db.query("currency_costs_table", null, null, null, null, null, null, null);
+        ArrayList<Currency> currencies = new ArrayList<Currency>();
+        curCursor.moveToFirst();
+        while (!curCursor.isAfterLast()) {
+            Currency newCurrency = new Currency(curCursor.getString(curCursor.getColumnIndex("currency_name")));
+            newCurrency.setAbbr(curCursor.getString(curCursor.getColumnIndex("currency_sign")));
+            String currId = curCursor.getString(curCursor.getColumnIndex("currency_id"));
+            newCurrency.setId(currId);
+            newCurrency.setMain(curCursor.getInt(curCursor.getColumnIndex("currency_main"))!=0);
+            curCostCursor.moveToFirst();
+            while(!curCostCursor.isAfterLast()) {
+                if (curCostCursor.getString(curCostCursor.getColumnIndex("currency_id")).matches(currId)) {
+                    CurrencyCost newCurrencyCost = new CurrencyCost();
+                    try {
+                        Calendar day = Calendar.getInstance();
+                        day.setTime(dateFormat.parse(curCostCursor.getString(curCostCursor.getColumnIndex("date"))));
+                        newCurrencyCost.setDay(day);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    newCurrencyCost.setCost(curCostCursor.getDouble(curCostCursor.getColumnIndex("cost")));
+                    newCurrency.getCosts().add(newCurrencyCost);
+                }
+                curCostCursor.moveToNext();
+            }
+            currencies.add(newCurrency);
+            curCursor.moveToNext();
+        }
         Cursor cursor = db.query("account_table", null, null, null, null, null, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
@@ -232,6 +269,11 @@ public class SyncBase {
             newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
             newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
             newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
+            newAccount.setLimitCurrency(null);
+            newAccount.setStartMoneyCurrency(null);
+            newAccount.setAmount(0);
+            newAccount.setLimited(false);
+            newAccount.setLimitSum(0);
             result.add(newAccount);
             cursor.moveToNext();
         }
@@ -248,12 +290,30 @@ public class SyncBase {
                 + "is_limited INTEGER,"
                 + "limit_amount REAL"
                 + ");");
+        for (Account account : result) {
+            Log.d("sss", account.getName());
+        }
+        Log.d("sss", "account table created");
+        ContentValues values = new ContentValues();
+        for (Account account : result) {
+            values.put("account_name", account.getName());
+            values.put("account_id", account.getId());
+            values.put("icon", account.getIcon());
+            values.put("start_amount", account.getAmount());
+            values.put("start_money_currency_id", currencies.get(0).getId());
+            values.put("limit_currency_id", currencies.get(0).getId());
+            values.put("is_limited", account.isLimited());
+            values.put("limit_amount", account.getLimitSum());
+            db.insert("account_table", null, values);
+        }
+
         db.execSQL("CREATE TABLE record_photo_table ("
                 + "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "photopath TEXT,"
                 + "photopathCache TEXT,"
                 + "record_id TEXT"
                 + ");");
+
     }
     private void upgradeFromThreeToFour(SQLiteDatabase db) {
         String[] resCatsId = context.getResources().getStringArray(R.array.cat_values);

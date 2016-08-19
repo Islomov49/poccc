@@ -1326,4 +1326,12 @@
     <string name="start_moneyy">Начальная сумма</string>
     <string name="data_izmenenia">Дата:</string>
     <string name="securee">Защита</string>
+    <string-array name="adding_ticket_type">
+        <item>Из галереи</item>
+        <item>Камера</item>
+    </string-array>
+    <string-array name="more_option_for_credit_debt">
+        <item>Редактировать</item>
+        <item>Удалить</item>
+    </string-array>
 </resources>

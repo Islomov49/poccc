@@ -1327,4 +1327,12 @@
     <string name="start_moneyy">Start sum</string>
     <string name="data_izmenenia">Date:</string>
     <string name="securee">Security</string>
+    <string-array name="adding_ticket_type">
+        <item>From gallery</item>
+        <item>Camera</item>
+    </string-array>
+    <string-array name="more_option_for_credit_debt">
+        <item>Edit</item>
+        <item>Delete</item>
+    </string-array>
 </resources>

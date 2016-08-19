@@ -1279,7 +1279,7 @@
     <string name="share_ticket">Share</string>
     <string-array name="adding_ticket_type">
         <item>From gallery</item>
-        <item>From camera</item>
+        <item>Camera</item>
     </string-array>
     <string-array name="more_option_for_credit_debt">
         <item>Edit</item>

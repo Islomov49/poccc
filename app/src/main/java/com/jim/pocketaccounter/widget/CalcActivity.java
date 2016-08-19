@@ -48,6 +48,7 @@ package com.jim.pocketaccounter.widget;
     import android.widget.TextView;
     import android.widget.Toast;
 
+    import com.jim.pocketaccounter.PocketAccounter;
     import com.jim.pocketaccounter.R;
     import com.jim.pocketaccounter.RecordEditFragment;
     import com.jim.pocketaccounter.SettingsActivity;
@@ -1210,35 +1211,26 @@ package com.jim.pocketaccounter.widget;
             if (value.length() > 14)
                 value = value.substring(0, 14);
             if (account.isLimited()) {
-                double limit = account.getLimitSum();
-                double accounted = account.getAmount();
-                for (int i = 0; i < financeManager.getRecords().size(); i++) {
-                    if (financeManager.getRecords().get(i).getAccount().getId().matches(account.getId())) {
-
-                        if (financeManager.getRecords().get(i).getCategory().getType() == PocketAccounterGeneral.INCOME)
-                            accounted = accounted + PocketAccounterGeneral.getCost(financeManager.getRecords().get(i));
+                double limit =  account.getLimitSum();
+                double accounted = PocketAccounterGeneral.getCost(date, account.getStartMoneyCurrency(), account.getLimitCurrency(), account.getAmount());
+                for (int i = 0; i < PocketAccounter.financeManager.getRecords().size(); i++) {
+                    FinanceRecord tempac=PocketAccounter.financeManager.getRecords().get(i);
+                    if (tempac.getAccount().getId().matches(account.getId())) {
+                        if (tempac.getCategory().getType() == PocketAccounterGeneral.INCOME)
+                            accounted = accounted + PocketAccounterGeneral.getCost(tempac.getDate(),tempac.getCurrency(),account.getLimitCurrency(),tempac.getAmount());
                         else
-                            accounted = accounted - PocketAccounterGeneral.getCost(financeManager.getRecords().get(i));
+                            accounted = accounted - PocketAccounterGeneral.getCost(tempac.getDate(),tempac.getCurrency(),account.getLimitCurrency(),tempac.getAmount());
                     }
                 }
-                try {
-                    if (category.getType() == PocketAccounterGeneral.INCOME)
-                        accounted = accounted + PocketAccounterGeneral.getCost(date, currency, Double.parseDouble(tvRecordEditDisplay.getText().toString()));
-                    else
-                        accounted = accounted - PocketAccounterGeneral.getCost(date, currency, Double.parseDouble(tvRecordEditDisplay.getText().toString()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                for (DebtBorrow debtBorrow : financeManager.getDebtBorrows()) {
+                for (DebtBorrow debtBorrow : PocketAccounter.financeManager.getDebtBorrows()) {
                     if (debtBorrow.isCalculate()) {
                         if (debtBorrow.getAccount().getId().matches(account.getId())) {
                             if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(),account.getLimitCurrency(), debtBorrow.getAmount());
+                            } else {
+                                accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(),account.getLimitCurrency(), debtBorrow.getAmount());
                             }
-                            else {
-                                accounted = accounted - PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
-                            }
-                            for (Recking recking:debtBorrow.getReckings()) {
+                            for (Recking recking : debtBorrow.getReckings()) {
                                 SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
                                 Calendar cal = Calendar.getInstance();
                                 try {
@@ -1246,31 +1238,51 @@ package com.jim.pocketaccounter.widget;
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                                if (debtBorrow.getType() == DebtBorrow.BORROW) {
-                                    accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(), debtBorrow.getAmount());
+                                if (debtBorrow.getType() == DebtBorrow.DEBT) {
+                                    accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(),account.getLimitCurrency(), recking.getAmount());
+                                } else {
+                                    accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(),account.getLimitCurrency(), recking.getAmount());
                                 }
-                                else {
-                                    accounted = accounted + PocketAccounterGeneral.getCost(debtBorrow.getTakenDate(), debtBorrow.getCurrency(), debtBorrow.getAmount());
+                            }
+                        } else {
+                            for (Recking recking : debtBorrow.getReckings()) {
+                                SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+                                Calendar cal = Calendar.getInstance();
+                                if (recking.getAccountId().matches(account.getId())) {
+                                    try {
+                                        cal.setTime(format.parse(recking.getPayDate()));
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (debtBorrow.getType() == DebtBorrow.BORROW) {
+                                        accounted = accounted + PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(),account.getLimitCurrency(), recking.getAmount());
+                                    } else {
+                                        accounted = accounted - PocketAccounterGeneral.getCost(cal, debtBorrow.getCurrency(),account.getLimitCurrency(), recking.getAmount());
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                for (CreditDetials creditDetials : financeManager.getCredits()) {
+                //TODO editda tekwir ozini hisoblamaslini
+                for (CreditDetials creditDetials : PocketAccounter.financeManager.getCredits()) {
                     if (creditDetials.isKey_for_include()) {
                         for (ReckingCredit reckingCredit : creditDetials.getReckings()) {
                             if (reckingCredit.getAccountId().matches(account.getId())) {
                                 Calendar cal = Calendar.getInstance();
                                 cal.setTimeInMillis(reckingCredit.getPayDate());
-                                accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(), reckingCredit.getAmount());
+                                accounted = accounted - PocketAccounterGeneral.getCost(cal, creditDetials.getValyute_currency(),account.getLimitCurrency(), reckingCredit.getAmount());
                             }
                         }
                     }
                 }
+                accounted = accounted - PocketAccounterGeneral.getCost(date, currency, account.getLimitCurrency() ,Double.parseDouble(tvRecordEditDisplay.getText().toString()));
                 if (-limit > accounted) {
-                    Toast.makeText(CalcActivity.this, R.string.limit_exceed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.limit_exceed, Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                //
             }
             if (Double.parseDouble(value) != 0) {
 

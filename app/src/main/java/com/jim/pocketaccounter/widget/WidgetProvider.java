@@ -417,7 +417,10 @@ public class WidgetProvider extends AppWidgetProvider {
                     expAmount = expAmount + PocketAccounterGeneral.getCost(tempExp.get(i));
                 }
             }
-
+            for (Account account:PocketAccounter.financeManager.getAccounts()) {
+                if (account.getLimitCurrency() != null)
+                    incAmount = incAmount + PocketAccounterGeneral.getCost(Calendar.getInstance(), account.getLimitCurrency(), account.getAmount());
+            }
             for (DebtBorrow debtBorrow : manager.getDebtBorrows()) {
                 if (debtBorrow.isCalculate()) {
                     if (debtBorrow.getTakenDate().compareTo(first) >= 0 && debtBorrow.getTakenDate().compareTo(second) <= 0) {

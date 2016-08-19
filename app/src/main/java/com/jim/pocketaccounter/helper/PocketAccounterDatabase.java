@@ -621,12 +621,12 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		String[] catIcons = context.getResources().getStringArray(R.array.cat_icons);
 		for (int i=0; i<catValues.length; i++) {
 			int resId = context.getResources().getIdentifier(catValues[i], "string", context.getPackageName());
-			int iconId = context.getResources().getIdentifier(catIcons[i], "drawable", context.getPackageName());
+//			int iconId = context.getResources().getIdentifier(catIcons[i], "drawable", context.getPackageName());
 			ContentValues values = new ContentValues();
 			values.put("category_name", context.getResources().getString(resId));
 			values.put("category_id", catValues[i]);
 			values.put("category_type", catTypes[i]);
-			values.put("icon", iconId);
+			values.put("icon", catIcons[i]);
 			db.insert("category_table", null, values);
 			int arrayId = context.getResources().getIdentifier(catValues[i], "array", context.getPackageName());
 			if (arrayId != 0) {
@@ -1013,7 +1013,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		ArrayList<Account> result = new ArrayList<Account>();
 		ArrayList<Currency> currencies = loadCurrencies();
-		Log.d("sss", currencies.size()+"");
+		Log.d("sss", currencies.size()+" accounts_size");
 		Cursor cursor = db.query("account_table", null, null, null, null, null, null);
 		cursor.moveToFirst();
 		while(!cursor.isAfterLast()) {
@@ -1021,6 +1021,8 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
 			newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
 			newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
+			Log.d("sss", "start column: "+cursor.getColumnIndex("start_amount"));
+
 			newAccount.setAmount(cursor.getDouble(cursor.getColumnIndex("start_amount")));
 			String startMoneyCurrencyId = cursor.getString(cursor.getColumnIndex("start_money_currency_id"));
 			String limitCurrencyId = cursor.getString(cursor.getColumnIndex("limit_currency_id"));
@@ -1438,8 +1440,8 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 		}
 		if (arg1 == 4 && arg2 == 5) {
 			Log.d("sss", "4->5");
+			upgradeFromThreeToFour(db);
 			ArrayList<Account> result = new ArrayList<Account>();
-
 			Cursor curCursor = db.query("currency_table", null, null, null, null, null, null, null);
 			Cursor curCostCursor = db.query("currency_costs_table", null, null, null, null, null, null, null);
 			ArrayList<Currency> currencies = new ArrayList<Currency>();
@@ -1471,13 +1473,20 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 			}
 			Cursor cursor = db.query("account_table", null, null, null, null, null, null);
 			cursor.moveToFirst();
+			Currency mainCurrency = null;
+			for (Currency currency : currencies) {
+				if (currency.getMain()) {
+					mainCurrency = currency;
+					break;
+				}
+			}
 			while(!cursor.isAfterLast()) {
 				Account newAccount = new Account();
 				newAccount.setName(cursor.getString(cursor.getColumnIndex("account_name")));
 				newAccount.setId(cursor.getString(cursor.getColumnIndex("account_id")));
 				newAccount.setIcon(cursor.getInt(cursor.getColumnIndex("icon")));
-				newAccount.setLimitCurrency(null);
-				newAccount.setStartMoneyCurrency(null);
+				newAccount.setLimitCurrency(mainCurrency);
+				newAccount.setStartMoneyCurrency(mainCurrency);
 				newAccount.setAmount(0);
 				newAccount.setLimited(false);
 				newAccount.setLimitSum(0);
@@ -1497,7 +1506,10 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 					+ "is_limited INTEGER,"
 					+ "limit_amount REAL"
 					+ ");");
+			Log.d("sss", "account_table_is_created");
+			Cursor csr = db.query("account_table", null, null, null, null, null, null);
 
+			Log.d("sss", "start_amount: "+csr.getColumnIndex("start_money")+" account_name: "+csr.getColumnIndex("start_money"));
 			ContentValues values = new ContentValues();
 			for (Account account : result) {
 				values.put("account_name", account.getName());
@@ -1510,6 +1522,7 @@ public class PocketAccounterDatabase extends SQLiteOpenHelper {
 				values.put("limit_amount", account.getLimitSum());
 				db.insert("account_table", null, values);
 			}
+			Log.d("sss", "in_account_table_put_datas");
 
 			db.execSQL("CREATE TABLE record_photo_table ("
 					+ "_id INTEGER PRIMARY KEY AUTOINCREMENT,"
