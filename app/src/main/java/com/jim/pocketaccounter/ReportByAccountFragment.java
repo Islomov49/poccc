@@ -218,6 +218,7 @@ public class ReportByAccountFragment extends Fragment implements View.OnClickLis
 
     void onCreateReportbyAccount(Context context, Calendar begin, Calendar end, Account account, Currency currency) {
         reportByAccount = new ReportByAccount(context, begin, end, account, currency);
+
         sortReportByAccount = reportByAccount.makeAccountReport();
         Calendar current_begin = (Calendar) Calendar.getInstance().clone(), current_end = (Calendar) Calendar.getInstance().clone();
         Collections.sort(sortReportByAccount, new MyComparator());

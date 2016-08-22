@@ -238,7 +238,7 @@ public class CategoryFragment extends Fragment implements OnClickListener, OnIte
 				if (selected[i]) {
 					String id = PocketAccounter.financeManager.getCategories().get(i).getId();
 					for (int j=0; j<PocketAccounter.financeManager.getExpanses().size(); j++) {
-						if (PocketAccounter.financeManager.getExpanses().get(j) == null)	continue;
+						if (PocketAccounter.financeManager.getExpanses().get(j) == null) continue;
 						if (PocketAccounter.financeManager.getExpanses().get(j).getId().matches(id))
 							PocketAccounter.financeManager.getExpanses().set(j, null);
 					}
@@ -277,8 +277,11 @@ public class CategoryFragment extends Fragment implements OnClickListener, OnIte
 						}
 					}
 					for (int j=0; j<PocketAccounter.financeManager.getCategories().size(); j++) {
-						if (PocketAccounter.financeManager.getCategories().get(j).getId().matches(id))
+						if (PocketAccounter.financeManager.getCategories().get(j)!= null && PocketAccounter.financeManager.getCategories().get(j).getId().matches(id)) {
 							PocketAccounter.financeManager.getCategories().set(j, null);
+							break;
+						}
+
 					}
 				}
 			}
@@ -303,7 +306,7 @@ public class CategoryFragment extends Fragment implements OnClickListener, OnIte
 						}
 					}
 					for (int j=0; j<PocketAccounter.financeManager.getCategories().size(); j++) {
-						if (PocketAccounter.financeManager.getCategories().get(j).getId().matches(id))
+						if (PocketAccounter.financeManager.getCategories().get(j) != null && PocketAccounter.financeManager.getCategories().get(j).getId().matches(id))
 							PocketAccounter.financeManager.getCategories().set(j, null);
 					}
 				}
