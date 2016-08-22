@@ -1335,4 +1335,6 @@
         <item>Удалить</item>
     </string-array>
     <string name="choesetypeing">Выберите фото</string>
+    <string name="savein">СОХРАНИТЬ</string>
+    <string name="ok_b">OK</string>
 </resources>

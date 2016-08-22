@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jim.pocketaccounter"
-    android:versionCode="10"
+    android:versionCode="12"
     android:versionName="6.205">
 
     <uses-sdk

@@ -140,7 +140,7 @@ public class IncomeExpanseReport {
                     if (cal.compareTo(b) >= 0 && cal.compareTo(e) <= 0) {
                         IncomeExpanseDayDetails detail = new IncomeExpanseDayDetails();
                         RootCategory category = new RootCategory();
-                        if (debtBorrowMain.get(i).getType() == DebtBorrow.BORROW) {
+                        if (debtBorrowRecking.get(i).getType() == DebtBorrow.BORROW) {
                             category.setName(context.getResources().getString(R.string.borrow_recking_statistics));
                             category.setType(PocketAccounterGeneral.INCOME);
                         }

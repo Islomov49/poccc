@@ -1336,4 +1336,6 @@
         <item>Delete</item>
     </string-array>
     <string name="choesetypeing">Select photo</string>
+    <string name="savein">SAVE</string>
+    <string name="ok_b">OK</string>
 </resources>
