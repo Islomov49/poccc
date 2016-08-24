@@ -294,6 +294,13 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 
 			if (chbNachalniy.isChecked()) {
 				goneWhenNacalniyaSumma.setVisibility(View.VISIBLE);
+				String startMoneyId = account.getStartMoneyCurrency().getId();
+				for (int i=0; i<PocketAccounter.financeManager.getCurrencies().size(); i++) {
+					if (PocketAccounter.financeManager.getCurrencies().get(i).getId().matches(startMoneyId)) {
+						spStartMoney.setSelection(i);
+						break;
+					}
+				}
 			}
 			else {
 				goneWhenNacalniyaSumma.setVisibility(View.GONE);
@@ -401,6 +408,8 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 					else account.setAmount(0);
 
 					account.setStartMoneyCurrency(PocketAccounter.financeManager.getCurrencies().get(spStartMoney.getSelectedItemPosition()));
+
+					Log.d("sss", account.getStartMoneyCurrency().getAbbr()+" start money "+spStartMoney.getSelectedItemPosition());
 					account.setLimitCurrency(PocketAccounter.financeManager.getCurrencies().get(spLimit.getSelectedItemPosition()));
 
 					account.setLimited(chbLimit.isChecked());
@@ -440,6 +449,9 @@ public class AccountFragment extends Fragment implements OnClickListener, OnItem
 					}
 					else newAccount.setLimitSum(0);
 					PocketAccounter.financeManager.getAccounts().add(newAccount);
+				}
+				for (Account account1 : PocketAccounter.financeManager.getAccounts()) {
+					Log.d("sss", account1.getName() + " "+account1.getStartMoneyCurrency().getAbbr() + " "+account1.getAmount());
 				}
 				PocketAccounter.financeManager.saveAccounts();
 				dialog.dismiss();

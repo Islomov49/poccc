@@ -412,7 +412,7 @@ public class PocketAccounter extends AppCompatActivity {
         }
         for (Account account:PocketAccounter.financeManager.getAccounts()) {
             if (account.getLimitCurrency() != null)
-                income = income + PocketAccounterGeneral.getCost(date, account.getLimitCurrency(), account.getAmount());
+                income = income + PocketAccounterGeneral.getCost(date, account.getStartMoneyCurrency(), account.getAmount());
         }
         //calculating debt borrows
         if (balanceSolve.matches(whole)) {
