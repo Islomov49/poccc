@@ -202,7 +202,7 @@ public class WidgetProvider extends AppWidgetProvider {
         }
 
             //income diagramma
-        Bitmap bitmap = makeDiagram(context);
+        Bitmap bitmap = makeDiagram(context,financeManager);
         views.setImageViewBitmap(R.id.diagramma_widget, bitmap);
 
         Intent active = new Intent(context, WidgetProvider.class);
@@ -359,8 +359,8 @@ public class WidgetProvider extends AppWidgetProvider {
 
     }
 
-    static Bitmap makeDiagram(Context context) {
-        FinanceManager manager = new FinanceManager(context);
+    static Bitmap makeDiagram(Context context,FinanceManager financeManager) {
+        FinanceManager manager = financeManager;
         Calendar begin = Calendar.getInstance();
         begin.set(Calendar.HOUR_OF_DAY, 0);
         begin.set(Calendar.MINUTE, 0);
@@ -417,7 +417,7 @@ public class WidgetProvider extends AppWidgetProvider {
                     expAmount = expAmount + PocketAccounterGeneral.getCost(tempExp.get(i));
                 }
             }
-            for (Account account:PocketAccounter.financeManager.getAccounts()) {
+            for (Account account:manager.getAccounts()) {
                 if (account.getLimitCurrency() != null)
                     incAmount = incAmount + PocketAccounterGeneral.getCost(Calendar.getInstance(), account.getLimitCurrency(), account.getAmount());
             }
@@ -464,6 +464,7 @@ public class WidgetProvider extends AppWidgetProvider {
             expenses.add(expAmount);
             begin.add(Calendar.DAY_OF_YEAR, 1);
         }
+
         //calculating debtborrows
 
         double max = 0.0;

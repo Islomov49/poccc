@@ -131,6 +131,7 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
     boolean openAddingDialog=false;
     View mainView;
     private SharedPreferences sharedPreferences;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 18;
 
     @SuppressLint("ValidFragment")
 
@@ -448,30 +449,35 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
                         .setItems(R.array.adding_ticket_type, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                if(which==0){
-                                   int permission = ContextCompat.checkSelfPermission(getContext(),
-                                           android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                   if (permission != PackageManager.PERMISSION_GRANTED) {
-                                       if (ActivityCompat.shouldShowRequestPermissionRationale(((PocketAccounter) getContext()),
+                                   if (ContextCompat.checkSelfPermission(contex,
+                                           android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                           != PackageManager.PERMISSION_GRANTED) {
+
+                                       // Should we show an explanation?
+                                       if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                                                android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                           android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getContext());
-                                           builder.setMessage("Permission to access the SD-CARD is required for this app to Download PDF.")
-                                                   .setTitle("Permission required");
+                                           Log.d("WRITE_EXTERNAL_STORAGE", "onClick: " + "WRITE_EXTERNAL_STORAGE");
 
-                                           builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                               public void onClick(DialogInterface dialog, int id) {
-                                                   ActivityCompat.requestPermissions((PocketAccounter) getContext(),
-                                                           new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                           PERMISSION_READ_STORAGE);
-                                               }
-                                           });
-                                           android.app.AlertDialog dialogik = builder.create();
-                                           dialogik.show();
-
-                                       } else {
                                            ActivityCompat.requestPermissions((PocketAccounter) getContext(),
                                                    new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                   PERMISSION_READ_STORAGE);
+                                                   MY_PERMISSIONS_REQUEST_CAMERA);
+                                           Log.d("WRITE_EXTERNAL_STORAGE", "onClick: " + "WRITE_EXTERNAL_STORAGE NOT");
+
+
+                                       } else {
+
+                                           // No explanation needed, we can request the permission.
+
+                                           ActivityCompat.requestPermissions((PocketAccounter) getContext(),
+                                                   new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                   MY_PERMISSIONS_REQUEST_CAMERA);
+                                           Log.d("WRITE_EXTERNAL_STORAGE", "onClick: " + "WRITE_EXTERNAL_STORAGE NOT");
+
+                                           // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                                           // app-defined int constant. The callback method gets the
+                                           // result of the request.
                                        }
+
                                    } else {
                                        getPhoto();
                                    }
@@ -479,18 +485,52 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
                                 else if(which==1){
                                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                                    if (takePictureIntent.resolveActivity(contex.getPackageManager()) != null) {
+                                       Log.d("WRITE_EXTERNAL_STORAGE", "onClick: ");
+                                       if (ContextCompat.checkSelfPermission(contex,
+                                               android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                               != PackageManager.PERMISSION_GRANTED) {
+
+                                           // Should we show an explanation?
+                                           if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                                                   android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                               Log.d("WRITE_EXTERNAL_STORAGE", "onClick: " + "WRITE_EXTERNAL_STORAGE");
+
+                                               ActivityCompat.requestPermissions((PocketAccounter) getContext(),
+                                                       new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                       MY_PERMISSIONS_REQUEST_CAMERA);
+                                               Log.d("WRITE_EXTERNAL_STORAGE", "onClick: " + "WRITE_EXTERNAL_STORAGE NOT");
+
+
+                                           } else {
+
+                                               // No explanation needed, we can request the permission.
+
+                                               ActivityCompat.requestPermissions((PocketAccounter) getContext(),
+                                                       new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                       MY_PERMISSIONS_REQUEST_CAMERA);
+                                               Log.d("WRITE_EXTERNAL_STORAGE", "onClick: " + "WRITE_EXTERNAL_STORAGE NOT");
+
+                                               // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                                               // app-defined int constant. The callback method gets the
+                                               // result of the request.
+                                           }
+
+                                       }
+
+                                        else {
+
 
                                            File f = new File(contex.getExternalFilesDir(null),"temp.jpg");
 
                                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                                       PocketAccounter.openActivity=true;
+                                           PocketAccounter.openActivity=true;
                                            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                                       }
 
                                    }
 
 
-                               }
-                            }
+                               }}
                         });
                  builder.create().show();
 
@@ -1769,6 +1809,42 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(contex.getPackageManager()) != null) {
+
+
+
+                        File f = new File(contex.getExternalFilesDir(null),"temp.jpg");
+
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                        PocketAccounter.openActivity=true;
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    } else {
+
+                        // permission denied, boo! Disable the
+                        // functionality that depends on this permission.
+                    }
+                    return;
+                }
+
+                // other 'case' lines to check for other
+                // permissions this app might request
+            }
+        }
+    }
+
+
 
     private Bitmap decodeFile(File f) {
         try {
@@ -1837,4 +1913,6 @@ public class RecordEditFragment extends Fragment implements OnClickListener {
         }
         return 0;
     }
+
+
 }
